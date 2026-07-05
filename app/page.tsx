@@ -69,7 +69,7 @@ export default function Home() {
           className="h-auto w-56 sm:w-64"
         />
         <p className="text-2xl sm:text-3xl">
-          a <LaTeX /> typesetting game for economists
+          a <LaTeX /> typesetting game for Economists
         </p>
       </div>
 
