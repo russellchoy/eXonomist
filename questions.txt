@@ -1,0 +1,95 @@
+# =============================================================================
+#  eXonomist question bank  —  EDIT THIS FILE, then run:  npm run import
+# =============================================================================
+#
+#  Each question is a block:
+#
+#      @ Title | difficulty | topic | points(optional)
+#      <LaTeX here — raw, exactly as in your notes, NO $ signs>
+#
+#    - difficulty : easy | medium | hard          (default: medium)
+#    - topic      : free text                      (default: General)
+#    - points     : optional integer; default by difficulty  easy=3 medium=5 hard=8
+#
+#  Rules:
+#    - A line starting with "@" starts a new question (its header).
+#    - Lines after the header, up to the next "@", are the formula. Multi-line is
+#      fine for matrices/cases — use \\ for row breaks and & for column separators.
+#    - Blank lines are ignored. Lines starting with "#" are comments.
+#    - Write LaTeX raw (\alpha, not \\alpha). Only KaTeX-supported commands render:
+#      https://katex.org/docs/supported.html
+#
+#  Then run  `npm run import`  — it renders every formula to catch typos and
+#  regenerates lib/problems.ts. If any formula fails, nothing is written and it
+#  tells you which line to fix.
+#
+#  Economics example (uncomment to try):
+#    @ Cobb–Douglas Production Function | medium | Microeconomics
+#    Y = A K^{\alpha} L^{1-\alpha}
+# =============================================================================
+
+
+# ---- Seeded samples (from the reference screenshots) ----
+
+@ Hockey-stick Identity | medium | Combinatorics | 5
+\sum_{i=r}^{n}\binom{i}{r}=\binom{n+1}{r+1}
+
+@ Root Mean Square | hard | Signal Analysis | 8
+f_{\mathrm{rms}}=\sqrt{\frac{1}{T_2-T_1}\int_{T_1}^{T_2}[f(t)]^2\,dt}
+
+@ Definition of a Well-founded Relation | hard | Logic | 10
+(\forall S\subseteq X)[S\neq\emptyset\implies(\exists m\in S)(\forall s\in S)\neg(sRm)]
+
+@ Euler's Theorem | medium | Number Theory | 6
+\gcd(a,n)=1\implies a^{\varphi(n)}\equiv 1\pmod{n}
+
+
+# ---- Easy ----
+
+@ Pythagorean Theorem | easy | Geometry
+a^2+b^2=c^2
+
+@ Quadratic Formula | easy | Algebra
+x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}
+
+@ Euler's Identity | easy | Analysis
+e^{i\pi}+1=0
+
+@ Power Rule for Derivatives | easy | Calculus
+\frac{d}{dx}x^n=nx^{n-1}
+
+@ De Morgan's Law | easy | Logic
+\overline{A\cup B}=\overline{A}\cap\overline{B}
+
+
+# ---- Medium ----
+
+@ Binomial Theorem | medium | Combinatorics
+(x+y)^n=\sum_{k=0}^{n}\binom{n}{k}x^{n-k}y^{k}
+
+@ Geometric Series Sum | medium | Analysis
+\sum_{n=0}^{\infty}ar^{n}=\frac{a}{1-r},\quad |r|<1
+
+@ Derivative as a Limit | medium | Calculus | 6
+f'(x)=\lim_{h\to 0}\frac{f(x+h)-f(x)}{h}
+
+@ Bayes' Theorem | medium | Probability
+P(A\mid B)=\frac{P(B\mid A)\,P(A)}{P(B)}
+
+@ Inverse of a 2x2 Matrix | medium | Linear Algebra | 6
+\begin{pmatrix}a&b\\c&d\end{pmatrix}^{-1}=\frac{1}{ad-bc}\begin{pmatrix}d&-b\\-c&a\end{pmatrix}
+
+@ Signum Function | medium | Analysis
+\operatorname{sgn}(x)=\begin{cases}-1&x<0\\0&x=0\\1&x>0\end{cases}
+
+
+# ---- Hard ----
+
+@ Gaussian Integral | hard | Analysis
+\int_{-\infty}^{\infty}e^{-x^2}\,dx=\sqrt{\pi}
+
+@ Cauchy-Schwarz Inequality | hard | Linear Algebra | 9
+\left(\sum_{i=1}^{n}a_i b_i\right)^{2}\le\left(\sum_{i=1}^{n}a_i^{2}\right)\left(\sum_{i=1}^{n}b_i^{2}\right)
+
+@ Fourier Transform | hard | Analysis | 10
+\hat{f}(\xi)=\int_{-\infty}^{\infty}f(x)\,e^{-2\pi i x\xi}\,dx
