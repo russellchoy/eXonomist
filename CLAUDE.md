@@ -46,10 +46,11 @@ Keep the clean, serif, black-on-white aesthetic of the original.
 - KaTeX for math rendering
 - Target deploy: Vercel
 
-> **Next.js 16 note** (see `AGENTS.md`): this Next.js is newer than most training
-> data. Consult `node_modules/next/dist/docs/` before writing app code. Key gotcha
-> already handled: a client component calling `useSearchParams` **fails the
-> production build** unless wrapped in a `<Suspense>` boundary — `/play` does this.
+> **Next.js 16 note:** this Next.js is newer than most training data. Consult
+> `node_modules/next/dist/docs/` before writing app code. Key gotcha already
+> handled: a client component calling `useSearchParams` **fails the production
+> build** unless wrapped in a `<Suspense>` boundary — `/play` avoids this by
+> reading `searchParams` (a Promise in Next 16) in the server page instead.
 
 ## Getting started (first run)
 
@@ -102,10 +103,9 @@ exists in the repo right now.
 |------|--------|--------------|
 | `CLAUDE.md` | ✅ | This guidance file. |
 | `plan.md` | ✅ | Full design brief. |
-| `AGENTS.md` | ✅ | create-next-app's Next.js 16 agent note. |
 | `questions.txt` | ✅ | **Question source of truth** — edit here, then `npm run import`. |
 | `reference_images/` | 📌 | `landing.png` + `problem1–4.png` UI reference shots. **Gitignored** — kept locally, not in the repo. |
-| `scripts/` | ✅ | `import-questions.mjs` (question importer) · `model-reminder.sh` (SessionStart model-choice hook). |
+| `scripts/` | ✅ | `import-questions.mjs` — the question importer. |
 | `app/` | ✅ | `layout.tsx` (imports KaTeX CSS), `globals.css`, `page.tsx` (landing), `play/page.tsx` (game). |
 | `components/` | ✅ | `Game`, `LatexInput`, `Preview`, `Target`, `ReferenceTable`, `Results`, `Wordmark`, `KatexMath`. |
 | `lib/` | ✅ | `problems.ts` (GENERATED), `checkAnswer.ts`, `reference.ts`, `katex.ts`. |
@@ -132,25 +132,6 @@ Legend: ✅ present · 🔧 in progress this build.
 - Points scale with difficulty; harder problems are worth more.
 - TypeScript strict mode. Prefer server components; mark interactive pieces
   (`Game`, `LatexInput`, `Preview`) with `"use client"`.
-
-## Model strategy (Fable vs Sonnet)
-
-Fable 5 is Anthropic's Mythos-class model — frontier coding, and built to run
-long autonomous multi-stage work (planning, sub-agent delegation, self-checking).
-It's ~3x the price of Opus, so use it **surgically**: reach for Fable when a
-mistake is expensive to unwind or the task needs sustained reasoning; use Sonnet
-for the fast tweak-refresh grind where the user is already in the loop.
-
-| Stage | Model | Why |
-|-------|-------|-----|
-| Refine / pressure-test `plan.md` | **Fable** | Architecture is cheap to decide, expensive to reverse. One high-quality critique pays off across the build. |
-| Initial scaffold + core game loop | **Fable** | Long autonomous run: KaTeX wiring, the rendered-comparison checker (normalizing KaTeX output trees is the genuinely hard bit), state/timer/scoring. |
-| Iteration & UI polish | **Sonnet** | Low-stakes, fast; user refreshes the browser between changes and catches mistakes immediately. |
-| Hard bug the model can't crack | **Fable** | Escalate only when stuck. |
-| Deploy (git + Vercel) | **Sonnet** | Routine command-running. |
-
-Rule of thumb: **Fable** when you'd have to redo the work if it came out wrong;
-**Sonnet** when you'll see and fix any mistake yourself. Switch with `/model`.
 
 ## Definition of done for a change
 
