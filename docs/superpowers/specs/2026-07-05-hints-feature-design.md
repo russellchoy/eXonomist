@@ -22,6 +22,11 @@ revealing the full answer.
 - **Reveal style:** progressive, one command at a time (trickiest first).
 - **Hint storage:** a `hints` array on each `Problem` in the dictionary,
   auto-generated at build time for all 366 problems.
+- **Hint count:** capped at the problem's **point value** — a problem offers up
+  to `points` hints, trimmed trickiest-first. Never fabricates hints: if the
+  formula uses fewer notable commands than `points`, it offers only that many
+  (possibly zero). This dovetails with the Timed penalty: using every available
+  hint drops a Timed problem to exactly 1 point.
 - **Scoring:** penalty applies in **Timed mode only** — free in Zen.
   - Penalty magnitude: **−1 point per hint revealed, floored at 1.**
 - **Curation:** a dedicated hint-command dictionary, separate from
@@ -75,7 +80,8 @@ New module `reference_images/latex/hints-dictionary.mjs` exports a curated list 
    command entries by token). Tokens absent from the dictionary produce no hint —
    the dictionary *is* the curation filter.
 3. Dedupe by `command`, sort ascending by `rank` (lower = trickier = first),
-   cap at 5.
+   then trim to the problem's `points` value (keep the `points` trickiest).
+   Result length is `min(notable commands found, points)`.
 4. Emit `hints: [...]` into each problem object.
 
 Rank bands (lower shown first):
@@ -123,7 +129,8 @@ The success flash shows `+{awarded}` (compute once, reuse for flash text).
 
 1. `npm run build` passes (TypeScript sees `hints` on every problem).
 2. Generator: a problem with `\begin{cases}` and `\varepsilon` yields those as
-   the first hints, cases before var-epsilon (rank order).
+   the first hints, cases before var-epsilon (rank order); hint count never
+   exceeds the problem's `points`.
 3. Dev flow: Hint button reveals commands progressively; resets on next problem.
 4. Timed mode: solving after 2 hints on an 8-pt problem awards 6; Zen awards 8.
 5. No console errors on the game screen.
