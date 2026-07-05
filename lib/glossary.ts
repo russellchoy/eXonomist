@@ -83,6 +83,15 @@ export const glossary: GlossaryGroup[] = [
     ],
   },
   {
+    name: "Spacing",
+    note: "House style is \\quad for gaps between parts. Spacing is cosmetic — the checker ignores it, so space however you like.",
+    entries: [
+      { command: String.raw`\quad`, example: String.raw`a \quad b`, description: "wide space — the preferred gap between parts" },
+      { command: String.raw`\qquad`, example: String.raw`a \qquad b`, description: "extra-wide space" },
+      { command: String.raw`\,`, example: String.raw`a \, b`, description: "thin space (e.g. before dx in an integral)" },
+    ],
+  },
+  {
     name: "Relations & operators",
     entries: [
       { command: String.raw`\leq`, example: String.raw`\leq`, description: "less than or equal" },

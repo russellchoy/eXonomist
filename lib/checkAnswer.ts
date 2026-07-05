@@ -148,6 +148,11 @@ function toNormalizedMathML(latex: string): string {
     // Drop the round-trippable TeX source KaTeX embeds — it differs between
     // equivalent inputs and would defeat the whole comparison.
     .replace(/<annotation[^>]*>[\s\S]*?<\/annotation>/g, "")
+    // Horizontal spacing is cosmetic: `\quad`, `\,`, `\;`, `\ `, `~`, … all emit
+    // <mspace>. Drop them so spacing never decides correctness — the house style
+    // is `\quad`, but a player may space (or not) however they like and still match.
+    .replace(/<mspace\b[^>]*\/?>/g, "")
+    .replace(/<\/mspace>/g, "")
     // Collapse insignificant whitespace FIRST so tag literals are canonical
     // before we match the redundant-display-style wrapper below.
     .replace(/>\s+</g, "><")
@@ -186,8 +191,12 @@ function normalizeSource(latex: string): string {
       .replace(/\\right/g, "")
       // `x^{2}` ≡ `x^2`, `a_{i}` ≡ `a_i` for single-token groups.
       .replace(/([_^])\{([a-zA-Z0-9])\}/g, "$1$2")
-      // `\,` `\;` `\:` `\!` explicit spaces don't change identity for the fast path.
+      // Explicit spacing is cosmetic and never decides correctness: `\,` `\;`
+      // `\:` `\!`, the ties `~`, and `\quad`/`\qquad` all drop out on the fast
+      // path (the rendered path strips <mspace> to match).
+      .replace(/\\qquad|\\quad/g, "")
       .replace(/\\[,;:!]/g, "")
+      .replace(/~/g, "")
   );
 }
 

@@ -43,6 +43,10 @@ const hints = [
     Use <code className="font-mono font-bold">\mathbf</code>, not{" "}
     <code className="font-mono font-bold">\textbf</code>
   </>,
+  <>
+    Prefer <code className="font-mono font-bold">\quad</code> for spacing between
+    parts of a formula (spacing never affects whether an answer is accepted)
+  </>,
   <>Harder problems are worth more points</>,
   <>
     Stuck? Reveal hints one at a time in-game, or open the{" "}
