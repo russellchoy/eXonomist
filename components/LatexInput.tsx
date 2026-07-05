@@ -1,24 +1,33 @@
 "use client";
 
+import type { ReactNode } from "react";
+
 /**
  * The code editor: a black "terminal" textarea (see reference problem screens),
  * with the "Toggle Shadow" control beneath it. Auto-focuses on mount — the parent
  * gives it a `key` per problem so each new problem gets a fresh, focused editor.
+ * `headerRight` renders on the label row (e.g. the Hint button) so it stays in
+ * view with the editor.
  */
 export function LatexInput({
   value,
   onChange,
   shadow,
   onToggleShadow,
+  headerRight,
 }: {
   value: string;
   onChange: (next: string) => void;
   shadow: boolean;
   onToggleShadow: (next: boolean) => void;
+  headerRight?: ReactNode;
 }) {
   return (
     <section>
-      <p className="mb-2 text-lg">Edit your code here:</p>
+      <div className="mb-2 flex flex-wrap items-center justify-between gap-3">
+        <p className="text-lg">Edit your code here:</p>
+        {headerRight}
+      </div>
       <textarea
         autoFocus
         value={value}

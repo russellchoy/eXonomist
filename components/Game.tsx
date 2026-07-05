@@ -188,20 +188,6 @@ export function Game({ mode }: { mode: GameMode }) {
           >
             Skip This Problem
           </button>
-          {current.hints.length > 0 && (
-            <button
-              type="button"
-              onClick={revealHint}
-              disabled={hintsShown >= current.hints.length}
-              className="border-2 border-black px-4 py-2 text-base hover:bg-black hover:text-white disabled:pointer-events-none disabled:opacity-40"
-            >
-              {hintsShown >= current.hints.length
-                ? "No more hints"
-                : hintsShown === 0
-                  ? `Show Hint${mode === "timed" ? " (−1 pt)" : ""}`
-                  : `Next Hint (${hintsShown}/${current.hints.length})${mode === "timed" ? " −1 pt" : ""}`}
-            </button>
-          )}
           <button
             type="button"
             onClick={() => setFinished(true)}
@@ -237,19 +223,37 @@ export function Game({ mode }: { mode: GameMode }) {
         )}
       </div>
 
-      <HintList hints={current.hints} shown={hintsShown} />
       <GlossaryPanel />
 
       <Target latex={current.latex} />
       <Preview latex={input} shadowLatex={current.latex} shadow={shadow} />
-      {/* key per question => fresh, auto-focused editor each problem */}
+      {/* key per question => fresh, auto-focused editor each problem. The Hint
+          button rides on the editor's label row so it stays in view; revealed
+          hints appear directly under the editor field. */}
       <LatexInput
         key={`${questionNumber}-${current.id}`}
         value={input}
         onChange={handleInput}
         shadow={shadow}
         onToggleShadow={setShadow}
+        headerRight={
+          current.hints.length > 0 ? (
+            <button
+              type="button"
+              onClick={revealHint}
+              disabled={hintsShown >= current.hints.length}
+              className="border-2 border-black px-4 py-2 text-base hover:bg-black hover:text-white disabled:pointer-events-none disabled:opacity-40"
+            >
+              {hintsShown >= current.hints.length
+                ? "No more hints"
+                : hintsShown === 0
+                  ? `Show Hint${mode === "timed" ? " (−1 pt)" : ""}`
+                  : `Next Hint (${hintsShown}/${current.hints.length})${mode === "timed" ? " −1 pt" : ""}`}
+            </button>
+          ) : null
+        }
       />
+      <HintList hints={current.hints} shown={hintsShown} />
 
       <ReferenceTable />
     </div>
