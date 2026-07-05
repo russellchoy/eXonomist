@@ -10,6 +10,7 @@ import { Preview } from "@/components/Preview";
 import { LatexInput } from "@/components/LatexInput";
 import { ReferenceTable } from "@/components/ReferenceTable";
 import { HintList } from "@/components/HintList";
+import { GlossaryPanel } from "@/components/GlossaryPanel";
 import { Results } from "@/components/Results";
 
 export type GameMode = "timed" | "zen";
@@ -237,6 +238,7 @@ export function Game({ mode }: { mode: GameMode }) {
       </div>
 
       <HintList hints={current.hints} shown={hintsShown} />
+      <GlossaryPanel />
 
       <Target latex={current.latex} />
       <Preview latex={input} shadowLatex={current.latex} shadow={shadow} />

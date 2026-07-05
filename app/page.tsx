@@ -3,11 +3,30 @@ import Link from "next/link";
 import { LaTeX } from "@/components/Wordmark";
 import logo from "@/public/logo.png";
 
+const notes = [
+  <>
+    Inspired by{" "}
+    <a
+      href="https://texnique.xyz/"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="underline underline-offset-2 hover:text-[#3b5bdb]"
+    >
+      TeXnique
+    </a>{" "}
+    — thank you to Akshay Ravikumar for creating the original game.
+  </>,
+  <>
+    Questions are drawn from the Part I and Part IIA papers of the Cambridge
+    Economics Tripos (from lecture notes).
+  </>,
+];
+
 const hints = [
   <>
     No <code className="font-mono font-bold">$</code> signs needed
   </>,
-  <>All formulas are rendered in display style</>,
+  <>All formulae are rendered in display style</>,
   <>
     Use <code className="font-mono font-bold">\left</code> and{" "}
     <code className="font-mono font-bold">\right</code> to correctly size balanced
@@ -25,6 +44,13 @@ const hints = [
     <code className="font-mono font-bold">\textbf</code>
   </>,
   <>Harder problems are worth more points</>,
+  <>
+    Stuck? Reveal hints one at a time in-game, or open the{" "}
+    <Link href="/glossary" className="underline underline-offset-2 hover:text-[#3b5bdb]">
+      Glossary
+    </Link>{" "}
+    for command syntax
+  </>,
   <>Open the in-game Symbol Reference to look up unknown symbols</>,
 ];
 
@@ -48,7 +74,7 @@ export default function Home() {
           This is a game to test your <LaTeX /> skills.
         </p>
         <p>
-          Type as many formulas as you can in three minutes (timed game), or play
+          Type as many formulae as you can in three minutes (timed game), or play
           an untimed game (zen mode)!
         </p>
       </div>
@@ -68,11 +94,27 @@ export default function Home() {
         </Link>
       </div>
 
+      <Link
+        href="/glossary"
+        className="text-lg underline underline-offset-4 hover:text-[#3b5bdb]"
+      >
+        Browse the LaTeX glossary →
+      </Link>
+
       <section className="w-full">
         <h2 className="mb-3 text-xl font-bold">Hints:</h2>
         <ul className="ml-6 flex list-disc flex-col gap-2 text-lg">
           {hints.map((h, i) => (
             <li key={i}>{h}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="w-full">
+        <h2 className="mb-3 text-xl font-bold">Notes:</h2>
+        <ul className="ml-6 flex list-disc flex-col gap-2 text-lg">
+          {notes.map((n, i) => (
+            <li key={i}>{n}</li>
           ))}
         </ul>
       </section>

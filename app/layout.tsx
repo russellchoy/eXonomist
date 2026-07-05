@@ -12,7 +12,7 @@ const siteUrl = process.env.VERCEL_URL
 
 const title = "eXonomist — a LaTeX typesetting game for economists";
 const description =
-  "Reproduce rendered formulas in LaTeX against the clock. Timed and Zen modes, a live KaTeX preview, and a searchable symbol reference. A LaTeX typesetting game for economists.";
+  "Reproduce rendered formulae in LaTeX against the clock. Timed and Zen modes, a live KaTeX preview, and a searchable symbol reference. A LaTeX typesetting game for economists.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
