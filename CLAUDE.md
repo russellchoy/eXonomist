@@ -104,7 +104,7 @@ exists in the repo right now.
 | `plan.md` | ✅ | Full design brief. |
 | `AGENTS.md` | ✅ | create-next-app's Next.js 16 agent note. |
 | `questions.txt` | ✅ | **Question source of truth** — edit here, then `npm run import`. |
-| `reference_images/` | ✅ | `landing.png` + `problem1–4.png` UI reference shots. |
+| `reference_images/` | 📌 | `landing.png` + `problem1–4.png` UI reference shots. **Gitignored** — kept locally, not in the repo. |
 | `scripts/` | ✅ | `import-questions.mjs` (question importer) · `model-reminder.sh` (SessionStart model-choice hook). |
 | `app/` | ✅ | `layout.tsx` (imports KaTeX CSS), `globals.css`, `page.tsx` (landing), `play/page.tsx` (game). |
 | `components/` | ✅ | `Game`, `LatexInput`, `Preview`, `Target`, `ReferenceTable`, `Results`, `Wordmark`, `KatexMath`. |
