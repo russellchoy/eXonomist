@@ -9,6 +9,7 @@ import { Target } from "@/components/Target";
 import { Preview } from "@/components/Preview";
 import { LatexInput } from "@/components/LatexInput";
 import { ReferenceTable } from "@/components/ReferenceTable";
+import { HintList } from "@/components/HintList";
 import { Results } from "@/components/Results";
 
 export type GameMode = "timed" | "zen";
@@ -50,6 +51,10 @@ export function Game({ mode }: { mode: GameMode }) {
   const [finished, setFinished] = useState(false);
   const [shadow, setShadow] = useState(false);
   const [flash, setFlash] = useState(false);
+  // Hints revealed for the current problem, and points awarded on the last solve
+  // (may be reduced by the timed-mode hint penalty — shown in the success flash).
+  const [hintsShown, setHintsShown] = useState(0);
+  const [lastAward, setLastAward] = useState(0);
 
   // Guards against re-awarding while the success flash plays out.
   const transitioning = useRef(false);
@@ -87,6 +92,7 @@ export function Game({ mode }: { mode: GameMode }) {
 
   const advance = useCallback(() => {
     setInput("");
+    setHintsShown(0);
     setQuestionNumber((n) => n + 1);
     setPos((p) => {
       const next = p + 1;
@@ -105,7 +111,11 @@ export function Game({ mode }: { mode: GameMode }) {
       setInput(next);
       if (next.trim() && isCorrect(next, current.latex)) {
         transitioning.current = true;
-        setScore((s) => s + current.points);
+        // Timed mode docks 1 point per hint revealed; a solve is always worth ≥1.
+        const penalty = mode === "timed" ? hintsShown : 0;
+        const awarded = Math.max(1, current.points - penalty);
+        setScore((s) => s + awarded);
+        setLastAward(awarded);
         setSolved((n) => n + 1);
         setFlash(true);
         advanceTimer.current = setTimeout(() => {
@@ -115,8 +125,13 @@ export function Game({ mode }: { mode: GameMode }) {
         }, 450);
       }
     },
-    [current, advance],
+    [current, advance, mode, hintsShown],
   );
+
+  const revealHint = useCallback(() => {
+    if (!current) return;
+    setHintsShown((n) => Math.min(n + 1, current.hints.length));
+  }, [current]);
 
   const skip = useCallback(() => {
     if (transitioning.current) return;
@@ -131,6 +146,7 @@ export function Game({ mode }: { mode: GameMode }) {
     setInput("");
     setScore(0);
     setSolved(0);
+    setHintsShown(0);
     setSecondsLeft(mode === "timed" ? TIMED_SECONDS : null);
     setFlash(false);
     setFinished(false);
@@ -171,6 +187,20 @@ export function Game({ mode }: { mode: GameMode }) {
           >
             Skip This Problem
           </button>
+          {current.hints.length > 0 && (
+            <button
+              type="button"
+              onClick={revealHint}
+              disabled={hintsShown >= current.hints.length}
+              className="border-2 border-black px-4 py-2 text-base hover:bg-black hover:text-white disabled:pointer-events-none disabled:opacity-40"
+            >
+              {hintsShown >= current.hints.length
+                ? "No more hints"
+                : hintsShown === 0
+                  ? `Show Hint${mode === "timed" ? " (−1 pt)" : ""}`
+                  : `Next Hint (${hintsShown}/${current.hints.length})${mode === "timed" ? " −1 pt" : ""}`}
+            </button>
+          )}
           <button
             type="button"
             onClick={() => setFinished(true)}
@@ -201,10 +231,12 @@ export function Game({ mode }: { mode: GameMode }) {
         </h2>
         {flash && (
           <span className="text-xl font-bold text-green-700">
-            ✓ Correct! +{current.points}
+            ✓ Correct! +{lastAward}
           </span>
         )}
       </div>
+
+      <HintList hints={current.hints} shown={hintsShown} />
 
       <Target latex={current.latex} />
       <Preview latex={input} shadowLatex={current.latex} shadow={shadow} />
