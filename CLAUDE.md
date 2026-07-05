@@ -106,11 +106,11 @@ exists in the repo right now.
 | `CLAUDE.md` | ✅ | This guidance file. |
 | `plan.md` | ✅ | Full design brief. |
 | `questions.txt` | ✅ | **Question source of truth** — edit here, then `npm run import`. |
-| `reference_images/` | 📌 | `landing.png` + `problem1–4.png` UI reference shots. **Gitignored** — kept locally, not in the repo. |
+| `reference_images/` | 📌 | `landing.png` + `problem1–4.png` UI reference shots **and** `latex/` — the lecture-note sources (`.tex`/`.md`), `*.raw.json` extracts, `hints-dictionary.mjs`, and `build-problems.mjs` that generate the bulk question bank. **Gitignored** — kept locally, not in the repo. |
 | `scripts/` | ✅ | `import-questions.mjs` — the question importer. |
 | `app/` | ✅ | `layout.tsx` (imports KaTeX CSS), `globals.css`, `page.tsx` (landing), `play/page.tsx` (game). |
-| `components/` | ✅ | `Game`, `LatexInput`, `Preview`, `Target`, `ReferenceTable`, `Results`, `Wordmark`, `KatexMath`. |
-| `lib/` | ✅ | `problems.ts` (GENERATED), `checkAnswer.ts`, `reference.ts`, `katex.ts`. |
+| `components/` | ✅ | `Game`, `LatexInput`, `Preview`, `Target`, `ReferenceTable`, `Results`, `Wordmark`, `KatexMath`, `HintList`. |
+| `lib/` | ✅ | `problems.ts` (GENERATED — currently the 468-problem bank from `reference_images/latex/`), `checkAnswer.ts`, `reference.ts`, `katex.ts`. |
 | `package.json` etc. | ✅ | Next.js 16 + Tailwind v4 + KaTeX config from `create-next-app`. |
 
 Legend: ✅ present · 🔧 in progress this build.
@@ -134,6 +134,75 @@ Legend: ✅ present · 🔧 in progress this build.
 - Points scale with difficulty; harder problems are worth more.
 - TypeScript strict mode. Prefer server components; mark interactive pieces
   (`Game`, `LatexInput`, `Preview`) with `"use client"`.
+
+## Generating questions from lecture-note sources
+
+There are **two** ways `lib/problems.ts` gets populated. Know which is in play
+before touching it.
+
+1. **`questions.txt` → `npm run import`** (the original, hand-authored path).
+2. **The bulk extraction pipeline in `reference_images/latex/`** — this is what
+   currently produces the live 468-problem bank. Both pipelines write the SAME
+   file (`lib/problems.ts`), so **`npm run import` will overwrite the extracted
+   bank** with whatever is in `questions.txt`. Don't run it unless you mean to
+   switch back to the hand-authored path.
+
+### The extraction pipeline (how to add a new source of questions)
+
+Use this when the user drops a lecture-notes file (a `.tex` paper or a `.md`
+problem bank) into `reference_images/latex/` and wants its equations added.
+
+1. **Inspect the source.** Check its size, math density (`\[…\]`, equation envs,
+   inline `$…$`), section structure (`\section`/`\subsection`/`\part`), and its
+   **preamble for custom macros** (`\newcommand`/`\DeclareMathOperator`/`\def`).
+   Text-only helper macros are ignored; math macros must be expanded or the
+   formulas using them skipped.
+2. **Extract in parallel.** Fan out one subagent per section/file (a large file
+   → one agent per `\section` with explicit line ranges; small files → one agent
+   each). Each agent reads its slice and returns **only a JSON array** of
+   `{title, latex, difficulty, points, topic}`. Selection & cleanup rules the
+   agents must follow:
+   - **Keep** self-contained, visually interesting formulas — named results,
+     estimators, definitions, identities, model equations. Aim for variety of
+     notation.
+   - **Reject** trivial single symbols (`$x$`, `$N$`), prose, data/regression
+     tables, exam-answer arithmetic with plugged-in numbers, derivations longer
+     than ~2 lines, and anything tikz/figure-based.
+   - **KaTeX-safe only:** expand custom macros to standard LaTeX (e.g. a
+     coefficient-with-standard-error macro → `\underset{\scriptscriptstyle(se)}{coef}`)
+     or skip. Strip `$`, `\[ \]`, equation/align wrappers, `\boxed`, `\label`,
+     `\notag`, `\\` line-tags; convert `align` to a KaTeX-safe `aligned`/`cases`/
+     `pmatrix` or a single clean line. **No `$` delimiters** in stored LaTeX.
+   - Difficulty/points scale with visual complexity (easy 3-4, medium 5-6,
+     hard 7-10). `latex` must be valid JSON string content; encode literal
+     `< > &` as the HTML entities `&lt; &gt; &amp;` (the build unescapes them).
+3. **Save** the combined array to `reference_images/latex/<source>.raw.json`.
+4. **Register** the new filename in the `inFiles` array of
+   `reference_images/latex/build-problems.mjs`.
+5. **Build:** `node build-problems.mjs` (needs `PATH="$HOME/.local/bin:$PATH"`).
+   It merges every `*.raw.json`, unescapes entities, dedupes by normalized LaTeX,
+   slugs unique `id`s, **validates every formula with KaTeX (refuses to write on
+   any failure)**, auto-generates each problem's `hints` array (see below), and
+   writes `reference_images/latex/problems.ts`.
+6. **Copy to the app:** `cp reference_images/latex/problems.ts lib/problems.ts`,
+   then restore the top-of-file header note (the `// NOTE: npm run import …`
+   comment; update the problem count).
+7. **Verify:** `npm run build` passes and `grep -c '&amp;\|&lt;\|&gt;'
+   lib/problems.ts` is `0`.
+
+Because `reference_images/` is **gitignored**, the sources, `*.raw.json`, and the
+generator tooling live only on this machine — `lib/problems.ts` is the committed
+output. Regenerating the bank requires the local `reference_images/latex/` folder.
+
+### Hints (auto-generated)
+
+The `Problem` shape carries `hints: Hint[]` (`{command, name, example}`),
+generated by `build-problems.mjs` from `hints-dictionary.mjs`: it scans each
+target for notable commands (environments, accents, var/rare Greek, big
+operators, relations, fonts), orders them **trickiest-first**, and caps the
+count at the problem's `points`. The game reveals them one at a time; Timed mode
+docks 1 point per hint (floored at 1). To broaden hint coverage, add entries to
+`hints-dictionary.mjs` (each needs a renderable `example`) and rebuild.
 
 ## Definition of done for a change
 
