@@ -28,6 +28,9 @@ export function Leaderboard() {
 
   useEffect(() => {
     const k = dailyKey();
+    // Client-only initialization: today's key depends on the viewer's clock, so
+    // it can't be computed during (server) render without a hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setDay(k);
 
     fetchTimed()

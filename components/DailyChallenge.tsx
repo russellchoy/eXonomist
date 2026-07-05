@@ -21,6 +21,20 @@ interface PriorResult {
 
 const lockKey = (day: string) => `exo-daily-${day}`;
 
+// Defined at module level so its identity is stable across renders — an inline
+// definition would give React a new component type every stopwatch tick and
+// remount the whole subtree (stealing textarea focus, closing the glossary).
+function Shell({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-6 px-6 py-8">
+      <Link href="/" className="no-underline">
+        <Masthead size="small" />
+      </Link>
+      {children}
+    </div>
+  );
+}
+
 export function DailyChallenge() {
   const [day, setDay] = useState<string | null>(null);
   const [prior, setPrior] = useState<PriorResult | null>(null);
@@ -29,10 +43,25 @@ export function DailyChallenge() {
   // Client-only: today's key + whether this device already completed it.
   useEffect(() => {
     const k = dailyKey();
+    // Client-only initialization: the day key and localStorage lock can only be
+    // read in the browser — same canonical pattern as the shuffle in Game.tsx.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setDay(k);
     try {
       const raw = localStorage.getItem(lockKey(k));
-      if (raw) setPrior(JSON.parse(raw) as PriorResult);
+      if (raw) {
+        // Guard the shape, not just the parse — corrupt-but-valid JSON (e.g. `{}`)
+        // would otherwise render `NaN:NaN` on the already-done screen.
+        const parsed: unknown = JSON.parse(raw);
+        if (
+          parsed !== null &&
+          typeof parsed === "object" &&
+          typeof (parsed as PriorResult).name === "string" &&
+          Number.isFinite((parsed as PriorResult).seconds)
+        ) {
+          setPrior(parsed as PriorResult);
+        }
+      }
     } catch {
       /* ignore */
     }
@@ -142,15 +171,6 @@ export function DailyChallenge() {
       setSubmitState("error");
     }
   }, [day, finalSeconds, name, submitState]);
-
-  const Shell = ({ children }: { children: React.ReactNode }) => (
-    <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-6 px-6 py-8">
-      <Link href="/" className="no-underline">
-        <Masthead size="small" />
-      </Link>
-      {children}
-    </div>
-  );
 
   if (phase === "loading") {
     return (

@@ -184,11 +184,20 @@ function normalizeSource(latex: string): string {
       // Backslash-space `\ ` (but not `\\`) is just a space.
       .replace(/(?<!\\)\\ /g, " ")
       // --- structural / whitespace normalization ---
+      // Spaces inside text-mode arguments are literal rendered content
+      // (`\text{if }` ≠ `\text{if}`) — shield them (collapsed to one, as TeX
+      // renders runs of spaces) before the global strip; restored at the end.
+      .replace(
+        /\\(text(?:rm|bf|it|sf|tt|normal)?|mbox)\{([^{}]*)\}/g,
+        (_m, cmd: string, body: string) =>
+          `\\${cmd}{${body.replace(/\s+/g, "\u0000")}}`,
+      )
       // Strip all whitespace (including the tie `~` and thin space handled below).
       .replace(/\s+/g, "")
-      // Delimiter auto-sizing doesn't change the formula's identity.
-      .replace(/\\left/g, "")
-      .replace(/\\right/g, "")
+      // Delimiter auto-sizing doesn't change the formula's identity. The guard
+      // keeps `\leftarrow`/`\rightarrow` (which contain these as substrings) intact.
+      .replace(/\\left(?![a-zA-Z])/g, "")
+      .replace(/\\right(?![a-zA-Z])/g, "")
       // `x^{2}` ≡ `x^2`, `a_{i}` ≡ `a_i` for single-token groups.
       .replace(/([_^])\{([a-zA-Z0-9])\}/g, "$1$2")
       // Explicit spacing is cosmetic and never decides correctness: `\,` `\;`
@@ -197,6 +206,8 @@ function normalizeSource(latex: string): string {
       .replace(/\\qquad|\\quad/g, "")
       .replace(/\\[,;:!]/g, "")
       .replace(/~/g, "")
+      // Restore the shielded text-mode spaces.
+      .replace(/\u0000/g, " ")
   );
 }
 

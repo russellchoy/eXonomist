@@ -9,6 +9,31 @@ const WEBAPP_URL = process.env.SHEET_WEBAPP_URL;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const MAX_NAME = 24;
 
+// Per-IP rate limiting. In-memory, so on serverless it's per-instance — coarse,
+// but enough to stop a single client flooding the sheet and burning through the
+// Apps Script daily quota. Writes are rare (one per finished game), so the
+// budgets can be tight.
+const WINDOW_MS = 60_000;
+const MAX_POSTS_PER_WINDOW = 5;
+const MAX_GETS_PER_WINDOW = 30;
+const hits = new Map<string, { count: number; resetAt: number }>();
+
+function rateLimited(key: string, max: number): boolean {
+  const now = Date.now();
+  const entry = hits.get(key);
+  if (!entry || now >= entry.resetAt) {
+    if (hits.size > 5_000) hits.clear(); // bound memory under address churn
+    hits.set(key, { count: 1, resetAt: now + WINDOW_MS });
+    return false;
+  }
+  entry.count += 1;
+  return entry.count > max;
+}
+
+function clientIp(req: NextRequest): string {
+  return req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+}
+
 function cleanName(raw: unknown): string {
   const stripped = String(raw ?? "")
     .split("")
@@ -19,8 +44,17 @@ function cleanName(raw: unknown): string {
   return stripped || "Anonymous";
 }
 
+// Board reads change at most once per finished game, so a few seconds of shared
+// (CDN) caching blunts read floods without anyone noticing staleness.
+const GET_CACHE_HEADERS = {
+  "Cache-Control": "public, s-maxage=15, stale-while-revalidate=60",
+};
+
 export async function GET(req: NextRequest) {
   if (!WEBAPP_URL) return NextResponse.json({ configured: false, entries: [] });
+
+  if (rateLimited(`get:${clientIp(req)}`, MAX_GETS_PER_WINDOW))
+    return NextResponse.json({ configured: true, entries: [], error: "rate limited" }, { status: 429 });
 
   const board = req.nextUrl.searchParams.get("board") === "daily" ? "daily" : "timed";
   const date = req.nextUrl.searchParams.get("date") ?? "";
@@ -32,7 +66,7 @@ export async function GET(req: NextRequest) {
     const res = await fetch(`${WEBAPP_URL}?${qs.toString()}`, { cache: "no-store" });
     const data = await res.json();
     const entries = Array.isArray(data) ? data : (data?.entries ?? []);
-    return NextResponse.json({ configured: true, entries });
+    return NextResponse.json({ configured: true, entries }, { headers: GET_CACHE_HEADERS });
   } catch {
     return NextResponse.json({ configured: true, entries: [], error: "fetch failed" });
   }
@@ -40,6 +74,9 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   if (!WEBAPP_URL) return NextResponse.json({ ok: false, configured: false });
+
+  if (rateLimited(`post:${clientIp(req)}`, MAX_POSTS_PER_WINDOW))
+    return NextResponse.json({ ok: false, error: "rate limited" }, { status: 429 });
 
   let body: Record<string, unknown>;
   try {

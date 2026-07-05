@@ -89,8 +89,10 @@ function toProblem(block, usedIds, errors) {
 
   const topic = topicRaw || "General";
   const points = pointsRaw ? Number(pointsRaw) : DEFAULT_POINTS[difficulty];
-  if (!Number.isFinite(points) || points <= 0) {
-    errors.push(`questions.txt:${block.line}: "${title}" has invalid points "${pointsRaw}"`);
+  if (!Number.isInteger(points) || points <= 0) {
+    errors.push(
+      `questions.txt:${block.line}: "${title}" has invalid points "${pointsRaw}" (must be a positive integer)`,
+    );
     return null;
   }
 
@@ -150,13 +152,24 @@ function render(problems) {
         `    difficulty: ${JSON.stringify(p.difficulty)},\n` +
         `    points: ${p.points},\n` +
         `    topic: ${JSON.stringify(p.topic)},\n` +
+        `    context: "",\n` +
+        `    hints: [],\n` +
         `  },`,
     )
     .join("\n");
 
+  // Keep this shape in sync with the bulk pipeline's output
+  // (reference_images/latex/build-problems.mjs) — the app consumes
+  // `context` and `hints` on every problem.
   return `// AUTO-GENERATED from questions.txt by \`npm run import\` — DO NOT EDIT BY HAND.
 // Add or change questions in questions.txt, then run:  npm run import
 export type Difficulty = "easy" | "medium" | "hard";
+
+export interface Hint {
+  command: string; // what the player types, e.g. String.raw\`\\tilde{ }\`
+  name: string; // friendly label, e.g. "tilde accent"
+  example: string; // renderable KaTeX snippet for a glyph preview
+}
 
 export interface Problem {
   id: string;
@@ -165,6 +178,8 @@ export interface Problem {
   difficulty: Difficulty;
   points: number;
   topic: string;
+  context: string; // 1-2 sentence plain-English interpretation (may be empty)
+  hints: Hint[]; // notable commands in the target, trickiest-first (may be empty)
 }
 
 export const problems: Problem[] = [
@@ -174,6 +189,30 @@ ${body}
 }
 
 function main() {
+  // Safety interlock: lib/problems.ts may hold the bulk question bank generated
+  // by reference_images/latex/build-problems.mjs (hundreds of problems with
+  // hints/context). Running this importer would replace it with the handful in
+  // questions.txt — refuse unless the current file was written by this script,
+  // or the caller explicitly passes --force.
+  const force = process.argv.includes("--force");
+  if (!force) {
+    let existing = "";
+    try {
+      existing = readFileSync(OUT, "utf8");
+    } catch {
+      /* no existing file — nothing to protect */
+    }
+    if (existing && !existing.startsWith("// AUTO-GENERATED from questions.txt")) {
+      console.error(
+        "\n✗ Refusing to overwrite lib/problems.ts — it was not generated from questions.txt\n" +
+          "  (it looks like the bulk bank from reference_images/latex/build-problems.mjs).\n" +
+          "  Re-run with --force if you really mean to replace it:\n" +
+          "    npm run import -- --force\n",
+      );
+      process.exit(1);
+    }
+  }
+
   let text;
   try {
     text = readFileSync(SRC, "utf8");

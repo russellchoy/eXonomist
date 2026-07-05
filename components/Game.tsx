@@ -59,8 +59,13 @@ export function Game({ mode }: { mode: GameMode }) {
 
   // Guards against re-awarding while the success flash plays out.
   const transitioning = useRef(false);
-  // Tracks the pending auto-advance timeout so it can be cleared on unmount.
+  // Tracks the pending auto-advance timeout so it can be cleared on unmount,
+  // End Game, or Play Again (a stale one would skip the next game's first problem).
   const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Wall-clock deadline for timed mode, set when the clock starts. Deriving the
+  // display from this (rather than decrementing per tick) keeps the game honest
+  // when the browser throttles background-tab timers.
+  const deadline = useRef<number | null>(null);
 
   const ready = order.length > 0;
   // Game is over on an explicit End Game, or when the timed clock hits zero.
@@ -82,12 +87,19 @@ export function Game({ mode }: { mode: GameMode }) {
   );
 
   // Countdown timer for timed mode. Re-subscribes only when the game ends
-  // (isFinished flips at 0), not on every tick.
+  // (isFinished flips at 0), not on every tick. Each tick recomputes the
+  // remaining time from the wall-clock deadline, so throttled/missed ticks
+  // (backgrounded tab) can't stretch the 3 minutes.
   useEffect(() => {
     if (mode !== "timed" || isFinished || !ready) return;
+    if (deadline.current === null) {
+      deadline.current = Date.now() + TIMED_SECONDS * 1000;
+    }
     const id = setInterval(() => {
-      setSecondsLeft((s) => (s === null ? s : Math.max(0, s - 1)));
-    }, 1000);
+      const end = deadline.current;
+      if (end === null) return;
+      setSecondsLeft(Math.max(0, Math.ceil((end - Date.now()) / 1000)));
+    }, 500);
     return () => clearInterval(id);
   }, [mode, isFinished, ready]);
 
@@ -95,16 +107,15 @@ export function Game({ mode }: { mode: GameMode }) {
     setInput("");
     setHintsShown(0);
     setQuestionNumber((n) => n + 1);
-    setPos((p) => {
-      const next = p + 1;
-      if (next >= order.length) {
-        // Reshuffle for a fresh pass when the deck is exhausted.
-        setOrder(shuffledIndices(problems.length));
-        return 0;
-      }
-      return next;
-    });
-  }, [order.length]);
+    if (pos + 1 >= order.length) {
+      // Reshuffle for a fresh pass when the deck is exhausted. Done here, not
+      // inside a state updater — updaters must stay pure (React may re-run them).
+      setOrder(shuffledIndices(problems.length));
+      setPos(0);
+    } else {
+      setPos(pos + 1);
+    }
+  }, [pos, order.length]);
 
   const handleInput = useCallback(
     (next: string) => {
@@ -139,8 +150,22 @@ export function Game({ mode }: { mode: GameMode }) {
     advance();
   }, [advance]);
 
-  const playAgain = useCallback(() => {
+  const endGame = useCallback(() => {
+    if (advanceTimer.current) {
+      clearTimeout(advanceTimer.current);
+      advanceTimer.current = null;
+    }
     transitioning.current = false;
+    setFinished(true);
+  }, []);
+
+  const playAgain = useCallback(() => {
+    if (advanceTimer.current) {
+      clearTimeout(advanceTimer.current);
+      advanceTimer.current = null;
+    }
+    transitioning.current = false;
+    deadline.current = null;
     setOrder(shuffledIndices(problems.length));
     setPos(0);
     setQuestionNumber(1);
@@ -190,7 +215,7 @@ export function Game({ mode }: { mode: GameMode }) {
           </button>
           <button
             type="button"
-            onClick={() => setFinished(true)}
+            onClick={endGame}
             className="border-2 border-black px-4 py-2 text-base hover:bg-black hover:text-white"
           >
             End Game
