@@ -17,8 +17,9 @@ const notes = [
     — thank you to Akshay Ravikumar for creating the original game.
   </>,
   <>
-    Questions are drawn from the Part I and Part IIA papers of the Cambridge
-    Economics Tripos (from lecture notes).
+    Questions are drawn from lecture notes across all years of the Cambridge
+    Economics Tripos, especially the core papers: Microeconomics,
+    Macroeconomics, and Econometrics.
   </>,
 ];
 
