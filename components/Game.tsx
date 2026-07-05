@@ -242,13 +242,31 @@ export function Game({ mode }: { mode: GameMode }) {
               type="button"
               onClick={revealHint}
               disabled={hintsShown >= current.hints.length}
-              className="border-2 border-black px-4 py-2 text-base hover:bg-black hover:text-white disabled:pointer-events-none disabled:opacity-40"
+              className="inline-flex items-center gap-2 border-2 border-black px-4 py-2 text-base hover:bg-black hover:text-white disabled:pointer-events-none disabled:opacity-40"
             >
-              {hintsShown >= current.hints.length
-                ? "No more hints"
-                : hintsShown === 0
-                  ? `Show Hint${mode === "timed" ? " (−1 pt)" : ""}`
-                  : `Next Hint (${hintsShown}/${current.hints.length})${mode === "timed" ? " −1 pt" : ""}`}
+              <svg
+                viewBox="0 0 24 24"
+                width="1.1em"
+                height="1.1em"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+                className="shrink-0"
+              >
+                <path d="M9 18h6" />
+                <path d="M10 21h4" />
+                <path d="M12 3a6 6 0 0 0-3.6 10.8c.6.45.9 1.1 1 1.8l.1.4h5l.1-.4c.1-.7.4-1.35 1-1.8A6 6 0 0 0 12 3z" />
+              </svg>
+              <span>
+                {hintsShown >= current.hints.length
+                  ? "No more hints"
+                  : hintsShown === 0
+                    ? `Show Hint${mode === "timed" ? " (−1 pt)" : ""}`
+                    : `Next Hint (${hintsShown}/${current.hints.length})${mode === "timed" ? " −1 pt" : ""}`}
+              </span>
             </button>
           ) : null
         }
