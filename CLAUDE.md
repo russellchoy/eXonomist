@@ -8,10 +8,12 @@ A TeXnique-style LaTeX typesetting game. Players see a rendered formula and
 reproduce it in LaTeX with a live preview. Timed + Zen modes, scoring, a
 searchable symbol reference table, and questions authored from lecture notes.
 
-**Branding:** the app is called **eXonomist** — in the masthead the "X" is
-typeset as a large chi (χ), and the tagline reads "a LaTeX typesetting game for
-economists". TeXnique remains the *visual/layout* reference only. The wordmark
-lives in `components/Wordmark.tsx` (`BRAND` + `ExonomistLogo`).
+**Branding:** the app is called **eXonomist** — tagline "a LaTeX typesetting game
+for economists". The landing hero and the favicon/social image use the designed
+logo (`public/logo.png` → landing via `next/image`; `app/icon.png` → favicon; OG
+image wired in `app/layout.tsx`). The in-game header and results use the compact
+text wordmark in `components/Wordmark.tsx` (the "X" typeset as a large chi χ).
+TeXnique remains the *visual/layout* reference only.
 
 Read `plan.md` in this folder for the full design brief. Follow it.
 

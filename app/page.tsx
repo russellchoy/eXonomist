@@ -1,5 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
-import { Masthead, LaTeX } from "@/components/Wordmark";
+import { LaTeX } from "@/components/Wordmark";
+import logo from "@/public/logo.png";
 
 const hints = [
   <>
@@ -29,7 +31,17 @@ const hints = [
 export default function Home() {
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center gap-12 px-6 py-16">
-      <Masthead size="large" />
+      <div className="flex flex-col items-center gap-5 text-center">
+        <Image
+          src={logo}
+          alt="eXonomist"
+          priority
+          className="h-auto w-56 sm:w-64"
+        />
+        <p className="text-2xl sm:text-3xl">
+          a <LaTeX /> typesetting game for economists
+        </p>
+      </div>
 
       <div className="flex flex-col items-center gap-4 text-center text-xl">
         <p>

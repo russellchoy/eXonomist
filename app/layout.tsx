@@ -3,10 +3,33 @@ import type { Metadata } from "next";
 import "katex/dist/katex.min.css";
 import "./globals.css";
 
+// Absolute base for OG/Twitter image URLs. Vercel sets VERCEL_URL automatically;
+// falls back to localhost in dev. (The favicon is handled automatically by
+// app/icon.png — no metadata.icons entry needed.)
+const siteUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : "http://localhost:3000";
+
+const title = "eXonomist — a LaTeX typesetting game for economists";
+const description =
+  "Reproduce rendered formulas in LaTeX against the clock. Timed and Zen modes, a live KaTeX preview, and a searchable symbol reference. A LaTeX typesetting game for economists.";
+
 export const metadata: Metadata = {
-  title: "eXonomist — a LaTeX typesetting game for economists",
-  description:
-    "Reproduce rendered formulas in LaTeX against the clock. Timed and Zen modes, a live KaTeX preview, and a searchable symbol reference. A LaTeX typesetting game for economists.",
+  metadataBase: new URL(siteUrl),
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    type: "website",
+    images: [{ url: "/logo.png", width: 512, height: 512, alt: "eXonomist" }],
+  },
+  twitter: {
+    card: "summary",
+    title,
+    description,
+    images: ["/logo.png"],
+  },
 };
 
 export default function RootLayout({
