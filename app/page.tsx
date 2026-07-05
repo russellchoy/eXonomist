@@ -83,7 +83,7 @@ export default function Home() {
         </p>
       </div>
 
-      <div className="flex gap-5">
+      <div className="flex flex-wrap justify-center gap-5">
         <Link
           href="/play?mode=timed"
           className="border-2 border-black px-6 py-3 text-xl no-underline hover:bg-black hover:text-white"
@@ -96,14 +96,28 @@ export default function Home() {
         >
           Zen Mode
         </Link>
+        <Link
+          href="/daily"
+          className="border-2 border-black px-6 py-3 text-xl no-underline hover:bg-black hover:text-white"
+        >
+          Daily Challenge
+        </Link>
       </div>
 
-      <Link
-        href="/glossary"
-        className="text-lg underline underline-offset-4 hover:text-[#3b5bdb]"
-      >
-        Browse the LaTeX glossary →
-      </Link>
+      <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
+        <Link
+          href="/leaderboard"
+          className="text-lg underline underline-offset-4 hover:text-[#3b5bdb]"
+        >
+          View the leaderboard →
+        </Link>
+        <Link
+          href="/glossary"
+          className="text-lg underline underline-offset-4 hover:text-[#3b5bdb]"
+        >
+          Browse the LaTeX glossary →
+        </Link>
+      </div>
 
       <section className="w-full">
         <h2 className="mb-3 text-xl font-bold">Hints:</h2>
