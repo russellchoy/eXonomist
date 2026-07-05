@@ -223,9 +223,15 @@ export function Game({ mode }: { mode: GameMode }) {
         )}
       </div>
 
-      <GlossaryPanel />
-
       <Target latex={current.latex} />
+      {current.context && (
+        <div className="border-2 border-black px-4 py-3">
+          <p className="mb-1 text-sm font-bold uppercase tracking-wide text-[var(--muted)]">
+            Context
+          </p>
+          <p className="text-base">{current.context}</p>
+        </div>
+      )}
       <Preview latex={input} shadowLatex={current.latex} shadow={shadow} />
       {/* key per question => fresh, auto-focused editor each problem */}
       <LatexInput
@@ -271,6 +277,8 @@ export function Game({ mode }: { mode: GameMode }) {
       )}
       <HintList hints={current.hints} shown={hintsShown} />
 
+      {/* Reference material collated at the bottom of the page. */}
+      <GlossaryPanel />
       <ReferenceTable />
     </div>
   );

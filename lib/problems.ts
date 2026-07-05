@@ -1,7 +1,7 @@
 // Economics & methods question bank (468 problems) compiled from the lecture-notes
 // .tex/.md sources in reference_images/latex/ via that folder's build-problems.mjs.
-// Each problem carries an auto-generated `hints` array (notable commands the
-// target uses, trickiest-first, capped at its point value).
+// Each problem carries an auto-generated `hints` array and a `context` (1-2
+// sentence plain-English interpretation of the equation).
 // NOTE: `npm run import` regenerates this file from questions.txt and will
 // overwrite it — sync questions.txt (or re-copy from reference_images/latex/) first.
 export type Difficulty = "easy" | "medium" | "hard";
@@ -19,6 +19,7 @@ export interface Problem {
   difficulty: Difficulty;
   points: number;
   topic: string;
+  context: string; // 1-2 sentence plain-English interpretation (may be empty)
   hints: Hint[]; // notable commands in the target, trickiest-first (may be empty)
 }
 
@@ -30,6 +31,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Maximum Likelihood",
+    context: "The log-likelihood measures how well a parameter value explains the observed data, summing log-probabilities across independent observations. Maximizing it gives the maximum-likelihood estimate, a cornerstone method for fitting statistical models.",
     hints: [
       { command: String.raw`\ell`, name: "script l", example: String.raw`\ell` },
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
@@ -42,6 +44,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Distributions",
+    context: "The Cauchy distribution is a bell-shaped curve with tails so heavy that its mean and variance don't exist. It's a classic cautionary example where averaging samples fails to settle down.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -53,6 +56,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Distributions",
+    context: "The normal (Gaussian) distribution is the familiar bell curve describing many natural and economic quantities. Its dominance follows from the Central Limit Theorem, which is why it underpins so much of statistics.",
     hints: [
       { command: String.raw`\sqrt{ }`, name: "square root", example: String.raw`\sqrt{x}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -65,6 +69,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Maximum Likelihood",
+    context: "Fisher information quantifies how much a sample tells you about an unknown parameter, based on the curvature of the log-likelihood. More information means sharper, more precise estimates.",
     hints: [
       { command: String.raw`\partial`, name: "partial derivative", example: String.raw`\partial` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -78,6 +83,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Maximum Likelihood",
+    context: "For large samples, the maximum-likelihood estimator behaves like a normal distribution centered on the true value, with variance set by the inverse Fisher information. This justifies standard confidence intervals and tests.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\sqrt{ }`, name: "square root", example: String.raw`\sqrt{x}` },
@@ -90,6 +96,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Discrete Choice",
+    context: "The probit model uses the normal CDF to turn a linear index into a probability of a yes/no outcome. It's a standard tool for modeling binary choices like buying, voting, or defaulting.",
     hints: [
       { command: String.raw`\Phi`, name: "capital phi", example: String.raw`\Phi` },
       { command: String.raw`\mid`, name: "vertical bar (given / such that)", example: String.raw`a \mid b` },
@@ -103,6 +110,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Discrete Choice",
+    context: "The logistic function squashes any real number into a probability between 0 and 1, giving the S-shaped curve at the heart of logistic regression and logit discrete-choice models.",
     hints: [
       { command: String.raw`\Lambda`, name: "capital lambda", example: String.raw`\Lambda` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -115,6 +123,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Econometrics",
+    context: "Under normally distributed errors, the maximum-likelihood slope estimate coincides exactly with ordinary least squares. This reassuring equivalence shows OLS is optimal in the classical regression setting.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
@@ -129,6 +138,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Discrete Choice",
+    context: "In nonlinear probit models a coefficient isn't the effect on probability directly. The average marginal effect averages each observation's slope, giving an interpretable 'typical' impact of a regressor on the outcome probability.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -143,6 +153,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Panel Data",
+    context: "The Hausman test compares two estimators—one efficient, one robust—to check whether a modeling assumption holds. A large gap signals the simpler estimator is biased, guiding model choice in panel data.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\widehat{ }`, name: "wide hat", example: String.raw`\widehat{xy}` },
@@ -159,6 +170,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 9,
     topic: "Econometrics",
+    context: "When errors are correlated within groups (like students in schools), ordinary standard errors are too optimistic. This sandwich estimator corrects them so hypothesis tests stay valid under clustering.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\widehat{ }`, name: "wide hat", example: String.raw`\widehat{xy}` },
@@ -174,6 +186,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Panel Data",
+    context: "In panel logit models, conditioning on the total outcome across periods lets you estimate effects while cancelling out unobserved individual traits. This clever trick sidesteps the incidental-parameters problem.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\mid`, name: "vertical bar (given / such that)", example: String.raw`a \mid b` },
@@ -186,6 +199,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Time Series",
+    context: "The autocorrelation function measures how strongly a time series relates to its own past values at different lags. It reveals persistence and cyclical structure, guiding time-series model selection.",
     hints: [
       { command: String.raw`\sqrt{ }`, name: "square root", example: String.raw`\sqrt{x}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -199,6 +213,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Time Series",
+    context: "For a stationary AR(1) process, the long-run variance grows as the persistence parameter approaches one. This shows why highly persistent series have wide, slowly-settling fluctuations.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -213,6 +228,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Time Series",
+    context: "A moving-average MA(1) process has memory of only one period: it correlates with its immediate neighbor but nothing beyond. This sharp cutoff helps identify MA models from data.",
     hints: [
       { command: String.raw`\begin{cases}`, name: "cases (piecewise)", example: String.raw`\begin{cases} a & x>0 \\ b & x\le 0 \end{cases}` },
       { command: String.raw`\dfrac{ }{ }`, name: "display fraction", example: String.raw`\dfrac{a}{b}` },
@@ -225,6 +241,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Time Series",
+    context: "The Ljung-Box test checks whether a time series (or model residuals) shows any leftover autocorrelation. A large value signals remaining structure, meaning your model hasn't captured all the dynamics.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\overset{ }{ }`, name: "over-set", example: String.raw`\overset{a}{=}` },
@@ -241,6 +258,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Time Series",
+    context: "The Durbin-Watson statistic detects first-order autocorrelation in regression residuals. Values near 2 suggest no serial correlation; departures warn that standard errors may be unreliable.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
@@ -257,6 +275,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Time Series",
+    context: "ARMA models combine autoregressive terms (dependence on past values) and moving-average terms (dependence on past shocks) to flexibly describe stationary time series—a workhorse of forecasting.",
     hints: [
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
       { command: String.raw`\Phi`, name: "capital phi", example: String.raw`\Phi` },
@@ -272,6 +291,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Time Series",
+    context: "The augmented Dickey-Fuller regression tests whether a time series has a unit root, meaning it's non-stationary and wanders without reverting. This distinction is crucial before running time-series regressions.",
     hints: [
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
       { command: String.raw`\Delta`, name: "capital delta", example: String.raw`\Delta` },
@@ -285,6 +305,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 9,
     topic: "Time Series",
+    context: "Newey-West standard errors stay valid when errors are both heteroskedastic and autocorrelated. By down-weighting distant lags, it delivers reliable inference for time-series regressions.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
@@ -298,6 +319,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Time Series",
+    context: "The error-correction model links short-run changes to a long-run equilibrium relationship between variables. When they drift apart, the term pulls them back, formalizing how cointegrated series co-move.",
     hints: [
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
       { command: String.raw`\Delta`, name: "capital delta", example: String.raw`\Delta` },
@@ -310,6 +332,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Time Series",
+    context: "AIC and BIC score models by trading off fit against complexity, penalizing extra parameters. They guide model selection, with BIC penalizing size more heavily and favoring simpler models.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\mathrm{ }`, name: "upright roman", example: String.raw`\mathrm{d}` },
@@ -322,6 +345,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Time Series",
+    context: "This gives the best forecast of an AR(1) series given its history: a blend of the mean and a geometrically decaying influence of the starting value, showing how persistence fades over time.",
     hints: [
       { command: String.raw`\Omega`, name: "capital omega", example: String.raw`\Omega` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -336,6 +360,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Econometrics",
+    context: "These formulas estimate a population's center and spread from data. Dividing the variance by n-1 (Bessel's correction) removes bias, making the sample variance an honest estimate.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
@@ -349,6 +374,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Econometrics",
+    context: "The t-statistic tests whether a sample mean differs from a hypothesized value when the true variance is unknown. Following a t-distribution, it underlies everyday hypothesis testing and confidence intervals.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
       { command: String.raw`\sqrt{ }`, name: "square root", example: String.raw`\sqrt{x}` },
@@ -363,6 +389,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Econometrics",
+    context: "When sampling from a normal population, the scaled sample variance follows a chi-squared distribution. This result lets you build confidence intervals and tests for an unknown population variance.",
     hints: [
       { command: String.raw`\chi`, name: "chi", example: String.raw`\chi` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -376,6 +403,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Econometrics",
+    context: "The F-distribution arises as a ratio of two independent chi-squared variables, each divided by its degrees of freedom. It's the basis for comparing variances and for ANOVA and joint significance tests.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\sim`, name: "similar / distributed as", example: String.raw`\sim` },
@@ -388,6 +416,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Econometrics",
+    context: "The t-distribution is built as a standard normal divided by the square root of a scaled chi-squared. This construction explains why replacing the unknown variance with its estimate yields t rather than normal.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
       { command: String.raw`\sqrt{ }`, name: "square root", example: String.raw`\sqrt{x}` },
@@ -403,6 +432,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Econometrics",
+    context: "The OLS slope is the ratio of the covariance between X and Y to the variance of X—the best-fitting line's steepness. It quantifies how much Y moves, on average, per unit change in X.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
@@ -417,6 +447,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Econometrics",
+    context: "This matrix formula gives the least-squares coefficients for multiple regression in one shot, minimizing squared errors. It's the fundamental engine behind linear regression across statistics and econometrics.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\boldsymbol{ }`, name: "bold symbol", example: String.raw`\boldsymbol{\beta}` },
@@ -431,6 +462,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Econometrics",
+    context: "A version of R-squared that penalizes adding extra regressors, so it only rises when a new variable improves fit more than chance. It lets you compare models with different numbers of predictors fairly.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -443,6 +475,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Econometrics",
+    context: "Tests whether several regression coefficients are jointly zero by comparing how much fit worsens when you impose the restrictions. It's how you judge if a group of variables matters together, not just one at a time.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\sim`, name: "similar / distributed as", example: String.raw`\sim` },
@@ -456,6 +489,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Econometrics",
+    context: "The uncertainty in forecasting a new individual outcome, combining the model's own error plus estimation error that grows for observations far from the data's center. It explains why predictions are least reliable at the edges.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\mid`, name: "vertical bar (given / such that)", example: String.raw`a \mid b` },
@@ -471,6 +505,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Distributions",
+    context: "A compact formula that encodes every moment (mean, variance, etc.) of a normal distribution. It's a powerful tool for deriving properties and proving that sums of normals are again normal.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -482,6 +517,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Econometrics",
+    context: "Shows how leaving out a relevant variable like IQ biases the estimated return to education, scaled by how strongly the omitted factor correlates with schooling. It warns that regressions can mislead when key controls are missing.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\widehat{ }`, name: "wide hat", example: String.raw`\widehat{xy}` },
@@ -497,6 +533,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Econometrics",
+    context: "Measures how fat-tailed a distribution is relative to the normal, so positive values signal frequent extreme outliers. It matters for gauging risk, since heavy tails mean rare shocks happen more often than a bell curve predicts.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\mathrm{ }`, name: "upright roman", example: String.raw`\mathrm{d}` },
@@ -509,6 +546,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Econometrics",
+    context: "An asymmetric loss that weights positive and negative errors differently to target a chosen quantile rather than the mean. It's the engine that lets regression describe the whole distribution, not just its average.",
     hints: [
       { command: String.raw`\begin{cases}`, name: "cases (piecewise)", example: String.raw`\begin{cases} a & x>0 \\ b & x\le 0 \end{cases}` },
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
@@ -523,6 +561,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Econometrics",
+    context: "Shows the median is the value minimizing total absolute distance to the data, which is why it resists outliers. This is the intuition behind why medians are more robust than means.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
@@ -537,6 +576,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Econometrics",
+    context: "Fits a regression line to a chosen quantile (e.g. the 10th or 90th percentile) by minimizing tilted absolute errors. It reveals how predictors affect the bottom or top of an outcome distribution, not just the middle.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\boldsymbol{ }`, name: "bold symbol", example: String.raw`\boldsymbol{\beta}` },
@@ -553,6 +593,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Econometrics",
+    context: "Shows that random measurement error in a regressor biases its estimated effect toward zero. It explains why noisy data systematically understate true relationships between variables.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -567,6 +608,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Econometrics",
+    context: "Quantifies how a coefficient is distorted when a correlated variable is left out, equal to the true effect plus the omitted variable's effect times its correlation with the included one. It's the core reason correlation isn't causation.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\widehat{ }`, name: "wide hat", example: String.raw`\widehat{xy}` },
@@ -582,6 +624,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Econometrics",
+    context: "The simplest instrumental variables estimator, recovering a causal effect by dividing the instrument's effect on the outcome by its effect on the treatment. It underlies how natural experiments identify causation despite confounding.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
@@ -597,6 +640,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Econometrics",
+    context: "Shows the precision of an instrumental variables estimate falls sharply when the instrument correlates weakly with the regressor. It's why weak instruments produce dangerously imprecise causal estimates.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -612,6 +656,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Monetary Economics",
+    context: "Describes how a household optimally trades off consuming today versus saving in money, balancing impatience against the real return on money adjusted for inflation. It's the core intertemporal condition in monetary models.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -623,6 +668,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Monetary Economics",
+    context: "Links the nominal return on money to expected inflation and the discount factor in equilibrium. It captures how anticipated inflation gets built into interest rates so real returns stay pinned down.",
     hints: [],
   },
   {
@@ -632,6 +678,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Monetary Economics",
+    context: "Shows households hold money up to where its liquidity benefit equals the opportunity cost of forgone interest. It explains why money demand falls as nominal interest rates rise.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -643,6 +690,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Monetary Economics",
+    context: "Extends money demand to when money itself pays interest, so the cost of holding it is only the spread between market and money rates. It shows paying interest on money reduces the distortion from holding it.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -654,6 +702,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Monetary Economics",
+    context: "Models people as valuing real money balances directly alongside consumption over their lifetime. It's a tractable shortcut for capturing money's liquidity services in macro models.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -666,6 +715,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Monetary Economics",
+    context: "Bundles many differentiated goods into a single consumption index where the elasticity governs how substitutable varieties are. It's the standard way to model love-of-variety and demand across products.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -678,6 +728,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Monetary Economics",
+    context: "A monetary policy rule where the central bank raises nominal rates more than one-for-one with inflation. Following this Taylor principle is what keeps inflation stable and determinate.",
     hints: [],
   },
   {
@@ -687,6 +738,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 9,
     topic: "Monetary Economics",
+    context: "States that the government's initial debt and money must be backed by the present value of future taxes plus revenue from printing money. It shows seigniorage as a fiscal financing source alongside taxation.",
     hints: [
       { command: String.raw`\Delta`, name: "capital delta", example: String.raw`\Delta` },
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
@@ -700,6 +752,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Monetary Economics",
+    context: "The interest rate that clears an isolated overlapping-generations economy, set by the young's and old's marginal utilities and impatience. It's the benchmark return when no outside store of value exists.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -711,6 +764,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Monetary Economics",
+    context: "Limits a generation's young-age and discounted old-age consumption to their discounted lifetime income. It's the backbone of overlapping-generations models of saving and interest.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\leq`, name: "less-or-equal", example: String.raw`\leq` },
@@ -723,6 +777,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Monetary Economics",
+    context: "Argues the price level adjusts so that real government liabilities equal the present value of future surpluses. It flips conventional thinking: fiscal policy, not just money supply, can determine inflation.",
     hints: [
       { command: String.raw`\Delta`, name: "capital delta", example: String.raw`\Delta` },
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
@@ -736,6 +791,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Monetary Economics",
+    context: "Shows fiat money can have value purely as a bubble, with its real worth equal to the savings the young lend to the old. It explains how intrinsically worthless money circulates.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -748,6 +804,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Monetary Economics",
+    context: "Balances the government's steady-state financing needs against the seigniorage revenue money creation provides. It reveals the limits of funding deficits by printing money.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -759,6 +816,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Real Business Cycles",
+    context: "A lifetime preference specification balancing the satisfaction from consumption against the pain of working, with curvature controlling risk aversion. It's the standard household objective in business-cycle models.",
     hints: [
       { command: String.raw`\varphi`, name: "var phi", example: String.raw`\varphi` },
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
@@ -773,6 +831,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Real Business Cycles",
+    context: "The optimal saving rule under uncertainty: today's marginal utility equals the discounted expected marginal utility of consuming tomorrow times the return. It governs how agents smooth consumption over time and states.",
     hints: [
       { command: String.raw`\mathbb{ }`, name: "blackboard bold (e.g. E, R)", example: String.raw`\mathbb{E}` },
     ],
@@ -784,6 +843,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Real Business Cycles",
+    context: "Output is produced from capital and labor with a productivity shock, where the exponents give each factor's share. It's the workhorse production technology driving real business cycle fluctuations.",
     hints: [],
   },
   {
@@ -793,6 +853,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Real Business Cycles",
+    context: "Each period, a household's savings and consumption cannot exceed its labor income plus the return on prior wealth. It's the accounting rule linking one period's choices to the next.",
     hints: [
       { command: String.raw`\leq`, name: "less-or-equal", example: String.raw`\leq` },
     ],
@@ -804,6 +865,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Real Business Cycles",
+    context: "The economy's feasibility condition: total output each period must cover consumption plus investment, where investment is the new capital stock added minus what remains after depreciation.",
     hints: [],
   },
   {
@@ -813,6 +875,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Real Business Cycles",
+    context: "Firms rent capital until its marginal product equals its user cost — the real interest rate plus the depreciation rate. This pins down capital demand in the RBC model.",
     hints: [],
   },
   {
@@ -822,6 +885,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 9,
     topic: "Real Business Cycles",
+    context: "In RBC equilibrium the real interest rate is determined by expected productivity: households demand a higher return to save when future output is expected to be higher, smoothing consumption across time.",
     hints: [
       { command: String.raw`\varphi`, name: "var phi", example: String.raw`\varphi` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -835,6 +899,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Real Business Cycles",
+    context: "Splits expected discounted returns into expected return times expected marginal utility plus a covariance term. The covariance captures risk: assets paying off in bad times command a premium.",
     hints: [
       { command: String.raw`\cdot`, name: "centred dot", example: String.raw`\cdot` },
       { command: String.raw`\mathbb{ }`, name: "blackboard bold (e.g. E, R)", example: String.raw`\mathbb{E}` },
@@ -848,6 +913,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Real Business Cycles",
+    context: "Technology evolves as a persistent random process — today's productivity is a fraction of yesterday's plus a shock. This persistent shock is the engine driving business cycles in RBC models.",
     hints: [
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
     ],
@@ -859,6 +925,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Real Business Cycles",
+    context: "The welfare benchmark: a benevolent planner maximizes the expected discounted sum of household utility, weighing consumption against the disutility of labour across all future periods.",
     hints: [
       { command: String.raw`\varphi`, name: "var phi", example: String.raw`\varphi` },
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
@@ -874,6 +941,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "New Keynesian",
+    context: "The New Keynesian household's lifetime objective: expected discounted utility from consumption minus the disutility of working, with σ governing risk aversion and φ the labour-supply elasticity.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -887,6 +955,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "New Keynesian",
+    context: "A firm with market power sets its price as a markup over marginal cost (wage divided by productivity). The markup η/(η−1) shrinks as demand becomes more elastic and competition intensifies.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\cdot`, name: "centred dot", example: String.raw`\cdot` },
@@ -899,6 +968,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "New Keynesian",
+    context: "The real wage under costly price adjustment (Rotemberg pricing). It links wages to productivity plus an inflation term, since firms facing adjustment costs pass some of them into prices.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -910,6 +980,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "New Keynesian",
+    context: "The New Keynesian supply relation linking output to productivity and inflation. Because prices are costly to change, higher inflation is associated with higher output — the core policy trade-off.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -921,6 +992,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "New Keynesian",
+    context: "The household's intertemporal optimality condition: consumption is smoothed according to the real interest rate, i.e. the nominal rate adjusted for expected inflation.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\mathbb{ }`, name: "blackboard bold (e.g. E, R)", example: String.raw`\mathbb{E}` },
@@ -933,6 +1005,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "New Keynesian",
+    context: "Defines the 'natural' real interest rate — the rate that would prevail if prices were fully flexible. It serves as the benchmark policymakers aim for to close the output gap.",
     hints: [
       { command: String.raw`\mathbb{ }`, name: "blackboard bold (e.g. E, R)", example: String.raw`\mathbb{E}` },
     ],
@@ -944,6 +1017,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "New Keynesian",
+    context: "The central bank's objective, penalizing squared deviations of inflation from target and of output from its efficient level. The weight ω sets how much output stabilization is valued relative to inflation.",
     hints: [],
   },
   {
@@ -953,6 +1027,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "New Keynesian",
+    context: "A log-linear approximation of New Keynesian supply, expressing the output gap as a linear function of inflation and shocks — the Phillips-curve trade-off in tractable form.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
     ],
@@ -964,6 +1039,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "New Keynesian",
+    context: "In the New Keynesian model, an extra pound of government spending raises output by less than one pound, because higher spending crowds out private consumption through wealth and labour effects.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\cdot`, name: "centred dot", example: String.raw`\cdot` },
@@ -976,6 +1052,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Intertemporal Macro",
+    context: "Over a lifetime, the present value of consumption cannot exceed the present value of income. Future amounts are discounted by the interest rate, tying together borrowing and saving.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\leq`, name: "less-or-equal", example: String.raw`\leq` },
@@ -988,6 +1065,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Intertemporal Macro",
+    context: "Defines permanent income as a weighted average of current and future income. The permanent-income hypothesis says consumption tracks this long-run measure, not transitory income fluctuations.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -1001,6 +1079,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Intertemporal Macro",
+    context: "Lifetime welfare is the discounted sum of each period's utility, with the discount factor β expressing impatience — future satisfaction counts for less than present satisfaction.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
     ],
@@ -1012,6 +1091,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Intertemporal Macro",
+    context: "The optimal consumption-smoothing rule: marginal utility today equals discounted marginal utility tomorrow scaled by the gross return. It governs how households trade off consuming now versus later.",
     hints: [],
   },
   {
@@ -1021,6 +1101,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Intertemporal Macro",
+    context: "Constant-relative-risk-aversion utility, the workhorse preference form. The parameter σ jointly governs risk aversion and the willingness to substitute consumption over time; it collapses to log utility when σ equals one.",
     hints: [
       { command: String.raw`\begin{cases}`, name: "cases (piecewise)", example: String.raw`\begin{cases} a & x>0 \\ b & x\le 0 \end{cases}` },
       { command: String.raw`\dfrac{ }{ }`, name: "display fraction", example: String.raw`\dfrac{a}{b}` },
@@ -1034,6 +1115,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Intertemporal Macro",
+    context: "With log utility, optimal first-period consumption is a fixed fraction of lifetime wealth (current income plus discounted future income). The discount rate δ sets how much is consumed now versus saved.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -1045,6 +1127,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Intertemporal Macro",
+    context: "Generalizes consumption smoothing to many periods: the household consumes a constant fraction of total lifetime resources, including initial assets and the present value of all future income.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -1057,6 +1140,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Intertemporal Macro",
+    context: "With an uncertain future, the consumption-smoothing condition holds in expectation: marginal utility today equals the discounted expected marginal utility tomorrow times the return.",
     hints: [
       { command: String.raw`\mathbb{ }`, name: "blackboard bold (e.g. E, R)", example: String.raw`\mathbb{E}` },
     ],
@@ -1068,6 +1152,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Intertemporal Macro",
+    context: "Consumption smoothing when saving is held in nominal bonds. The relevant return is the nominal interest rate deflated by inflation, i.e. the real return on the asset.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -1079,6 +1164,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Intertemporal Macro",
+    context: "The nominal interest rate compensates savers for both the real return and expected inflation. Rearranged, it shows the real rate is roughly the nominal rate minus inflation.",
     hints: [],
   },
   {
@@ -1088,6 +1174,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Intertemporal Macro",
+    context: "In equilibrium, returns on domestic and foreign bonds must be equal once the expected change in the exchange rate is accounted for — otherwise arbitrage would move capital across borders.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\cdot`, name: "centred dot", example: String.raw`\cdot` },
@@ -1100,6 +1187,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Intertemporal Macro",
+    context: "In an endowment economy the real interest rate is pinned down by how marginal utility changes over time: it rises when future income (and thus consumption growth) is expected to be higher.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -1111,6 +1199,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Intertemporal Macro",
+    context: "The general multi-period smoothing condition: for any period, marginal utility today equals discounted marginal utility next period scaled by the gross return — the backbone of dynamic consumption theory.",
     hints: [],
   },
   {
@@ -1120,6 +1209,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Labour Supply",
+    context: "Equilibrium labour supply responds to productivity, with the exponent's sign set by σ. It captures whether the income effect (work less when richer) or substitution effect (work more when wages rise) dominates.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -1131,6 +1221,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 9,
     topic: "Fiscal Policy",
+    context: "Measures how much output rises when government spending increases. Its size depends on the curvature of utility from consumption and the disutility of labour, which govern how households adjust work and consumption.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\dfrac{ }{ }`, name: "display fraction", example: String.raw`\dfrac{a}{b}` },
@@ -1143,6 +1234,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Price Indices",
+    context: "The price of a consumption basket when varieties are imperfect substitutes (elasticity η). It aggregates individual goods' prices into one index; the closer varieties are to identical, the more the cheapest ones dominate the overall price level.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -1155,6 +1247,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Price Indices",
+    context: "The cost of a basket when spending shares on two goods are fixed at ω and 1−ω. It is a weighted geometric mean of the two prices, with the constant Δ normalizing units so the index is well-defined.",
     hints: [
       { command: String.raw`\Delta`, name: "capital delta", example: String.raw`\Delta` },
     ],
@@ -1166,6 +1259,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Monopolistic Competition",
+    context: "A firm with market power sets its relative price as a constant markup η/(η−1) over marginal cost (the wage divided by productivity). Less substitutable goods (lower η) command fatter markups above cost.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\cdot`, name: "centred dot", example: String.raw`\cdot` },
@@ -1178,6 +1272,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Open Economy",
+    context: "A country's net exports equal foreign demand for its goods (which depends on its relative price via elasticity η) minus its own consumption. Cheaper home goods boost exports; the terms of trade shape the trade balance.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -1189,6 +1284,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Capital and Investment",
+    context: "The rental rate capital earns in a Cobb-Douglas economy, expressed in terms of productivity and the wage. It shows how the payoff to capital rises with technology and falls when labour is more expensive.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -1200,6 +1296,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Economic Growth",
+    context: "The long-run ratio of capital to output in a growing economy. It rises with capital's share α and falls when households discount the future more, when growth is faster, or when capital depreciates quickly.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -1211,6 +1308,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Game Theory",
+    context: "The formal description of a strategic game: who the players are (N), their possible actions and strategies (A, S), and each player's payoff function. It is the basic object for analyzing strategic interaction.",
     hints: [
       { command: String.raw`\Gamma`, name: "capital gamma", example: String.raw`\Gamma` },
       { command: String.raw`\in`, name: "element of", example: String.raw`\in` },
@@ -1224,6 +1322,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Game Theory",
+    context: "A strategy profile is a Nash equilibrium when no player can gain by unilaterally switching actions, given what everyone else does. It captures a stable, self-enforcing outcome where all choices are mutually best responses.",
     hints: [
       { command: String.raw`\geq`, name: "greater-or-equal", example: String.raw`\geq` },
       { command: String.raw`\in`, name: "element of", example: String.raw`\in` },
@@ -1237,6 +1336,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Game Theory",
+    context: "The set of actions that maximize a player's payoff given the opponents' choices. Nash equilibria are exactly the points where every player is simultaneously playing a best response to the others.",
     hints: [
       { command: String.raw`\geq`, name: "greater-or-equal", example: String.raw`\geq` },
       { command: String.raw`\in`, name: "element of", example: String.raw`\in` },
@@ -1250,6 +1350,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Game Theory",
+    context: "Extends Nash equilibrium to randomized play: no player can improve by switching to any other probability mix over actions. This guarantees equilibria exist even in games with no stable pure-strategy outcome.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\Delta`, name: "capital delta", example: String.raw`\Delta` },
@@ -1265,6 +1366,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Game Theory",
+    context: "The set of all valid randomizations over a player's actions—probabilities that lie between 0 and 1 and sum to one. It is the strategy space a player chooses from when mixing over pure actions.",
     hints: [
       { command: String.raw`\Delta`, name: "capital delta", example: String.raw`\Delta` },
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
@@ -1280,6 +1382,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Game Theory",
+    context: "Counts a player's pure strategies in a game with sequential moves: multiply the number of available actions across every decision point. A full strategy prescribes an action at each situation the player could face.",
     hints: [
       { command: String.raw`\prod_{ }^{ }`, name: "product", example: String.raw`\prod_{i=1}^{n}` },
       { command: String.raw`\in`, name: "element of", example: String.raw`\in` },
@@ -1292,6 +1395,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Game Theory",
+    context: "In price competition, the firm charging less captures the whole market, ties split demand equally, and the pricier firm sells nothing. This winner-take-all structure drives prices down toward marginal cost.",
     hints: [
       { command: String.raw`\begin{cases}`, name: "cases (piecewise)", example: String.raw`\begin{cases} a & x>0 \\ b & x\le 0 \end{cases}` },
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
@@ -1304,6 +1408,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Game Theory",
+    context: "In Cournot duopoly, iteratively eliminating dominated quantities pins down each firm producing (1−c)/3—two-thirds of the monopoly output combined. It shows rationality alone can lead firms to the competitive quantity outcome.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -1315,6 +1420,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Game Theory",
+    context: "With single-peaked preferences, the winning policy is the one preferred by the median voter M, the point splitting the electorate into two equal halves. Candidates converge toward this middle position to win majorities.",
     hints: [
       { command: String.raw`\int_{ }^{ }`, name: "integral", example: String.raw`\int_{a}^{b}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -1327,6 +1433,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Game Theory",
+    context: "The probability nobody volunteers to provide a public good as group size n grows. Each person hopes others act, so the chance the task goes undone rises with the cost-benefit ratio and the crowd size.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -1338,6 +1445,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 9,
     topic: "Game Theory",
+    context: "The equilibrium distribution of prices an incumbent charges when facing possible entry. Randomizing over prices between cost-plus-k and the choke price v keeps rivals indifferent, describing mixed-strategy pricing under entry threat.",
     hints: [
       { command: String.raw`\begin{cases}`, name: "cases (piecewise)", example: String.raw`\begin{cases} a & x>0 \\ b & x\le 0 \end{cases}` },
       { command: String.raw`\dfrac{ }{ }`, name: "display fraction", example: String.raw`\dfrac{a}{b}` },
@@ -1352,6 +1460,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Social Choice",
+    context: "Society ranks outcome x above y whenever it delivers a higher sum of everyone's individual utilities. This utilitarian criterion judges policies purely by aggregate welfare, ignoring how gains are distributed across people.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\iff`, name: "if and only if", example: String.raw`\iff` },
@@ -1367,6 +1476,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Decision Theory",
+    context: "The value of a risky prospect: the probability-weighted average of the utility of each possible outcome. Decision-makers rank gambles by this expected utility rather than by expected money, capturing attitudes toward risk.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\mid`, name: "vertical bar (given / such that)", example: String.raw`a \mid b` },
@@ -1380,6 +1490,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Decision Theory",
+    context: "Extends expected utility to outcomes on a continuum: integrate utility against the probability density instead of summing. It gives the value of a gamble whose payoff can take any value in a range.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
       { command: String.raw`\underline{ }`, name: "underline", example: String.raw`\underline{x}` },
@@ -1394,6 +1505,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Decision Theory",
+    context: "A game whose expected monetary payoff is infinite, yet people will pay only a little to play. It motivated expected-utility theory, showing that diminishing marginal utility explains why infinite expected value isn't infinitely valuable.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -1408,6 +1520,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Risk Aversion",
+    context: "The guaranteed amount that leaves someone exactly as well off as taking a gamble. A risk-averse person's certainty equivalent falls below the gamble's expected value, and the gap measures their risk premium.",
     hints: [
       { command: String.raw`\ell`, name: "script l", example: String.raw`\ell` },
       { command: String.raw`\mid`, name: "vertical bar (given / such that)", example: String.raw`a \mid b` },
@@ -1422,6 +1535,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Risk Aversion",
+    context: "A measure of how much a person dislikes risk over fixed dollar stakes, based on the curvature of their utility function. Higher values mean stronger aversion and a larger premium demanded to bear risk.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -1433,6 +1547,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Risk Aversion",
+    context: "Measures aversion to risks that are proportional to wealth by scaling utility's curvature by the wealth level. It gauges willingness to gamble percentage stakes and stays constant for widely used CRRA utility functions.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -1444,6 +1559,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Risk Aversion",
+    context: "The expected utility of a bet under constant-absolute-risk-aversion preferences. It reduces to a certain equivalent wealth w−c, showing that with CARA utility risk attitudes are independent of the person's wealth level.",
     hints: [
       { command: String.raw`\mathbb{ }`, name: "blackboard bold (e.g. E, R)", example: String.raw`\mathbb{E}` },
     ],
@@ -1455,6 +1571,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 9,
     topic: "Portfolio Choice",
+    context: "The amount an investor optimally places in a risky asset given the risk-free return and the two possible payoffs. It balances the asset's expected excess return against downside risk to set the best exposure.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -1466,6 +1583,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Auctions",
+    context: "In a second-price (Vickrey) auction the winner pays the runner-up's bid and earns value minus that price; losers get zero. This payoff structure makes bidding your true value a dominant strategy.",
     hints: [
       { command: String.raw`\begin{cases}`, name: "cases (piecewise)", example: String.raw`\begin{cases} a & x>0 \\ b & x\le 0 \end{cases}` },
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
@@ -1481,6 +1599,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Auctions",
+    context: "In a two-bidder first-price auction with uniform values, maximizing expected payoff yields bidding half your true value. It illustrates optimal bid shading: you shade below value to trade off winning odds against surplus.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\implies`, name: "implies", example: String.raw`\implies` },
@@ -1493,6 +1612,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Auctions",
+    context: "A bidder's expected gain in a first-price auction: the surplus (value minus bid) times the probability the bid beats all rivals' strategies. Bidders choose bids to balance winning chances against surplus captured.",
     hints: [
       { command: String.raw`\prod_{ }^{ }`, name: "product", example: String.raw`\prod_{i=1}^{n}` },
       { command: String.raw`\neq`, name: "not equal", example: String.raw`\neq` },
@@ -1506,6 +1626,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Auctions",
+    context: "The expected payoff when all n bidders use the same equilibrium bidding rule. Winning requires topping n−1 rivals, so the probability term is raised to that power; this pins down symmetric equilibrium bids.",
     hints: [
       { command: String.raw`\mathbb{ }`, name: "blackboard bold (e.g. E, R)", example: String.raw`\mathbb{E}` },
     ],
@@ -1517,6 +1638,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 9,
     topic: "Auctions",
+    context: "In a first-price sealed-bid auction, each bidder shades their bid below their true value by an amount that depends on how many rivals there are; the equilibrium strategy balances winning probability against the surplus kept.",
     hints: [
       { command: String.raw`\underline{ }`, name: "underline", example: String.raw`\underline{x}` },
       { command: String.raw`\int_{ }^{ }`, name: "integral", example: String.raw`\int_{a}^{b}` },
@@ -1530,6 +1652,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Auctions",
+    context: "When values are uniformly distributed, the optimal bid is a simple fraction (n-1)/n of your value: more bidders means less shading, so bids approach true values as competition rises.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\cdot`, name: "centred dot", example: String.raw`\cdot` },
@@ -1542,6 +1665,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Auctions",
+    context: "After observing a private signal (here type H), a bidder updates their belief about the item's common value using a probability-weighted average, the basis for reasoning in common-value auctions.",
     hints: [
       { command: String.raw`\mid`, name: "vertical bar (given / such that)", example: String.raw`a \mid b` },
       { command: String.raw`\mathbb{ }`, name: "blackboard bold (e.g. E, R)", example: String.raw`\mathbb{E}` },
@@ -1554,6 +1678,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Auctions",
+    context: "Illustrates the winner's curse: winning often means you overestimated the item's value, so bidding naively yields negative expected profit. Rational bidders must bid cautiously to avoid this.",
     hints: [
       { command: String.raw`\times`, name: "times", example: String.raw`\times` },
       { command: String.raw`\mathbb{ }`, name: "blackboard bold (e.g. E, R)", example: String.raw`\mathbb{E}` },
@@ -1566,6 +1691,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Adverse Selection",
+    context: "A buyer's expected payoff when only sellers whose quality falls below the offered price agree to trade; the indicator captures which types accept, the root of adverse selection.",
     hints: [
       { command: String.raw`\int_{ }^{ }`, name: "integral", example: String.raw`\int_{a}^{b}` },
       { command: String.raw`\leq`, name: "less-or-equal", example: String.raw`\leq` },
@@ -1580,6 +1706,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Market for Lemons",
+    context: "Simplifies the buyer's expected utility in the lemons market to a closed form, showing how the offered price shapes both which sellers trade and the buyer's net surplus.",
     hints: [
       { command: String.raw`\int_{ }^{ }`, name: "integral", example: String.raw`\int_{a}^{b}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -1593,6 +1720,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Adverse Selection",
+    context: "The buyer's profit-maximizing take-it-or-leave-it price in a lemons market; the denominator (2-b) reflects how quality's dependence on type distorts the optimal offer.",
     hints: [
       { command: String.raw`\dfrac{ }{ }`, name: "display fraction", example: String.raw`\dfrac{a}{b}` },
     ],
@@ -1604,6 +1732,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Adverse Selection",
+    context: "Maps each hidden seller type (low, medium, high quality) to their reservation value, showing the private information a buyer cannot observe under adverse selection.",
     hints: [
       { command: String.raw`\begin{cases}`, name: "cases (piecewise)", example: String.raw`\begin{cases} a & x>0 \\ b & x\le 0 \end{cases}` },
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
@@ -1616,6 +1745,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Market for Lemons",
+    context: "The buyer's payoff if a trade is accepted: intrinsic value plus quality tied to the seller's type, minus the price paid. The building block for lemons-market analysis.",
     hints: [],
   },
   {
@@ -1625,6 +1755,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Contract Theory",
+    context: "A quasilinear payoff where a buyer of type theta values quantity q through v(q) and pays transfer T; the type multiplies willingness to pay, central to screening contracts.",
     hints: [],
   },
   {
@@ -1634,6 +1765,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Contract Theory",
+    context: "Under full information the firm sets quantity where marginal value equals marginal cost and extracts all surplus via the transfer, the efficient benchmark before hidden types distort things.",
     hints: [
       { command: String.raw`\tilde{ }`, name: "tilde accent", example: String.raw`\tilde{x}` },
     ],
@@ -1645,6 +1777,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Contract Theory",
+    context: "The condition ensuring a high-value buyer prefers their own contract to mimicking the low type; incentive compatibility is what forces firms to leave rents to informed agents.",
     hints: [
       { command: String.raw`\geq`, name: "greater-or-equal", example: String.raw`\geq` },
     ],
@@ -1656,6 +1789,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Contract Theory",
+    context: "The extra surplus a high type earns by having private information: because they could mimic the low type, the firm must pay them a rent proportional to the type gap.",
     hints: [
       { command: String.raw`\tilde{ }`, name: "tilde accent", example: String.raw`\tilde{x}` },
     ],
@@ -1667,6 +1801,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Contract Theory",
+    context: "With hidden types the firm distorts the low type's quantity below efficient (marginal value exceeds cost) to reduce the rent paid to high types, the 'no distortion at the top, distortion below' result.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -1678,6 +1813,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Moral Hazard",
+    context: "For a principal to make high effort worthwhile, the gain in success probability must exceed the worker's extra cost of effort measured in wage terms, the core moral-hazard tradeoff.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -1689,6 +1825,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Moral Hazard",
+    context: "To induce high effort, the wage difference between success and failure (in utility terms) must be large enough to offset the worker's higher effort cost, so pay must be tied to outcomes.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\geq`, name: "greater-or-equal", example: String.raw`\geq` },
@@ -1701,6 +1838,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Moral Hazard",
+    context: "The utility the principal must promise on success to just induce high effort at minimum cost, balancing effort incentives against the risk premium paid to a risk-averse worker.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -1712,6 +1850,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Moral Hazard",
+    context: "When the worker cannot be paid below zero, the failure wage is fixed at zero and the success wage takes whichever binding constraint (participation or incentive) is larger, leaving the worker a rent.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\max`, name: "maximum", example: String.raw`\max` },
@@ -1724,6 +1863,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Bayesian Games",
+    context: "Formal description of a game with incomplete information: players, actions, private types, payoffs, and a common prior over types, the framework for modeling strategic uncertainty.",
     hints: [
       { command: String.raw`\Theta`, name: "capital theta", example: String.raw`\Theta` },
     ],
@@ -1735,6 +1875,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Bayesian Games",
+    context: "Bayes' rule for updating the probability of event A after observing B, with the denominator expanded by the law of total probability, the engine for belief updating in Bayesian games.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\neg`, name: "logical not", example: String.raw`\neg` },
@@ -1748,6 +1889,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Bayesian Games",
+    context: "A player's expected payoff, averaging over rivals' possible types using beliefs conditioned on their own type, what each player maximizes in a game of incomplete information.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\mid`, name: "vertical bar (given / such that)", example: String.raw`a \mid b` },
@@ -1760,6 +1902,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 9,
     topic: "Bayesian Games",
+    context: "Defines equilibrium in a Bayesian game: each type's strategy maximizes expected payoff given beliefs about rivals' types and their equilibrium strategies, so no type wants to deviate.",
     hints: [
       { command: String.raw`\Theta`, name: "capital theta", example: String.raw`\Theta` },
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
@@ -1776,6 +1919,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Bayesian Games",
+    context: "The same Bayesian Nash equilibrium condition written with expectation operators: each type's chosen strategy yields at least as much expected utility as any alternative, given rivals' play.",
     hints: [
       { command: String.raw`\forall`, name: "for all", example: String.raw`\forall` },
       { command: String.raw`\geq`, name: "greater-or-equal", example: String.raw`\geq` },
@@ -1790,6 +1934,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Bayesian Games",
+    context: "A hawk-dove style payoff matrix for contesting a resource: mutual fighting is costly to both, while yielding avoids conflict, the setup for analyzing conflict under incomplete information.",
     hints: [
       { command: String.raw`\begin{array}`, name: "array (custom columns)", example: String.raw`\begin{array}{cc} a & b \\ c & d \end{array}` },
     ],
@@ -1801,6 +1946,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Bayesian Games",
+    context: "A player's expected payoff from fighting when the rival fights with probability alpha; used to find the belief threshold at which a type is indifferent between fighting and retreating.",
     hints: [
       { command: String.raw`\mid`, name: "vertical bar (given / such that)", example: String.raw`a \mid b` },
       { command: String.raw`\mathbb{ }`, name: "blackboard bold (e.g. E, R)", example: String.raw`\mathbb{E}` },
@@ -1813,6 +1959,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Industrial Organization",
+    context: "A Cournot firm's profit: price (set by total industry output via inverse demand) minus unit cost, times its own quantity. The firm chooses output knowing its choice moves the market price.",
     hints: [],
   },
   {
@@ -1822,6 +1969,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Industrial Organization",
+    context: "A firm's profit-maximizing output given its rival's quantity; the downward slope shows outputs are strategic substitutes, more rival production means you produce less.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -1833,6 +1981,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Industrial Organization",
+    context: "The symmetric equilibrium where each duopolist produces (a-c)/3; total output exceeds monopoly but falls short of perfect competition, illustrating imperfect-competition markups.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -1844,6 +1993,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Industrial Organization",
+    context: "Cournot outputs when firms have different marginal costs: the lower-cost firm produces more, showing how cost advantages translate into larger market share in equilibrium.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -1855,6 +2005,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Bayesian Games",
+    context: "A Cournot firm's optimal output when uncertain about a rival's cost type; it responds to the expected cost, weighting high- and low-cost possibilities by their probabilities.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -1866,6 +2017,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Public Goods",
+    context: "In private-provision games, a public good is funded only if someone's value exceeds a cutoff v*. This equilibrium condition equates the marginal contributor's value, weighted by the chance they are pivotal, to the cost c.",
     hints: [],
   },
   {
@@ -1875,6 +2027,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Voting",
+    context: "When n people could each provide a benefit v at private cost c, this gives the probability p each volunteers in equilibrium. As the group grows, each person volunteers less, so provision can fail despite more potential helpers.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -1886,6 +2039,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Voting",
+    context: "Using Bayes' rule, this updates the probability a defendant is guilty after two jurors receive guilty signals. It shows how strategic voters should condition on being pivotal rather than trusting their own signal naively.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\mid`, name: "vertical bar (given / such that)", example: String.raw`a \mid b` },
@@ -1898,6 +2052,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Short-Run Macro",
+    context: "Total desired spending in the economy: autonomous consumption, consumption from disposable income, investment (falling with interest rates), and government spending. The Keynesian-cross building block where output adjusts to meet planned demand.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
     ],
@@ -1909,6 +2064,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Short-Run Macro",
+    context: "Solving the Keynesian cross for equilibrium output. Because spending feeds income which feeds more spending, an autonomous demand change is amplified by 1/(1-c), where c is the marginal propensity to consume.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -1921,6 +2077,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Short-Run Macro",
+    context: "A tax increase lowers output, but by less than an equal spending cut, because part of the tax hit is absorbed by reduced saving. The multiplier is -c/(1-c), smaller in magnitude than the spending multiplier.",
     hints: [
       { command: String.raw`\Delta`, name: "capital delta", example: String.raw`\Delta` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -1933,6 +2090,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Short-Run Macro",
+    context: "The nominal interest rate roughly equals the real rate plus expected inflation. Lenders demand compensation for expected erosion of purchasing power, so this links money returns to real returns.",
     hints: [],
   },
   {
@@ -1942,6 +2100,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Short-Run Macro",
+    context: "A monetary policy rule: the central bank sets its interest rate above the neutral rate when inflation exceeds target or output exceeds potential. It formalizes how central banks systematically respond to economic conditions.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
     ],
@@ -1953,6 +2112,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Short-Run Macro",
+    context: "Real money demand falls when interest rates rise (holding cash is costlier) and rises with income (more transactions). The behavioural relationship underlying the LM curve in IS-LM analysis.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -1964,6 +2124,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Short-Run Macro",
+    context: "Combinations of interest rate and output that clear the money market. Solving money-market equilibrium for the interest rate shows it rises with income and falls with the real money supply.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -1975,6 +2136,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Short-Run Macro",
+    context: "Inflation equals expected inflation plus a term rising with the output gap. When the economy runs above potential, inflation exceeds expectations; it captures the short-run inflation-output tradeoff.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
     ],
@@ -1986,6 +2148,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Short-Run Macro",
+    context: "The spending multiplier shrinks once the central bank responds. As government spending raises output, the bank raises rates (via m_Y), crowding out investment and dampening the fiscal boost.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -1997,6 +2160,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Short-Run Macro",
+    context: "The policy rate cannot fall below an effective lower bound r_LB. This shows the central bank's rate as the maximum of its desired rule and that floor, capturing the constraint that limits stimulus in deep slumps.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
       { command: String.raw`\max`, name: "maximum", example: String.raw`\max` },
@@ -2009,6 +2173,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Short-Run Macro",
+    context: "At the zero lower bound the nominal rate is stuck, so the real rate equals minus expected inflation. This pins down the maximum output achievable when monetary policy can no longer cut rates to boost demand.",
     hints: [
       { command: String.raw`\tilde{ }`, name: "tilde accent", example: String.raw`\tilde{x}` },
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
@@ -2022,6 +2187,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Short-Run Macro",
+    context: "With a fraction of firms holding prices fixed, the price level rises above expectations when output exceeds potential. It derives upward-sloping aggregate supply from the share s of flexible-price firms.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -2034,6 +2200,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Short-Run Macro",
+    context: "The price of domestic goods relative to foreign, converting via the nominal exchange rate. It measures international competitiveness: a higher value makes home goods relatively expensive and dampens net exports.",
     hints: [
       { command: String.raw`\epsilon`, name: "epsilon", example: String.raw`\epsilon` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -2046,6 +2213,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Short-Run Macro",
+    context: "Equilibrium output in an open economy where investment depends on the world rate plus a country risk premium θ, and net exports depend on the exchange rate. A rising risk premium contracts investment and output.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -2058,6 +2226,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Long-Run Macro",
+    context: "Output from capital and labour with a technology factor A and constant returns to scale. The exponent α is capital's income share; the workhorse production function of growth theory.",
     hints: [],
   },
   {
@@ -2067,6 +2236,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Long-Run Macro",
+    context: "Under constant returns and competitive markets, paying capital and labour their marginal products exactly uses up total output (Euler's theorem). There are no leftover profits to distribute.",
     hints: [
       { command: String.raw`\cdot`, name: "centred dot", example: String.raw`\cdot` },
     ],
@@ -2078,6 +2248,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Long-Run Macro",
+    context: "Capital per worker grows when saved output exceeds depreciation. This law of motion drives the Solow model toward a steady state where investment just replaces worn-out capital.",
     hints: [
       { command: String.raw`\Delta`, name: "capital delta", example: String.raw`\Delta` },
     ],
@@ -2089,6 +2260,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Long-Run Macro",
+    context: "With a growing workforce, capital per worker is diluted by new workers as well as depreciation. Saving must cover both (δ+n)k just to keep capital per worker constant.",
     hints: [
       { command: String.raw`\Delta`, name: "capital delta", example: String.raw`\Delta` },
     ],
@@ -2100,6 +2272,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Long-Run Macro",
+    context: "Adding labour-augmenting technical progress g, capital per effective worker is diluted by depreciation, population growth, and technology growth together. Growth in living standards ultimately comes from g.",
     hints: [
       { command: String.raw`\Delta`, name: "capital delta", example: String.raw`\Delta` },
     ],
@@ -2111,6 +2284,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Long-Run Macro",
+    context: "The long-run capital-labour ratio in the basic Solow model, rising with the saving rate and falling with depreciation. Higher thrift builds a larger capital stock but not faster permanent growth.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -2123,6 +2297,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Long-Run Macro",
+    context: "Long-run output per worker, increasing in the saving rate and technology and decreasing in depreciation and population growth. It explains cross-country income differences via saving and demographics.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -2135,6 +2310,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Long-Run Macro",
+    context: "The economy's total steady-state capital, scaling the per-worker result by the labour force. It shows aggregate capital grows with saving, technology, and workforce size.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -2147,6 +2323,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Long-Run Macro",
+    context: "Steady-state consumption equals output minus the investment needed to maintain capital. Maximizing this over capital identifies the saving rate that delivers the highest sustainable consumption.",
     hints: [],
   },
   {
@@ -2156,6 +2333,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Long-Run Macro",
+    context: "The consumption-maximizing steady state occurs where capital's marginal product equals depreciation plus population growth. Beyond this point, extra capital costs more to maintain than it produces.",
     hints: [],
   },
   {
@@ -2165,6 +2343,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Long-Run Macro",
+    context: "The growth rate of capital per worker equals saving times average product minus dilution. Because average product falls as capital rises, poorer economies grow faster — the convergence mechanism.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\cdot`, name: "centred dot", example: String.raw`\cdot` },
@@ -2177,6 +2356,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Long-Run Macro",
+    context: "Decomposes labour-productivity growth into technology (Solow residual) and capital deepening, using factor shares of 1/3 and 2/3. It attributes measured growth to inputs versus unexplained technical progress.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -2188,6 +2368,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "OLS",
+    context: "The basic model relating outcome y to a single regressor x plus a random error. It is the foundation of regression: β1 is the slope effect and u captures everything else affecting y.",
     hints: [],
   },
   {
@@ -2197,6 +2378,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "OLS",
+    context: "The OLS formula for the slope in simple regression, written using the deviation of x from its mean times y. It measures how much y changes on average per unit increase in x.",
     hints: [
       { command: String.raw`\widehat{ }`, name: "wide hat", example: String.raw`\widehat{xy}` },
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
@@ -2211,6 +2393,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "OLS",
+    context: "Shows the estimated slope equals the true slope plus an error term driven by the covariance between x and the disturbances. It reveals why OLS is unbiased only when regressors are uncorrelated with the errors.",
     hints: [
       { command: String.raw`\widehat{ }`, name: "wide hat", example: String.raw`\widehat{xy}` },
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
@@ -2225,6 +2408,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Econometrics",
+    context: "The classical assumption that regression errors are independent, identically distributed draws with zero mean and constant variance. This underpins the standard properties and inference of OLS estimators.",
     hints: [
       { command: String.raw`\sim`, name: "similar / distributed as", example: String.raw`\sim` },
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
@@ -2237,6 +2421,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Estimation",
+    context: "An alternative slope estimator built from just three data points arranged symmetrically. It illustrates that many linear estimators exist, though OLS is typically the efficient choice.",
     hints: [
       { command: String.raw`\widetilde{ }`, name: "wide tilde", example: String.raw`\widetilde{xy}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -2249,6 +2434,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Estimation",
+    context: "A generic class of estimators forming a weighted combination of the outcomes, with arbitrary weights. OLS is the special case whose weights minimise variance among unbiased linear estimators.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
     ],
@@ -2260,6 +2446,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Inference",
+    context: "Estimates the slope by averaging slopes computed from disjoint pairs of observations. A simple, intuitive alternative to OLS that trades efficiency for transparency.",
     hints: [
       { command: String.raw`\widetilde{ }`, name: "wide tilde", example: String.raw`\widetilde{xy}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -2272,6 +2459,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Inference",
+    context: "Estimates the slope by splitting data into high-x and low-x groups and comparing their average outcomes. A crude but consistent way to gauge the relationship between x and y.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -2284,6 +2472,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Inference",
+    context: "Defines the average x and y within the lower half of the sample, used in the split-sample estimator. These group means anchor the comparison between low- and high-x observations.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
@@ -2297,6 +2486,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Inference",
+    context: "The most basic slope estimate: the change in y divided by the change in x between two points. It captures the geometric idea of slope but is highly sensitive to noise.",
     hints: [
       { command: String.raw`\widetilde{ }`, name: "wide tilde", example: String.raw`\widetilde{xy}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -2309,6 +2499,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 9,
     topic: "Heteroskedasticity",
+    context: "An estimated log-wage equation (with standard errors) showing returns to being male, education, and experience, plus a diminishing experience effect. Coefficients approximate percentage effects on wages.",
     hints: [
       { command: String.raw`\widehat{ }`, name: "wide hat", example: String.raw`\widehat{xy}` },
       { command: String.raw`\underset{ }{ }`, name: "under-set (e.g. std. errors)", example: String.raw`\underset{(0.1)}{\beta}` },
@@ -2323,6 +2514,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Inference",
+    context: "A log-log demand estimate where coefficients are elasticities: food spending rises about 0.35% per 1% income increase and falls with its own price. Illustrates income and price responsiveness.",
     hints: [
       { command: String.raw`\widehat{ }`, name: "wide hat", example: String.raw`\widehat{xy}` },
       { command: String.raw`\underset{ }{ }`, name: "under-set (e.g. std. errors)", example: String.raw`\underset{(0.1)}{\beta}` },
@@ -2336,6 +2528,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Inference",
+    context: "A fitted regression of TV-watching on body mass, age, and sex, with standard errors reported. Demonstrates interpreting multiple regressors and a quadratic age effect simultaneously.",
     hints: [
       { command: String.raw`\underset{ }{ }`, name: "under-set (e.g. std. errors)", example: String.raw`\underset{(0.1)}{\beta}` },
     ],
@@ -2347,6 +2540,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Inference",
+    context: "SST measures total variation in y around its mean; SSR measures variation left unexplained by the model. Their ratio underlies goodness-of-fit measures like R-squared.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
@@ -2360,6 +2554,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Inference",
+    context: "The key exogeneity assumption that, given the regressors, the error has zero expected value. It is what allows OLS to recover unbiased causal or predictive effects.",
     hints: [
       { command: String.raw`\mid`, name: "vertical bar (given / such that)", example: String.raw`a \mid b` },
       { command: String.raw`\mathbb{ }`, name: "blackboard bold (e.g. E, R)", example: String.raw`\mathbb{E}` },
@@ -2373,6 +2568,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Instrumental Variables",
+    context: "Estimates a causal effect by dividing the difference in outcomes by the difference in treatment rates across instrument groups, as in the Vietnam draft-lottery study. It isolates variation driven purely by the instrument.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\widehat{ }`, name: "wide hat", example: String.raw`\widehat{xy}` },
@@ -2387,6 +2583,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Instrumental Variables",
+    context: "Expresses the instrumental-variables slope as the covariance of instrument with outcome divided by covariance of instrument with the regressor. It shows IV extracts only the instrument-driven part of x.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\mathrm{ }`, name: "upright roman", example: String.raw`\mathrm{d}` },
@@ -2399,6 +2596,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Instrumental Variables",
+    context: "For a binary instrument, its covariance with a variable reduces to the group probability spread times the difference in means across instrument values. A convenient building block for IV calculations.",
     hints: [
       { command: String.raw`\mid`, name: "vertical bar (given / such that)", example: String.raw`a \mid b` },
       { command: String.raw`\mathrm{ }`, name: "upright roman", example: String.raw`\mathrm{d}` },
@@ -2411,6 +2609,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Instrumental Variables",
+    context: "With a 0/1 instrument, the IV estimate equals the outcome difference divided by the treatment difference between the two instrument groups. This is the classic Wald ratio for causal identification.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\mid`, name: "vertical bar (given / such that)", example: String.raw`a \mid b` },
@@ -2423,6 +2622,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Instrumental Variables",
+    context: "Computes the IV slope from average outcomes and average regressor values in two instrument-defined subsamples. A practical version of the Wald estimator using group means.",
     hints: [
       { command: String.raw`\widehat{ }`, name: "wide hat", example: String.raw`\widehat{xy}` },
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
@@ -2436,6 +2636,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Measurement Error",
+    context: "Models a mismeasured regressor as the true value plus random noise. This error biases OLS toward zero (attenuation), motivating instrumental-variable corrections.",
     hints: [],
   },
   {
@@ -2445,6 +2646,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Measurement Error",
+    context: "A second noisy measurement of the true variable can serve as an instrument, since it correlates with the truth but has independent measurement error. This helps overcome attenuation bias.",
     hints: [
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
     ],
@@ -2456,6 +2658,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Instrumental Variables",
+    context: "A regression estimating a treatment effect (gamma) while adjusting for other covariates. Controls help isolate the treatment's effect from confounding characteristics.",
     hints: [
       { command: String.raw`\boldsymbol{ }`, name: "bold symbol", example: String.raw`\boldsymbol{\beta}` },
       { command: String.raw`\mathbf{ }`, name: "bold", example: String.raw`\mathbf{x}` },
@@ -2468,6 +2671,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Proxy Variables",
+    context: "A wage model including unobserved ability alongside education. Because ability is usually unmeasured, omitting it biases the estimated return to schooling.",
     hints: [],
   },
   {
@@ -2477,6 +2681,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Instrumental Variables",
+    context: "A detailed log-wage model with schooling, experience, and demographic controls. Schooling is suspected endogenous, motivating instrumental-variable estimation of its return.",
     hints: [
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
     ],
@@ -2488,6 +2693,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Instrumental Variables",
+    context: "The first-stage regression predicting schooling from proximity to college (the instrument) and controls. A strong nearcol effect validates college distance as an instrument for education.",
     hints: [],
   },
   {
@@ -2497,6 +2703,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Simultaneous Equations",
+    context: "A simultaneous system where each spouse's work hours depend on the other's, creating feedback. Because both are jointly determined, single-equation OLS is biased.",
     hints: [
       { command: String.raw`\begin{aligned}`, name: "aligned equations", example: String.raw`\begin{aligned} x &= a \\ y &= b \end{aligned}` },
     ],
@@ -2508,6 +2715,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Simultaneous Equations",
+    context: "A generic simultaneous-equations model where two outcomes each enter the other's equation. Simultaneity requires system methods rather than plain OLS for consistent estimates.",
     hints: [
       { command: String.raw`\begin{aligned}`, name: "aligned equations", example: String.raw`\begin{aligned} x &= a \\ y &= b \end{aligned}` },
     ],
@@ -2519,6 +2727,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Simultaneous Equations",
+    context: "Demand and supply equations where price and quantity are jointly determined. This classic identification problem shows why exogenous shifters are needed to separate the two curves.",
     hints: [
       { command: String.raw`\begin{aligned}`, name: "aligned equations", example: String.raw`\begin{aligned} x &= a \\ y &= b \end{aligned}` },
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
@@ -2531,6 +2740,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Simultaneous Equations",
+    context: "A simultaneous system of two siblings' study hours, each influencing the other, with individual controls. Illustrates peer/interaction effects requiring simultaneous-equation techniques.",
     hints: [
       { command: String.raw`\begin{aligned}`, name: "aligned equations", example: String.raw`\begin{aligned} x &= a \\ y &= b \end{aligned}` },
     ],
@@ -2542,6 +2752,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Simultaneous Equations",
+    context: "A wage-hours system where wages and hours worked are mutually determined by demand and supply. Jointly determined outcomes make each equation's OLS estimate biased without instruments.",
     hints: [
       { command: String.raw`\begin{aligned}`, name: "aligned equations", example: String.raw`\begin{aligned} x &= a \\ y &= b \end{aligned}` },
     ],
@@ -2553,6 +2764,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Simultaneous Equations",
+    context: "A two-equation macro system where unemployment and inflation each depend on the other and on past values. It models the joint dynamics of the Phillips-curve trade-off, requiring simultaneous-equations methods since both variables are endogenous.",
     hints: [
       { command: String.raw`\begin{aligned}`, name: "aligned equations", example: String.raw`\begin{aligned} x &= a \\ y &= b \end{aligned}` },
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
@@ -2565,6 +2777,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Simultaneous Equations",
+    context: "Exam scores and class size determine each other simultaneously: bigger classes may lower scores, but schools may also assign more staff to weaker cohorts. This reverse causality means simple OLS is biased, motivating instrumental-variable estimation.",
     hints: [
       { command: String.raw`\begin{aligned}`, name: "aligned equations", example: String.raw`\begin{aligned} x &= a \\ y &= b \end{aligned}` },
     ],
@@ -2576,6 +2789,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Simultaneous Equations",
+    context: "Hours worked and the wage rate feed back on each other: higher wages induce more work, and more experience raises wages. The simultaneity illustrates why labour-supply estimates need methods that handle mutual causation.",
     hints: [
       { command: String.raw`\begin{aligned}`, name: "aligned equations", example: String.raw`\begin{aligned} x &= a \\ y &= b \end{aligned}` },
     ],
@@ -2587,6 +2801,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Panel Data",
+    context: "Total variation in panel data splits into 'within' variation (how each unit changes over time) plus 'between' variation (how units differ on average). This decomposition underlies the choice between fixed- and random-effects estimators.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
@@ -2599,6 +2814,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Panel Data",
+    context: "A panel regression where each unit has its own intercept (alpha_i) absorbing all time-invariant traits. This controls for unobserved, unchanging characteristics, so the slope is identified purely from within-unit variation over time.",
     hints: [
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
     ],
@@ -2610,6 +2826,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Panel Data",
+    context: "A fixed-effects model explaining city crime rates from policing and poverty while a unit-specific term absorbs fixed local features. It isolates how changes in policing relate to crime, netting out permanent differences between cities.",
     hints: [
       { command: String.raw`\mathbf{ }`, name: "bold", example: String.raw`\mathbf{x}` },
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
@@ -2622,6 +2839,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Treatment Effects",
+    context: "Estimates a policy effect by comparing the before-after change for a treated group (women) against an untreated group. The interaction coefficient beta_3 is the causal effect, differencing out common trends and fixed group gaps.",
     hints: [
       { command: String.raw`\times`, name: "times", example: String.raw`\times` },
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
@@ -2634,6 +2852,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Treatment Effects",
+    context: "Extends difference-in-differences with a third dimension (F), comparing the treatment effect across an extra subgroup. The triple-interaction coefficient nets out confounding trends that a simple DiD might wrongly attribute to the policy.",
     hints: [
       { command: String.raw`\times`, name: "times", example: String.raw`\times` },
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
@@ -2646,6 +2865,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Panel Data",
+    context: "A fixed-effects panel linking local bicycle thefts to unemployment and youth share, with alpha_i absorbing permanent area differences. It shows whether within-area economic changes drive crime, not just cross-area comparisons.",
     hints: [
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
     ],
@@ -2657,6 +2877,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Treatment Effects",
+    context: "A difference-in-differences design evaluating how a student-aid program affected schooling of children with deceased fathers. The interaction coefficient beta captures the policy's causal effect on educational attainment.",
     hints: [
       { command: String.raw`\times`, name: "times", example: String.raw`\times` },
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
@@ -2669,6 +2890,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Panel Data",
+    context: "A panel model estimated in first differences to eliminate the fixed effect a_i, with a time dummy capturing aggregate shifts. Differencing removes unobserved individual heterogeneity so the slope reflects genuine within-unit change.",
     hints: [
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
     ],
@@ -2680,6 +2902,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Panel Data",
+    context: "A log-linear production function estimated across firms and time, giving output elasticities directly as coefficients. Panel structure lets unobserved firm heterogeneity be controlled while estimating returns to inputs.",
     hints: [],
   },
   {
@@ -2689,6 +2912,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Panel Data",
+    context: "Differencing a variable twice measures the change in its change, i.e. acceleration. In panel and time-series work it removes both fixed levels and linear trends, isolating turning points in the series.",
     hints: [],
   },
   {
@@ -2698,6 +2922,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Discrete Choice",
+    context: "A binary outcome is driven by an unobserved continuous 'index' crossing zero. This latent-variable framing gives probit and logit their structure: we see only the 0/1 choice, but model the underlying propensity.",
     hints: [
       { command: String.raw`\begin{cases}`, name: "cases (piecewise)", example: String.raw`\begin{cases} a & x>0 \\ b & x\le 0 \end{cases}` },
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
@@ -2710,6 +2935,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Discrete Choice",
+    context: "Models the probability of a yes/no outcome as the normal CDF of a linear index. It keeps predicted probabilities between 0 and 1, unlike a linear probability model, and is estimated by maximum likelihood.",
     hints: [
       { command: String.raw`\Phi`, name: "capital phi", example: String.raw`\Phi` },
       { command: String.raw`\mid`, name: "vertical bar (given / such that)", example: String.raw`a \mid b` },
@@ -2722,6 +2948,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Discrete Choice",
+    context: "A probit where the effect of one regressor depends on another via their product term. It captures how, for example, insurance status and price jointly shape a choice, though marginal effects need careful interpretation.",
     hints: [
       { command: String.raw`\Phi`, name: "capital phi", example: String.raw`\Phi` },
       { command: String.raw`\mid`, name: "vertical bar (given / such that)", example: String.raw`a \mid b` },
@@ -2735,6 +2962,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Time Series",
+    context: "A first-order autoregression: today's value is a fraction rho of yesterday's plus a fresh normal shock. It is the workhorse model of persistence, stationary when |rho|<1, capturing how disturbances fade gradually.",
     hints: [
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
       { command: String.raw`\sim`, name: "similar / distributed as", example: String.raw`\sim` },
@@ -2747,6 +2975,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Time Series",
+    context: "Firms face costs both for deviating from their target price change and from last period's price change. Balancing these costs generates sluggish, smoothed price adjustment, a microfoundation for inflation inertia.",
     hints: [
       { command: String.raw`\Delta`, name: "capital delta", example: String.raw`\Delta` },
     ],
@@ -2758,6 +2987,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Time Series",
+    context: "An autoregressive distributed-lag model: inflation depends on current and lagged money growth plus its own lag. It flexibly captures short-run dynamics and, in the long run, embeds a steady-state relationship.",
     hints: [
       { command: String.raw`\Delta`, name: "capital delta", example: String.raw`\Delta` },
     ],
@@ -2769,6 +2999,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Time Series",
+    context: "A two-variable vector autoregression where inflation and money growth each depend on current and lagged values of both. VARs let data determine the dynamic interrelationships without imposing which variable is exogenous.",
     hints: [
       { command: String.raw`\begin{aligned}`, name: "aligned equations", example: String.raw`\begin{aligned} x &= a \\ y &= b \end{aligned}` },
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
@@ -2782,6 +3013,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Time Series",
+    context: "Inflation surprises (actual minus expected) relate to the unemployment gap from its natural rate mu. It embeds the natural-rate hypothesis: there is no permanent inflation-unemployment trade-off once expectations adjust.",
     hints: [],
   },
   {
@@ -2791,6 +3023,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Time Series",
+    context: "A second-order autoregression where today's value depends on the two previous periods. The extra lag lets the series display richer dynamics such as cycles or oscillations, unlike a plain AR(1).",
     hints: [
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
     ],
@@ -2802,6 +3035,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Time Series",
+    context: "The second difference equals the change in the change, expanding to a weighted combination of three consecutive values. Applied twice, differencing removes quadratic trends and helps render a series stationary.",
     hints: [
       { command: String.raw`\Delta`, name: "capital delta", example: String.raw`\Delta` },
     ],
@@ -2813,6 +3047,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Time Series",
+    context: "An autoregressive model whose error term is itself autocorrelated. This serial correlation in residuals biases inference if ignored, and signals the dynamic specification may be incomplete.",
     hints: [
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
     ],
@@ -2824,6 +3059,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Time Series",
+    context: "For a stationary AR(1), the correlation between observations h periods apart is beta_1 raised to the power h. It decays geometrically, showing how persistence fades smoothly as the time gap widens.",
     hints: [
       { command: String.raw`\mathrm{ }`, name: "upright roman", example: String.raw`\mathrm{d}` },
     ],
@@ -2835,6 +3071,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Time Series",
+    context: "An autoregressive model augmented with an external explanatory variable X. It combines a variable's own momentum with the influence of outside drivers, blending persistence and structural effects.",
     hints: [],
   },
   {
@@ -2844,6 +3081,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Time Series",
+    context: "An autoregressive distributed-lag consumption function: spending depends on current and past income and on its own lag. It captures habit-like smoothing and yields a long-run marginal propensity to consume.",
     hints: [
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
     ],
@@ -2855,6 +3093,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Time Series",
+    context: "Log CO2 modelled with a deterministic time trend plus an autoregressive term. If the series fluctuates around a trend rather than wandering, it is trend-stationary, meaning shocks are temporary around a predictable path.",
     hints: [],
   },
   {
@@ -2864,6 +3103,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Unit Roots",
+    context: "An estimated ADF test regression (with standard errors) for a unit root in an exchange rate. A significantly negative coefficient on the lagged level rejects a random walk, implying the series is stationary.",
     hints: [
       { command: String.raw`\widehat{ }`, name: "wide hat", example: String.raw`\widehat{xy}` },
       { command: String.raw`\underset{ }{ }`, name: "under-set (e.g. std. errors)", example: String.raw`\underset{(0.1)}{\beta}` },
@@ -2877,6 +3117,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Time Series",
+    context: "A time-series regression combining a deterministic trend with a lagged dependent variable. It distinguishes trend-stationary behaviour from a unit root, a key step in diagnosing whether shocks are permanent.",
     hints: [
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
     ],
@@ -2888,6 +3129,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Time Series",
+    context: "A concrete ARMA(1,1) time-series model combining an autoregressive term (this period depends on last period) with a moving-average term (this period depends on last period's random shock), capturing both persistence and short-lived noise.",
     hints: [
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
     ],
@@ -2899,6 +3141,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Cointegration",
+    context: "An estimated long-run relationship linking a nominal exchange rate to relative prices, testing purchasing power parity: the near-unit slope suggests prices and the exchange rate move together over time, i.e. they are cointegrated.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
     ],
@@ -2910,6 +3153,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 9,
     topic: "Cointegration",
+    context: "An estimated model where the exchange rate's short-run changes respond to price changes plus a correction term that pulls it back toward its long-run equilibrium; the negative coefficient measures how fast deviations are undone.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\underset{ }{ }`, name: "under-set (e.g. std. errors)", example: String.raw`\underset{(0.1)}{\beta}` },
@@ -2924,6 +3168,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Cointegration",
+    context: "An example of a spurious regression: two trending (non-stationary) series appear strongly related, but the tight fit is an artifact of shared trends, not a genuine economic link — a classic time-series pitfall.",
     hints: [
       { command: String.raw`\widehat{ }`, name: "wide hat", example: String.raw`\widehat{xy}` },
       { command: String.raw`\underset{ }{ }`, name: "under-set (e.g. std. errors)", example: String.raw`\underset{(0.1)}{\beta}` },
@@ -2936,6 +3181,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Cointegration",
+    context: "A Dickey-Fuller test applied to regression residuals to check for cointegration: a coefficient near zero on the lagged residual signals a unit root, meaning the residuals don't revert and the relationship is spurious.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\widehat{ }`, name: "wide hat", example: String.raw`\widehat{xy}` },
@@ -2950,6 +3196,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 9,
     topic: "Unit Roots",
+    context: "An Augmented Dickey-Fuller regression testing whether a price series has a unit root (is non-stationary), including a trend and lagged differences to soak up serial correlation so the test is valid.",
     hints: [
       { command: String.raw`\widehat{ }`, name: "wide hat", example: String.raw`\widehat{xy}` },
       { command: String.raw`\underset{ }{ }`, name: "under-set (e.g. std. errors)", example: String.raw`\underset{(0.1)}{\beta}` },
@@ -2965,6 +3212,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Unit Roots",
+    context: "A Dickey-Fuller unit-root test written in error-correction form: regressing the change in a series on its lagged level and a trend to test whether the series is stationary or has a stochastic trend.",
     hints: [
       { command: String.raw`\underset{ }{ }`, name: "under-set (e.g. std. errors)", example: String.raw`\underset{(0.1)}{\beta}` },
       { command: String.raw`\times`, name: "times", example: String.raw`\times` },
@@ -2977,6 +3225,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Game Theory",
+    context: "A player's utility from a private good X and a shared public good T (e.g. trees), with log form giving diminishing returns; used in game-theory models of voluntary contribution to public goods.",
     hints: [],
   },
   {
@@ -2986,6 +3235,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Game Theory",
+    context: "A player's payoff in a climate game: the private benefit of polluting minus the expected cost of crossing a catastrophic threshold, weighted by how likely aggregate emissions exceed the tipping point.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
       { command: String.raw`\mathrm{ }`, name: "upright roman", example: String.raw`\mathrm{d}` },
@@ -2998,6 +3248,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Game Theory",
+    context: "A ranking of players by their cost sensitivity parameters, all exceeding one; ordering the types this way structures the analysis of who acts first or contributes most in a game.",
     hints: [],
   },
   {
@@ -3007,6 +3258,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Game Theory",
+    context: "The total pollution (or output) produced by everyone except player i — the strategic externality each player reacts to when choosing their own emissions in a game.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\neq`, name: "not equal", example: String.raw`\neq` },
@@ -3019,6 +3271,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Game Theory",
+    context: "A team member's payoff: a share of the log of total output minus their private effort cost, capturing the free-rider tension since each shares the fruits but bears their own effort.",
     hints: [],
   },
   {
@@ -3028,6 +3281,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Game Theory",
+    context: "Total team output is simply the sum of individual efforts, so each member's contribution adds directly but is enjoyed by all — the setup that generates free-riding in team production.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
     ],
@@ -3039,6 +3293,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Game Theory",
+    context: "Utility depending not just on own consumption but on it relative to a rival's, minus a cost — modeling envy or status concerns where others' consumption erodes your satisfaction.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -3050,6 +3305,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Game Theory",
+    context: "A payoff for status-seeking: ordinary utility from consumption plus a bonus from visible spending, with an extra penalty when you visibly consume less than a rival — capturing keeping-up-with-the-Joneses.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\mathbf{ }`, name: "bold", example: String.raw`\mathbf{x}` },
@@ -3062,6 +3318,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Oligopoly",
+    context: "A linear demand curve where price falls as quantity rises but cannot go negative — it hits zero once the market is saturated. A standard building block for oligopoly models.",
     hints: [
       { command: String.raw`\begin{cases}`, name: "cases (piecewise)", example: String.raw`\begin{cases} a & x>0 \\ b & x\le 0 \end{cases}` },
       { command: String.raw`\leq`, name: "less-or-equal", example: String.raw`\leq` },
@@ -3074,6 +3331,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Oligopoly",
+    context: "Market price in a two-firm Cournot model, set by combined output and floored at zero: the more both firms produce, the lower the price they jointly face.",
     hints: [
       { command: String.raw`\max`, name: "maximum", example: String.raw`\max` },
     ],
@@ -3085,6 +3343,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Oligopoly",
+    context: "A consumer's payoff in Hotelling spatial competition: gross value minus a quadratic 'travel' cost of distance from the firm's location and minus its price — capturing preference for nearby or better-matched products.",
     hints: [],
   },
   {
@@ -3094,6 +3353,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Game Theory",
+    context: "An expected value combining probabilities of different states with squared payoff terms, used in a game-theory model to compute the likelihood of an outcome like capture or success across scenarios.",
     hints: [],
   },
   {
@@ -3103,6 +3363,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Game Theory",
+    context: "The indifference conditions pinning down a mixed-strategy equilibrium in a contest: each player randomizes so that rivals are indifferent across efforts, equating expected marginal gains via the rivals' effort distributions.",
     hints: [
       { command: String.raw`\begin{aligned}`, name: "aligned equations", example: String.raw`\begin{aligned} x &= a \\ y &= b \end{aligned}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -3115,6 +3376,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Game Theory",
+    context: "A parameter measuring the net asymmetry between two contestants — the difference in their abilities adjusted by a handicap — that shifts each player's effective advantage in a contest game.",
     hints: [
       { command: String.raw`\equiv`, name: "equivalent / identical", example: String.raw`\equiv` },
     ],
@@ -3126,6 +3388,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Game Theory",
+    context: "A payoff rule for a strategic number-guessing game with quirky tie-breaking around the number 10, designed to illustrate how best responses and equilibria depend on discontinuous, rule-based payoffs.",
     hints: [
       { command: String.raw`\begin{cases}`, name: "cases (piecewise)", example: String.raw`\begin{cases} a & x>0 \\ b & x\le 0 \end{cases}` },
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
@@ -3138,6 +3401,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Game Theory",
+    context: "A coordination payoff: player 2 wins only by exactly matching player 1's choice, otherwise gets nothing — a matching game where the incentive is to anticipate and align with the other.",
     hints: [
       { command: String.raw`\begin{cases}`, name: "cases (piecewise)", example: String.raw`\begin{cases} a & x>0 \\ b & x\le 0 \end{cases}` },
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
@@ -3150,6 +3414,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Repeated Games",
+    context: "The geometric series formula giving the present value of a constant payoff received every period forever; foundational for discounting future payoffs in repeated games and asset pricing.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -3163,6 +3428,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Repeated Games",
+    context: "The discounted sum of payoffs received only in even periods, a geometric series in the squared discount factor — used when a strategy delivers rewards on alternating rounds of a repeated game.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -3176,6 +3442,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Repeated Games",
+    context: "The normalized average payoff in a repeated game: the (1-δ) factor rescales the discounted sum so it's comparable to a single-period payoff, making patience effects easier to interpret.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\infty`, name: "infinity", example: String.raw`\infty` },
@@ -3188,6 +3455,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Bertrand Competition",
+    context: "Profit for the cheaper firm in Bertrand price competition: it captures the whole market by undercutting, earning margin times demand only when it strictly sets the lower price.",
     hints: [
       { command: String.raw`\begin{cases}`, name: "cases (piecewise)", example: String.raw`\begin{cases} a & x>0 \\ b & x\le 0 \end{cases}` },
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
@@ -3200,6 +3468,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Bertrand Competition",
+    context: "The rival firm's profit in Bertrand competition, winning all demand when its price weakly undercuts; the tie-breaking asymmetry with the low-cost firm shapes the equilibrium where price is driven to cost.",
     hints: [
       { command: String.raw`\begin{cases}`, name: "cases (piecewise)", example: String.raw`\begin{cases} a & x>0 \\ b & x\le 0 \end{cases}` },
       { command: String.raw`\leq`, name: "less-or-equal", example: String.raw`\leq` },
@@ -3213,6 +3482,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Bertrand Competition",
+    context: "The profit-maximizing monopoly price, chosen to maximize margin times quantity demanded; it serves as the benchmark upper bound firms would charge absent competitive pressure.",
     hints: [
       { command: String.raw`\geq`, name: "greater-or-equal", example: String.raw`\geq` },
       { command: String.raw`\operatorname{ }`, name: "named operator", example: String.raw`\operatorname{Var}` },
@@ -3225,6 +3495,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Cournot Competition",
+    context: "Market price in Cournot competition as a function of total quantity produced by both firms, floored at zero — the demand side that firms internalize when choosing outputs strategically.",
     hints: [
       { command: String.raw`\max`, name: "maximum", example: String.raw`\max` },
     ],
@@ -3236,6 +3507,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Repeated Games",
+    context: "Market price falls one-for-one as total output Q rises, but a random demand shock α_t shifts the whole curve each period; price never goes below zero. Captures uncertain demand in repeated oligopoly games.",
     hints: [
       { command: String.raw`\max`, name: "maximum", example: String.raw`\max` },
     ],
@@ -3247,6 +3519,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Voting",
+    context: "A voter's satisfaction with candidate j falls with the squared distance between the voter's ideal point l_i and the candidate's position l_j, so voters prefer candidates closest to their views.",
     hints: [],
   },
   {
@@ -3256,6 +3529,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Voting",
+    context: "A voter earns a baseline of 1 minus the squared gap between their ideal point and the chosen policy, so payoff is highest when the policy exactly matches their preference and declines sharply as it diverges.",
     hints: [],
   },
   {
@@ -3265,6 +3539,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Voting",
+    context: "Payoff from a policy outcome minus the squared distance from the voter's ideal, less a fixed cost c of actually voting. Explains why some rational citizens abstain when voting is costly.",
     hints: [],
   },
   {
@@ -3274,6 +3549,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Social Choice",
+    context: "Formalizes a single citizen's choice as three options: vote for the policy (+1), for the status quo (−1), or abstain (0). Basis for aggregating individual votes into a collective decision.",
     hints: [
       { command: String.raw`\begin{cases}`, name: "cases (piecewise)", example: String.raw`\begin{cases} a & x>0 \\ b & x\le 0 \end{cases}` },
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
@@ -3286,6 +3562,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Social Choice",
+    context: "A voting rule is a function taking every citizen's ballot (yes/abstain/no) and returning one collective decision. This abstraction lets social choice theory study which rules are fair or consistent.",
     hints: [
       { command: String.raw`\to`, name: "arrow (to)", example: String.raw`\to` },
     ],
@@ -3297,6 +3574,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Social Choice",
+    context: "A voting rule treats both alternatives symmetrically: flipping everyone's vote flips the outcome. No option gets a built-in advantage, ruling out bias toward the status quo.",
     hints: [],
   },
   {
@@ -3306,6 +3584,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Social Choice",
+    context: "A voting rule depends only on the votes cast, not on who casts them, so relabeling voters leaves the outcome unchanged. Every voter counts equally.",
     hints: [],
   },
   {
@@ -3315,6 +3594,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Social Choice",
+    context: "Two vote profiles with the same number of supporters are treated identically, reflecting that under anonymous rules only vote tallies matter, not individual identities.",
     hints: [],
   },
   {
@@ -3324,6 +3604,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Social Choice",
+    context: "If votes for and against exactly cancel out, a neutral and anonymous rule must return no decision (abstention). Ties produce deadlock rather than an arbitrary winner.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\implies`, name: "implies", example: String.raw`\implies` },
@@ -3336,6 +3617,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Social Choice",
+    context: "Adding one extra net vote in favour breaks a tie and forces the collective decision to 'adopt.' Shows how majority rule responds to the marginal decisive voter.",
     hints: [
       { command: String.raw`\tilde{ }`, name: "tilde accent", example: String.raw`\tilde{x}` },
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
@@ -3349,6 +3631,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Voting",
+    context: "A voter supports candidate K over R when K's platform is closer to the voter's ideal point y_j. Justifies honest voting: back whichever option minimizes squared distance.",
     hints: [],
   },
   {
@@ -3358,6 +3641,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Social Choice",
+    context: "Alternative x is a strict social winner when it is ranked above every other option y. Describes when collective preferences pick a clear best choice from individual rankings.",
     hints: [
       { command: String.raw`\succ`, name: "succeeds", example: String.raw`\succ` },
       { command: String.raw`\neq`, name: "not equal", example: String.raw`\neq` },
@@ -3371,6 +3655,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Risk Aversion",
+    context: "Standard utility with constant relative risk aversion ρ: how a person values wealth curves so that risk attitude stays proportionally the same at every wealth level. Widely used in finance and macro.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -3382,6 +3667,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Risk Aversion",
+    context: "Exponential utility whose absolute risk aversion α is constant regardless of wealth, so the dollar amount a person will risk doesn't change as they get richer. Convenient for tractable models.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -3393,6 +3679,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Risk Aversion",
+    context: "The simplest constant-absolute-risk-aversion utility over wealth w; more concave for larger α, meaning greater risk aversion. Often paired with normal returns for closed-form portfolio results.",
     hints: [],
   },
   {
@@ -3402,6 +3689,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Risk Aversion",
+    context: "Power (isoelastic) utility with constant relative risk aversion β. The curvature parameter governs both willingness to bear risk and, in dynamic models, the desire to smooth consumption over time.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -3413,6 +3701,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Risk Aversion",
+    context: "Measures aversion to gambles proportional to wealth, scaling the Arrow-Pratt absolute measure by wealth x. Higher values mean a person more strongly avoids percentage risks to their fortune.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -3424,6 +3713,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Risk Aversion",
+    context: "A flexible class where absolute risk aversion declines with wealth as a power function, nesting CARA (β=0) and letting richer agents take larger absolute risks. Generalizes standard utility forms.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -3435,6 +3725,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Expected Utility",
+    context: "The infinite sum of success-failure probabilities collapses to 1/p, the expected number of trials until a first success. Underlies expected-utility and repeated-game calculations with geometric timing.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -3448,6 +3739,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Bayesian Games",
+    context: "A solution of a Bayesian game specifying randomization probabilities for each player type; here player 1 mixes with probability 1/4 while player 2 plays purely by type. Each strategy is a best response given beliefs.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\mathcal{ }`, name: "calligraphic", example: String.raw`\mathcal{L}` },
@@ -3460,6 +3752,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Bayesian Games",
+    context: "Players' payoffs depend on firm F's privately known type t_F, so the same actions yield different rewards under different types. Captures how private information shapes outcomes in Bayesian games.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\in`, name: "element of", example: String.raw`\in` },
@@ -3472,6 +3765,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Bayesian Games",
+    context: "Player 1 assigns equal probability 1/2 to each possible version of the game (opponent type). These beliefs drive expected-payoff calculations when the true situation is uncertain.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -3483,6 +3777,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Bayesian Games",
+    context: "Lists the possible private information each player can have: player 1 is type a or b, player 2 type A or B. The type spaces define all information scenarios in the Bayesian game.",
     hints: [],
   },
   {
@@ -3492,6 +3787,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Bayesian Games",
+    context: "The shared probability that player 1 is type a and player 2 type A is 1/6. A common prior lets both players form consistent beliefs about each other's hidden types.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -3503,6 +3799,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Bayesian Games",
+    context: "Market price falls with combined output of two firms until demand is exhausted at Q=4, after which price is zero. The demand side of a Cournot quantity-competition game.",
     hints: [
       { command: String.raw`\begin{cases}`, name: "cases (piecewise)", example: String.raw`\begin{cases} a & x>0 \\ b & x\le 0 \end{cases}` },
       { command: String.raw`\le`, name: "less-or-equal", example: String.raw`\le` },
@@ -3515,6 +3812,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Bayesian Games",
+    context: "Price equals 2 minus total quantity supplied by the two firms, floored at zero. Sets how aggregate output depresses price in a duopoly model.",
     hints: [
       { command: String.raw`\max`, name: "maximum", example: String.raw`\max` },
     ],
@@ -3526,6 +3824,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Bayesian Games",
+    context: "Firm 1's total cost rises more than proportionally with output due to the squared term, reflecting increasing marginal cost. Convex costs make firms reluctant to expand production without limit.",
     hints: [],
   },
   {
@@ -3535,6 +3834,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Bayesian Games",
+    context: "Firm 2 privately has either low (marginal cost 2) or high (marginal cost 6) technology. This cost uncertainty is the private information driving a Bayesian Cournot game.",
     hints: [],
   },
   {
@@ -3544,6 +3844,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Bayesian Games",
+    context: "The monopolist's marginal cost is a known base k plus a random shock ε, so cost is uncertain when decisions are made. Models production under stochastic cost conditions.",
     hints: [
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
     ],
@@ -3555,6 +3856,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Bayesian Games",
+    context: "A monopolist's profit under a two-part tariff combines the fixed access fee T with the per-unit markup (p−c) times quantity q sold. It separates revenue from membership versus usage.",
     hints: [
       { command: String.raw`\Pi`, name: "capital pi", example: String.raw`\Pi` },
     ],
@@ -3566,6 +3868,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Bayesian Games",
+    context: "Sets the fixed entry fee equal to the consumer surplus a buyer enjoys at usage price p, the area under the linear demand curve above p. This lets the firm extract that surplus upfront.",
     hints: [
       { command: String.raw`\int_{ }^{ }`, name: "integral", example: String.raw`\int_{a}^{b}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -3578,6 +3881,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Public Goods",
+    context: "The threshold valuation v* at which a person is just willing to fund a public good alone: the probability everyone else values it below v* (raised to n−1) times v* equals the cost. Free-riding raises the threshold.",
     hints: [],
   },
   {
@@ -3587,6 +3891,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Auctions",
+    context: "In a symmetric first-price auction with two bidders and uniform values, the equilibrium strategy is to bid two-thirds of your true valuation. Bidders shade bids below value to keep a positive surplus.",
     hints: [],
   },
   {
@@ -3596,6 +3901,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Adverse Selection",
+    context: "Akerlof's market-for-lemons equilibrium price when quality is unobserved: adverse selection drives price down as buyer skepticism (parameter b) rises, potentially collapsing the market for good-quality goods.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -3607,6 +3913,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Signalling",
+    context: "The employer's payoff in a signalling game peaks when its action t matches the worker's true type r; mismatches in either direction reduce utility. Captures the cost of misjudging worker ability.",
     hints: [
       { command: String.raw`\begin{cases}`, name: "cases (piecewise)", example: String.raw`\begin{cases} a & x>0 \\ b & x\le 0 \end{cases}` },
       { command: String.raw`\geq`, name: "greater-or-equal", example: String.raw`\geq` },
@@ -3620,6 +3927,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Signalling",
+    context: "The student's payoff depends on how close t+4 (their signal-adjusted position) is to their type r, with a built-in offset of 4. Illustrates the private incentives shaping education signals.",
     hints: [
       { command: String.raw`\begin{cases}`, name: "cases (piecewise)", example: String.raw`\begin{cases} a & x>0 \\ b & x\le 0 \end{cases}` },
       { command: String.raw`\geq`, name: "greater-or-equal", example: String.raw`\geq` },
@@ -3633,6 +3941,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Adverse Selection",
+    context: "In a pooling equilibrium the insurer or buyer offers one price equal to the average valuation of high- and low-type agents, since types cannot be distinguished. Both types face the same terms.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -3644,6 +3953,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Contract Theory",
+    context: "A high-demand consumer's net utility under nonlinear pricing: gross benefit 100√q from consuming q minus the total charge P_H(q). The square root captures diminishing marginal benefit.",
     hints: [
       { command: String.raw`\sqrt{ }`, name: "square root", example: String.raw`\sqrt{x}` },
     ],
@@ -3655,6 +3965,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Contract Theory",
+    context: "The monopolist's profit from serving the high type: revenue P_H(q) minus production cost of 5 per unit. Used in screening problems to design menus that maximize extracted surplus.",
     hints: [
       { command: String.raw`\Pi`, name: "capital pi", example: String.raw`\Pi` },
     ],
@@ -3666,6 +3977,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Contract Theory",
+    context: "A screening menu offering each type a distinct package of fixed fee, unit price, and quantity. By self-selecting, consumers reveal their hidden type, letting the seller price-discriminate.",
     hints: [
       { command: String.raw`\mathcal{ }`, name: "calligraphic", example: String.raw`\mathcal{L}` },
     ],
@@ -3677,6 +3989,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Contract Theory",
+    context: "Defines the total payment each type makes under a two-part tariff menu: a fixed fee plus a per-unit price times quantity. The screener designs these to induce truthful self-selection.",
     hints: [],
   },
   {
@@ -3686,6 +3999,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Moral Hazard",
+    context: "The principal's expected profit when the agent chooses effort e: the value 9 times the probability of a good outcome, minus the wage w paid. Higher effort raises success odds but may require higher pay.",
     hints: [
       { command: String.raw`\Pi`, name: "capital pi", example: String.raw`\Pi` },
       { command: String.raw`\mid`, name: "vertical bar (given / such that)", example: String.raw`a \mid b` },
@@ -3698,6 +4012,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Moral Hazard",
+    context: "A risk-averse agent values wage w through a concave √w and subtracts the disutility of effort e. Concavity means the agent dislikes income variability, shaping optimal incentive contracts.",
     hints: [
       { command: String.raw`\sqrt{ }`, name: "square root", example: String.raw`\sqrt{x}` },
     ],
@@ -3709,6 +4024,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Moral Hazard",
+    context: "Effort shifts the odds of a high return: working (e=5) yields success probability 3/4 versus 1/2 when shirking. This gap is what incentive pay must exploit to motivate effort.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\mid`, name: "vertical bar (given / such that)", example: String.raw`a \mid b` },
@@ -3721,6 +4037,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Contract Theory",
+    context: "In a team-production partnership, project success probability is the sum of the two partners' efforts. Because each bears full effort cost but shares output, individual free-riding underprovides effort.",
     hints: [],
   },
   {
@@ -3730,6 +4047,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Moral Hazard",
+    context: "The innovator's expected return rises with effort e via 16√e, exhibiting diminishing returns. Balancing this concave payoff against effort cost determines the optimal investment level.",
     hints: [
       { command: String.raw`\Pi`, name: "capital pi", example: String.raw`\Pi` },
       { command: String.raw`\sqrt{ }`, name: "square root", example: String.raw`\sqrt{x}` },
@@ -3742,6 +4060,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Moral Hazard",
+    context: "Effort is costly with quadratic disutility, so marginal cost rises linearly with e; the condition y<λ ensures the cost grows fast enough that an interior optimum exists.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -3753,6 +4072,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Consumer Theory",
+    context: "The consumer's spending on two goods must exhaust income m: price times quantity for each good sums to m. It defines the affordable set the consumer optimizes over.",
     hints: [],
   },
   {
@@ -3762,6 +4082,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Consumer Theory",
+    context: "At the optimal bundle the marginal rate of substitution (ratio of marginal utilities) equals the price ratio. Intuitively, the consumer trades goods at the same rate the market does.",
     hints: [
       { command: String.raw`\partial`, name: "partial derivative", example: String.raw`\partial` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -3774,6 +4095,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Consumer Theory",
+    context: "The Cobb-Douglas utility function, where exponents a and 1−a are the fixed expenditure shares each good commands. It gives smooth, well-behaved indifference curves widely used in demand theory.",
     hints: [],
   },
   {
@@ -3783,6 +4105,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Consumer Theory",
+    context: "With Cobb-Douglas preferences, each good's demand spends a constant share of income on it, independent of the other good's price. Demand equals the budget share divided by the good's price.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -3794,6 +4117,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Consumer Theory",
+    context: "The constant-elasticity-of-substitution utility function nests perfect substitutes, Cobb-Douglas, and perfect complements as the parameter ρ varies. It sets a fixed substitutability between the two goods.",
     hints: [],
   },
   {
@@ -3803,6 +4127,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Consumer Theory",
+    context: "For goods consumed in fixed one-to-one proportions (like left and right shoes), the consumer buys equal amounts, spending income across the combined per-pair price. Demand ignores relative prices.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -3814,6 +4139,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Consumer Theory",
+    context: "With quasilinear utility, the marginal utility of good 1 alone pins down demand at the price ratio, so demand for good 1 is independent of income. Income effects fall entirely on the numeraire good.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -3825,6 +4151,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Duality",
+    context: "The maximum Cobb-Douglas utility achievable given prices and income m, expressed as real income deflated by a price index. It shows welfare falling as either price rises.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -3836,6 +4163,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Duality",
+    context: "The minimum spending needed to reach utility level u at given prices. Dual to utility maximization, it underlies compensated demand and welfare measures like compensating variation.",
     hints: [
       { command: String.raw`\ge`, name: "greater-or-equal", example: String.raw`\ge` },
       { command: String.raw`\cdot`, name: "centred dot", example: String.raw`\cdot` },
@@ -3849,6 +4177,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Duality",
+    context: "Roy's identity recovers Marshallian demand directly from the indirect utility function as the ratio of its price and income derivatives. It links observable demand to the value function without re-solving the optimization.",
     hints: [
       { command: String.raw`\partial`, name: "partial derivative", example: String.raw`\partial` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -3861,6 +4190,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Duality",
+    context: "Shephard's lemma states that differentiating the expenditure function with respect to a good's price yields the Hicksian (compensated) demand for that good. A clean shortcut from cost to demand.",
     hints: [
       { command: String.raw`\partial`, name: "partial derivative", example: String.raw`\partial` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -3873,6 +4203,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Duality",
+    context: "This identity links the two demand concepts: compensated demand at utility u equals ordinary demand evaluated at the income just sufficient to afford u. It grounds the Slutsky decomposition of price effects.",
     hints: [],
   },
   {
@@ -3882,6 +4213,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Comparative Statics",
+    context: "Decomposes how demand for a good responds to a price change into a substitution effect (movement along an indifference curve) and an income effect (the change in purchasing power), central to comparative statics in consumer theory.",
     hints: [
       { command: String.raw`\partial`, name: "partial derivative", example: String.raw`\partial` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -3894,6 +4226,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Comparative Statics",
+    context: "Measures the percentage change in quantity demanded for a one-percent change in the good's own price, capturing how price-sensitive buyers are; values below -1 mean demand is elastic.",
     hints: [
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
       { command: String.raw`\partial`, name: "partial derivative", example: String.raw`\partial` },
@@ -3908,6 +4241,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Comparative Statics",
+    context: "Measures the percentage change in quantity demanded for a one-percent change in income, distinguishing normal goods (positive) from inferior goods (negative) and luxuries (greater than one).",
     hints: [
       { command: String.raw`\partial`, name: "partial derivative", example: String.raw`\partial` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -3921,6 +4255,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Comparative Statics",
+    context: "An adding-up condition stating that the extra spending across all goods from one more unit of income must sum to exactly one dollar, since the whole budget is allocated.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\partial`, name: "partial derivative", example: String.raw`\partial` },
@@ -3934,6 +4269,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Welfare",
+    context: "Measures the welfare gain or loss to consumers from a price change as the area between the old and new prices under the demand curve, a practical dollar valuation of well-being.",
     hints: [
       { command: String.raw`\Delta`, name: "capital delta", example: String.raw`\Delta` },
       { command: String.raw`\int_{ }^{ }`, name: "integral", example: String.raw`\int_{a}^{b}` },
@@ -3946,6 +4282,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Welfare",
+    context: "Two exact money-metric measures of welfare change from a price change: compensating variation uses the original utility level, equivalent variation uses the new one, both based on the expenditure function.",
     hints: [],
   },
   {
@@ -3955,6 +4292,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Consumer Theory",
+    context: "States that the present value of lifetime consumption cannot exceed the present value of lifetime income, letting consumers borrow and save across two periods at interest rate r.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -3966,6 +4304,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Consumer Theory",
+    context: "The optimality condition for saving: at the consumer's best plan, the marginal utility of consuming today equals the interest-adjusted marginal utility of consuming tomorrow, so no reallocation improves welfare.",
     hints: [],
   },
   {
@@ -3975,6 +4314,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Labour Supply",
+    context: "Shows consumption equals wage income from hours worked (total time minus leisure) plus non-labour income, framing the worker's trade-off between earning and enjoying free time.",
     hints: [
       { command: String.raw`\ell`, name: "script l", example: String.raw`\ell` },
     ],
@@ -3986,6 +4326,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Labour Supply",
+    context: "At the optimal labour supply, the worker's marginal rate of substitution between leisure and consumption equals the wage, the market price of an hour of leisure forgone.",
     hints: [
       { command: String.raw`\ell`, name: "script l", example: String.raw`\ell` },
     ],
@@ -3997,6 +4338,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Producer Theory",
+    context: "Describes how output responds when all inputs are scaled by a common factor: k greater than one means increasing returns, k equal to one constant, and k less than one decreasing returns to scale.",
     hints: [],
   },
   {
@@ -4006,6 +4348,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Producer Theory",
+    context: "To produce output at least cost, a firm equates the marginal rate of technical substitution between labour and capital to the ratio of their prices, balancing productivity per dollar across inputs.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -4017,6 +4360,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Producer Theory",
+    context: "States that the derivative of the cost function with respect to an input's price gives the firm's conditional (cost-minimising) demand for that input, a convenient shortcut for recovering factor demands.",
     hints: [
       { command: String.raw`\partial`, name: "partial derivative", example: String.raw`\partial` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -4029,6 +4373,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Producer Theory",
+    context: "Defines total cost as spending on labour and capital, average cost as cost per unit of output, and marginal cost as the added cost of one more unit, the core cost concepts of the firm.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -4040,6 +4385,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Producer Theory",
+    context: "The minimised cost of producing output q under a symmetric technology, rising linearly in output and in the geometric mean of the two input prices, illustrating how factor prices shape costs.",
     hints: [
       { command: String.raw`\sqrt{ }`, name: "square root", example: String.raw`\sqrt{x}` },
     ],
@@ -4051,6 +4397,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Producer Theory",
+    context: "The long-run average cost curve is the lower envelope of short-run average cost curves, since in the long run the firm can choose the plant size (capital) that minimises cost at each output.",
     hints: [
       { command: String.raw`\min`, name: "minimum", example: String.raw`\min` },
     ],
@@ -4062,6 +4409,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Producer Theory",
+    context: "A price-taking firm supplies where price equals marginal cost, but only produces if price covers average variable cost; otherwise it shuts down to avoid losses exceeding fixed costs.",
     hints: [
       { command: String.raw`\ge`, name: "greater-or-equal", example: String.raw`\ge` },
       { command: String.raw`\min`, name: "minimum", example: String.raw`\min` },
@@ -4074,6 +4422,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Producer Theory",
+    context: "With free entry, competition drives the long-run price down to the minimum of average cost, leaving each firm with zero economic profit, the hallmark of long-run competitive equilibrium.",
     hints: [
       { command: String.raw`\implies`, name: "implies", example: String.raw`\implies` },
       { command: String.raw`\min`, name: "minimum", example: String.raw`\min` },
@@ -4086,6 +4435,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Monopoly",
+    context: "Links a monopolist's marginal revenue to price and demand elasticity, and setting it equal to marginal cost gives the profit-maximising rule; less elastic demand means a bigger markup.",
     hints: [
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -4098,6 +4448,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Monopoly",
+    context: "Measures a firm's market power as the markup of price over marginal cost relative to price, equal to the inverse of demand elasticity; higher values signal greater monopoly power.",
     hints: [
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -4110,6 +4461,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Monopoly",
+    context: "For linear demand and constant marginal cost, gives the profit-maximising monopoly quantity and price, showing the monopolist restricts output and charges above cost, unlike competition.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -4121,6 +4473,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Monopoly",
+    context: "A monopolist selling to separable markets maximises profit by equating marginal revenue in each market to marginal cost, charging different prices to groups with different demand elasticities.",
     hints: [],
   },
   {
@@ -4130,6 +4483,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Monopoly",
+    context: "Under price discrimination, the ratio of prices across two markets depends on their demand elasticities, so the group with less elastic (more captive) demand is charged the higher price.",
     hints: [
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -4142,6 +4496,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "General Equilibrium",
+    context: "An allocation is efficient in exchange when both consumers share the same marginal rate of substitution between goods, so no mutually beneficial trade remains, a key condition of general equilibrium.",
     hints: [],
   },
   {
@@ -4151,6 +4506,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "General Equilibrium",
+    context: "Requires that total consumption of each good equals the total endowment, ensuring supply meets demand across the whole economy with no good left over or in shortage.",
     hints: [
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
     ],
@@ -4162,6 +4518,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "General Equilibrium",
+    context: "States that the total value of excess demand across all markets is always zero at any prices, implying that if all but one market clears, the last one must clear too.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
     ],
@@ -4173,6 +4530,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "General Equilibrium",
+    context: "The slope of the production possibility frontier, showing how many units of one good must be given up to produce more of another, reflecting the economy's opportunity cost in production.",
     hints: [
       { command: String.raw`\partial`, name: "partial derivative", example: String.raw`\partial` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -4185,6 +4543,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "General Equilibrium",
+    context: "A competitive firm hires labour until the value of what an extra worker produces (price times marginal product) equals the wage, the profit-maximising labour demand condition.",
     hints: [],
   },
   {
@@ -4194,6 +4553,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "General Equilibrium",
+    context: "In a full production economy, efficiency requires the consumers' marginal rate of substitution to equal the marginal rate of transformation and the price ratio, aligning consumption and production choices.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -4205,6 +4565,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "General Equilibrium",
+    context: "A specific concave frontier showing all efficient combinations of two goods the economy can produce given its resources; its bowed-out shape reflects increasing opportunity cost.",
     hints: [
       { command: String.raw`\sqrt{ }`, name: "square root", example: String.raw`\sqrt{x}` },
     ],
@@ -4216,6 +4577,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Public Goods",
+    context: "The efficient level of a public good occurs where the sum of everyone's marginal willingness to pay (marginal rates of substitution) equals the marginal cost of production, because all consumers enjoy the good simultaneously.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
     ],
@@ -4227,6 +4589,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Externalities",
+    context: "To correct a negative externality, set a per-unit tax equal to the marginal external cost at the efficient output, making polluters internalize the harm they impose on others.",
     hints: [],
   },
   {
@@ -4236,6 +4599,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Externalities",
+    context: "A benevolent planner chooses an allocation to maximize total welfare across individuals, subject to feasibility—that goods consumed cannot exceed the economy's total endowment. It defines the efficient benchmark.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
@@ -4249,6 +4613,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "International Trade",
+    context: "A country exports the good in which its relative labor requirement is lower than the foreign country's. Comparative, not absolute, cost advantage determines the pattern of gainful trade.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -4260,6 +4625,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "International Trade",
+    context: "Without trade, the price ratio between two goods equals their relative labor requirements, since competitive prices reflect the labor cost of producing each good.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
@@ -4272,6 +4638,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "International Trade",
+    context: "With trade, the ratio of home to foreign wages must lie between the two industries' relative productivities, ensuring each country specializes in its comparative-advantage good.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -4283,6 +4650,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Linear Algebra",
+    context: "A matrix whose entries depend on a parameter; studying when it becomes singular (zero determinant) reveals values of the parameter where the system loses rank or invertibility.",
     hints: [
       { command: String.raw`\begin{pmatrix}`, name: "matrix (parentheses)", example: String.raw`\begin{pmatrix} a & b \\ c & d \end{pmatrix}` },
     ],
@@ -4294,6 +4662,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Linear Algebra",
+    context: "An example where scalar multiplication is redefined to zero out the first component. It illustrates how altered operations can violate the vector-space axioms.",
     hints: [
       { command: String.raw`\begin{pmatrix}`, name: "matrix (parentheses)", example: String.raw`\begin{pmatrix} a & b \\ c & d \end{pmatrix}` },
     ],
@@ -4305,6 +4674,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Linear Algebra",
+    context: "A set of vectors formed by summing pairs of standard basis vectors; checking whether they still span the space tests linear independence under a transformed basis.",
     hints: [],
   },
   {
@@ -4314,6 +4684,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Linear Algebra",
+    context: "A symmetric matrix, guaranteed to have real eigenvalues and orthogonal eigenvectors, used to practice diagonalization and spectral decomposition.",
     hints: [
       { command: String.raw`\begin{pmatrix}`, name: "matrix (parentheses)", example: String.raw`\begin{pmatrix} a & b \\ c & d \end{pmatrix}` },
     ],
@@ -4325,6 +4696,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Linear Algebra",
+    context: "A large block-structured matrix with a parameter, used to compute determinants or eigenvalues and see how they depend on the parameter value.",
     hints: [
       { command: String.raw`\begin{pmatrix}`, name: "matrix (parentheses)", example: String.raw`\begin{pmatrix} a & b \\ c & d \end{pmatrix}` },
     ],
@@ -4336,6 +4708,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Linear Algebra",
+    context: "The determinant of a product of matrices equals the product of their determinants—a key multiplicative property linking invertibility and scaling of volume under composition.",
     hints: [],
   },
   {
@@ -4345,6 +4718,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Linear Algebra",
+    context: "The trace of a product of matrices is invariant under cyclic reordering of the factors, a fact widely used to simplify expressions in statistics and econometrics.",
     hints: [
       { command: String.raw`\mathrm{ }`, name: "upright roman", example: String.raw`\mathrm{d}` },
     ],
@@ -4356,6 +4730,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Linear Algebra",
+    context: "A matrix's trace equals the sum of its eigenvalues and its determinant equals their product, connecting simple matrix summaries to its spectral structure.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\prod_{ }^{ }`, name: "product", example: String.raw`\prod_{i=1}^{n}` },
@@ -4369,6 +4744,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Linear Algebra",
+    context: "If a matrix equals its own square (idempotent), then a simple linear transformation of it squares to the identity, showing idempotent matrices generate involutions.",
     hints: [
       { command: String.raw`\implies`, name: "implies", example: String.raw`\implies` },
     ],
@@ -4380,6 +4756,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Linear Algebra",
+    context: "The residual-maker matrix from regression projects out fitted values; being a singular projection, its determinant is zero, reflecting that it collapses dimensions.",
     hints: [
       { command: String.raw`\top`, name: "transpose / top", example: String.raw`x^{\top}` },
     ],
@@ -4391,6 +4768,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Linear Algebra",
+    context: "Any positive-semidefinite matrix can be written as a matrix times its transpose, guaranteeing it arises as a valid covariance or Gram matrix.",
     hints: [
       { command: String.raw`\top`, name: "transpose / top", example: String.raw`x^{\top}` },
     ],
@@ -4402,6 +4780,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Linear Algebra",
+    context: "Repeatedly applying a stochastic-like matrix drives a vector toward a steady state determined by the dominant eigenvector, illustrating long-run behavior of iterated linear maps.",
     hints: [
       { command: String.raw`\begin{pmatrix}`, name: "matrix (parentheses)", example: String.raw`\begin{pmatrix} a & b \\ c & d \end{pmatrix}` },
       { command: String.raw`\lim_{ }`, name: "limit", example: String.raw`\lim_{x\to 0}` },
@@ -4417,6 +4796,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Linear Algebra",
+    context: "Solutions to this equation are vectors fixed by a high power of the matrix, identifying eigenspaces tied to eigenvalues that satisfy the polynomial relation.",
     hints: [],
   },
   {
@@ -4426,6 +4806,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Linear Algebra",
+    context: "A diagonal matrix modified by subtracting a rank-one outer product; such structured updates appear in efficient recomputations of inverses and determinants.",
     hints: [
       { command: String.raw`\operatorname{ }`, name: "named operator", example: String.raw`\operatorname{Var}` },
       { command: String.raw`\top`, name: "transpose / top", example: String.raw`x^{\top}` },
@@ -4438,6 +4819,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Linear Algebra",
+    context: "The explicit inverse of a rank-one perturbed matrix, an instance of the Sherman-Morrison formula that avoids recomputing an inverse from scratch.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\top`, name: "transpose / top", example: String.raw`x^{\top}` },
@@ -4450,6 +4832,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Real Analysis",
+    context: "A sequence converges if its terms eventually become arbitrarily close to each other, letting us establish convergence without knowing the limit in advance.",
     hints: [
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
       { command: String.raw`\forall`, name: "for all", example: String.raw`\forall` },
@@ -4465,6 +4848,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Real Analysis",
+    context: "The formal epsilon definition: a sequence approaches a limit if, past some point, all terms lie within any chosen tolerance of that limit.",
     hints: [
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
       { command: String.raw`\lim_{ }`, name: "limit", example: String.raw`\lim_{x\to 0}` },
@@ -4481,6 +4865,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Real Analysis",
+    context: "Logically negating convergence: a sequence fails to approach a value if some fixed gap is exceeded infinitely often, no matter how far out you look.",
     hints: [
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
       { command: String.raw`\forall`, name: "for all", example: String.raw`\forall` },
@@ -4496,6 +4881,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Real Analysis",
+    context: "If a sequence is trapped between two others that both converge to the same limit, it must converge to that limit too—a standard tool for hard limits.",
     hints: [
       { command: String.raw`\implies`, name: "implies", example: String.raw`\implies` },
       { command: String.raw`\to`, name: "arrow (to)", example: String.raw`\to` },
@@ -4509,6 +4895,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Real Analysis",
+    context: "The limit of a product of two convergent sequences equals the product of their limits, one of the basic algebraic rules that make limits tractable.",
     hints: [
       { command: String.raw`\implies`, name: "implies", example: String.raw`\implies` },
       { command: String.raw`\to`, name: "arrow (to)", example: String.raw`\to` },
@@ -4521,6 +4908,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Real Analysis",
+    context: "A function is Lipschitz if its output changes no faster than a constant times its input change, bounding steepness and guaranteeing continuity and stable behavior.",
     hints: [
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
     ],
@@ -4532,6 +4920,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Real Analysis",
+    context: "These tight bounds on the natural logarithm, derivable from the mean value theorem, are useful for approximations and for proving growth-rate inequalities.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
@@ -4544,6 +4933,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Real Analysis",
+    context: "The preimage collects all inputs that a function maps into a given target set—a fundamental construction for defining continuity and measurability.",
     hints: [
       { command: String.raw`\in`, name: "element of", example: String.raw`\in` },
     ],
@@ -4555,6 +4945,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Real Analysis",
+    context: "The image is the set of all output values a function produces from a given domain, describing the range reached by the mapping.",
     hints: [
       { command: String.raw`\in`, name: "element of", example: String.raw`\in` },
     ],
@@ -4566,6 +4957,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Real Analysis",
+    context: "A two-variable expression that is homogeneous in x^n and y^n, structured like a quadratic in those powers. Its sign (whether it stays positive) is governed by the discriminant b^2-ac, a standard tool for classifying such forms.",
     hints: [],
   },
   {
@@ -4575,6 +4967,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Real Analysis",
+    context: "A sequence defined by repeatedly squaring the previous term, starting at 1/2. Since terms stay in (0,1), squaring shrinks them, so the sequence decreases monotonically toward 0 — a classic example for studying convergence.",
     hints: [],
   },
   {
@@ -4584,6 +4977,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Real Analysis",
+    context: "If a smooth function takes equal values at three points, Rolle's theorem applied twice guarantees a point where the second derivative is zero — an inflection-like point. Illustrates how repeated derivatives inherit zeros.",
     hints: [
       { command: String.raw`\implies`, name: "implies", example: String.raw`\implies` },
       { command: String.raw`\exists`, name: "there exists", example: String.raw`\exists` },
@@ -4598,6 +4992,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Optimisation",
+    context: "An objective combining a linear term with nested exponentials, used as an unconstrained optimisation exercise. Students find critical points by setting partial derivatives to zero and check curvature to classify the optimum.",
     hints: [],
   },
   {
@@ -4607,6 +5002,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Optimisation",
+    context: "A concave quadratic in two goods with an interaction term ax_1x_2, representing complementarity or substitution. Maximising it shows how the cross-term parameter shifts the optimal bundle and the second-order conditions.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -4618,6 +5014,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Optimisation",
+    context: "A function raising a logarithm to an exponentially-growing power, used to practice differentiating awkward composite forms via logarithmic differentiation and analysing growth behaviour.",
     hints: [],
   },
   {
@@ -4627,6 +5024,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Optimisation",
+    context: "Maximise distance from the origin subject to a symmetric quadratic constraint. A Lagrange-multiplier problem whose symmetry (x=y=z) reveals the optimum, illustrating constrained optimisation on quadric surfaces.",
     hints: [
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
       { command: String.raw`\max`, name: "maximum", example: String.raw`\max` },
@@ -4639,6 +5037,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Optimisation",
+    context: "Maximise the sum x+y+z when the reciprocals sum to one. Lagrange conditions force symmetry x=y=z=3, showing how reciprocal constraints shape optimal allocations.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
@@ -4652,6 +5051,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Optimisation",
+    context: "Maximise log utility over two goods under a budget-style inequality. Demonstrates Kuhn-Tucker reasoning: check whether the constraint binds, since the +5 shifts the optimal split away from equal shares.",
     hints: [
       { command: String.raw`\geq`, name: "greater-or-equal", example: String.raw`\geq` },
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
@@ -4665,6 +5065,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Optimisation",
+    context: "Minimise a convex quadratic over a closed disc of radius sqrt(b). A textbook KKT problem: the unconstrained minimum may lie inside or outside the disc, determining whether the boundary constraint is active.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\leq`, name: "less-or-equal", example: String.raw`\leq` },
@@ -4678,6 +5079,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Optimisation",
+    context: "Minimise a weighted sum of squares subject to a lower bound on the product x^2y^2. The constraint binds at the optimum, and Lagrange/KKT conditions balance the two goods against the required product.",
     hints: [
       { command: String.raw`\geq`, name: "greater-or-equal", example: String.raw`\geq` },
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
@@ -4691,6 +5093,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Optimisation",
+    context: "A feasible region defined by a cubic inequality, used to practice describing and optimising over non-convex constraint sets where the boundary is a curved cubic rather than a line.",
     hints: [
       { command: String.raw`\geq`, name: "greater-or-equal", example: String.raw`\geq` },
     ],
@@ -4702,6 +5105,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Optimisation",
+    context: "Gul-Pesendorfer preferences: utility equals the best commitment payoff minus the cost of resisting temptation. Captures that having tempting options in the choice set lowers welfare even if not chosen.",
     hints: [
       { command: String.raw`\max`, name: "maximum", example: String.raw`\max` },
     ],
@@ -4713,6 +5117,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Optimisation",
+    context: "A concave utility over two goods with diminishing marginal utility (square roots). The weight on y makes it twice as valued at the margin; used to derive demand and interior optima.",
     hints: [
       { command: String.raw`\sqrt{ }`, name: "square root", example: String.raw`\sqrt{x}` },
     ],
@@ -4724,6 +5129,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Optimisation",
+    context: "A worker's payoff: wage minus a convex effort cost that eases with ability a_i. Central to principal-agent models where firms design wages to elicit effort from workers of differing types.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -4735,6 +5141,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Differential Equations",
+    context: "A nonlinear first-order ODE of Bernoulli type. The substitution turning it into a linear equation (via 1/y) is the standard solution trick, common in growth and dynamics models.",
     hints: [
       { command: String.raw`\dot{ }`, name: "dot accent", example: String.raw`\dot{x}` },
     ],
@@ -4746,6 +5153,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Differential Equations",
+    context: "A first-order ODE where variables separate, so both sides can be integrated independently. The simplest solvable class of differential equations, foundational for dynamic analysis.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -4757,6 +5165,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Differential Equations",
+    context: "A linear ODE whose characteristic equation has a repeated root, and whose forcing term resonates with the homogeneous solution. Illustrates why the particular solution needs an extra factor of x.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -4768,6 +5177,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Differential Equations",
+    context: "A third-order constant-coefficient ODE with a triple characteristic root plus polynomial and exponential forcing. Practices building general solutions from homogeneous plus particular parts under resonance.",
     hints: [],
   },
   {
@@ -4777,6 +5187,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Differential Equations",
+    context: "A fourth-order ODE where the forcing frequency matches a natural frequency, producing resonance. Demonstrates how resonant forcing requires multiplying the trial solution by x to capture growing oscillations.",
     hints: [],
   },
   {
@@ -4786,6 +5197,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Differential Equations",
+    context: "The logistic growth model: growth slows as the population y approaches carrying capacity K. A cornerstone of population and diffusion dynamics with an S-shaped solution path.",
     hints: [
       { command: String.raw`\dot{ }`, name: "dot accent", example: String.raw`\dot{x}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -4798,6 +5210,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Differential Equations",
+    context: "A linear system of ODEs written compactly in matrix form. Eigenvalues of the coefficient matrix (+1 and -1 here) determine the system's stability and trajectory behaviour.",
     hints: [
       { command: String.raw`\begin{pmatrix}`, name: "matrix (parentheses)", example: String.raw`\begin{pmatrix} a & b \\ c & d \end{pmatrix}` },
     ],
@@ -4809,6 +5222,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Differential Equations",
+    context: "One step of the explicit Euler method for numerically solving an ODE system: advance the state by a small time step delta using the current derivative. Basic tool for simulating dynamics without closed forms.",
     hints: [
       { command: String.raw`\begin{pmatrix}`, name: "matrix (parentheses)", example: String.raw`\begin{pmatrix} a & b \\ c & d \end{pmatrix}` },
     ],
@@ -4820,6 +5234,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Differential Equations",
+    context: "A planar linear dynamic system whose eigenvalues are complex, producing spiralling (focus) trajectories. Used to classify phase-plane behaviour by the nature of the coefficient matrix's eigenvalues.",
     hints: [
       { command: String.raw`\begin{aligned}`, name: "aligned equations", example: String.raw`\begin{aligned} x &= a \\ y &= b \end{aligned}` },
       { command: String.raw`\dot{ }`, name: "dot accent", example: String.raw`\dot{x}` },
@@ -4832,6 +5247,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Differential Equations",
+    context: "A three-dimensional linear dynamical system. Its stability and trajectories are found from the eigenvalues and eigenvectors of the 3x3 coefficient matrix, extending phase analysis to higher dimensions.",
     hints: [
       { command: String.raw`\begin{aligned}`, name: "aligned equations", example: String.raw`\begin{aligned} x &= a \\ y &= b \end{aligned}` },
       { command: String.raw`\dot{ }`, name: "dot accent", example: String.raw`\dot{x}` },
@@ -4844,6 +5260,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Dynamic Optimisation",
+    context: "An optimal-control problem: maximise discounted log utility of consumption while a finite stock depletes. The Euler/Hamiltonian conditions yield a smooth consumption path that runs the stock down over the horizon.",
     hints: [
       { command: String.raw`\dot{ }`, name: "dot accent", example: String.raw`\dot{x}` },
       { command: String.raw`\int_{ }^{ }`, name: "integral", example: String.raw`\int_{a}^{b}` },
@@ -4858,6 +5275,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Dynamic Optimisation",
+    context: "A continuous-time objective integrating CRRA-type consumption utility with curvature alpha. The exponent controls intertemporal substitution, shaping how optimally to spread consumption over time.",
     hints: [
       { command: String.raw`\int_{ }^{ }`, name: "integral", example: String.raw`\int_{a}^{b}` },
     ],
@@ -4869,6 +5287,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Dynamic Optimisation",
+    context: "The classic calculus-of-variations problem: find the curve minimising path length between two fixed points. The Euler-Lagrange equation confirms the answer is a straight line.",
     hints: [
       { command: String.raw`\int_{ }^{ }`, name: "integral", example: String.raw`\int_{a}^{b}` },
       { command: String.raw`\sqrt{ }`, name: "square root", example: String.raw`\sqrt{x}` },
@@ -4882,6 +5301,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Dynamic Optimisation",
+    context: "An optimal-control model of extracting a finite resource: maximise discounted profit (revenue px minus cost Ax^2) as the stock depletes. Yields the Hotelling-style optimal extraction path.",
     hints: [
       { command: String.raw`\dot{ }`, name: "dot accent", example: String.raw`\dot{x}` },
       { command: String.raw`\int_{ }^{ }`, name: "integral", example: String.raw`\int_{a}^{b}` },
@@ -4896,6 +5316,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Dynamic Optimisation",
+    context: "The condition pinning down the time T_0 at which a resource stock is fully exhausted under the optimal extraction plan. Links the initial stock, discount rate, and price-to-cost ratio to the extraction horizon.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -4907,6 +5328,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Dynamic Optimisation",
+    context: "An optimal control problem: maximise the running payoff (output minus squared effort cost) over time, where the state x evolves according to control u. Illustrates how to trade instantaneous reward against building up the state.",
     hints: [
       { command: String.raw`\dot{ }`, name: "dot accent", example: String.raw`\dot{x}` },
       { command: String.raw`\int_{ }^{ }`, name: "integral", example: String.raw`\int_{a}^{b}` },
@@ -4920,6 +5342,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Dynamic Optimisation",
+    context: "A dynamic optimisation objective with a quadratic running payoff that rewards a high state and penalises both large states and costly control effort, capturing diminishing returns and effort costs over a planning horizon.",
     hints: [
       { command: String.raw`\int_{ }^{ }`, name: "integral", example: String.raw`\int_{a}^{b}` },
     ],
@@ -4931,6 +5354,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Dynamic Optimisation",
+    context: "Choose an extraction path to maximise discounted log utility from a growing stock, where the stock grows at rate r but is depleted by withdrawals x. Models optimal harvesting of a self-renewing asset.",
     hints: [
       { command: String.raw`\dot{ }`, name: "dot accent", example: String.raw`\dot{x}` },
       { command: String.raw`\int_{ }^{ }`, name: "integral", example: String.raw`\int_{a}^{b}` },
@@ -4945,6 +5369,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Dynamic Optimisation",
+    context: "A monopolist maximises profit over time, earning revenue but paying for output and for adjusting price quickly (the squared price-change term), capturing costs of rapid price adjustment.",
     hints: [
       { command: String.raw`\dot{ }`, name: "dot accent", example: String.raw`\dot{x}` },
       { command: String.raw`\int_{ }^{ }`, name: "integral", example: String.raw`\int_{a}^{b}` },
@@ -4957,6 +5382,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Dynamic Optimisation",
+    context: "Maximise discounted lifetime utility from consumption (with square-root, diminishing marginal utility) subject to savings that earn interest and grow with income minus consumption. A classic consumption-savings problem.",
     hints: [
       { command: String.raw`\dot{ }`, name: "dot accent", example: String.raw`\dot{x}` },
       { command: String.raw`\int_{ }^{ }`, name: "integral", example: String.raw`\int_{a}^{b}` },
@@ -4972,6 +5398,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Dynamic Optimisation",
+    context: "The paired equations of motion for optimal harvesting: the fish stock grows logistically while the optimal harvest adjusts according to how the marginal stock return compares to the discount rate. Bioeconomic resource management.",
     hints: [
       { command: String.raw`\begin{aligned}`, name: "aligned equations", example: String.raw`\begin{aligned} x &= a \\ y &= b \end{aligned}` },
       { command: String.raw`\dot{ }`, name: "dot accent", example: String.raw`\dot{x}` },
@@ -4984,6 +5411,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Dynamic Optimisation",
+    context: "Hotelling's rule: the shadow price (scarcity rent) of an exhaustible resource grows over time at the interest rate, so owners are indifferent between extracting now and leaving it in the ground.",
     hints: [],
   },
   {
@@ -4993,6 +5421,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Probability",
+    context: "The joint probability of many events equals a product of conditional probabilities, each conditioning on all previous events. A foundational tool for decomposing complex joint distributions step by step.",
     hints: [
       { command: String.raw`\mid`, name: "vertical bar (given / such that)", example: String.raw`a \mid b` },
       { command: String.raw`\cdot`, name: "centred dot", example: String.raw`\cdot` },
@@ -5005,6 +5434,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Probability",
+    context: "Defines the alpha-quantile: the value q such that at most fraction alpha of probability lies strictly below and at most 1-alpha strictly above. Generalises the median to arbitrary probability cut-offs.",
     hints: [
       { command: String.raw`\leq`, name: "less-or-equal", example: String.raw`\leq` },
       { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
@@ -5017,6 +5447,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Probability",
+    context: "Predicts the leading digit d of many real-world datasets: smaller digits appear far more often (1 leads about 30% of the time). Used to detect fraud in accounting and election data.",
     hints: [],
   },
   {
@@ -5026,6 +5457,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Probability",
+    context: "The cumulative form of Benford's Law: the probability that a leading digit is at most d. Gives the running total of leading-digit frequencies used in fraud-detection tests.",
     hints: [
       { command: String.raw`\le`, name: "less-or-equal", example: String.raw`\le` },
     ],
@@ -5037,6 +5469,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Distributions",
+    context: "The bell curve with mean 0 and variance 1, the reference distribution to which standardised data and sample means converge. The building block for z-scores and much of statistical inference.",
     hints: [
       { command: String.raw`\sqrt{ }`, name: "square root", example: String.raw`\sqrt{x}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -5049,6 +5482,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Transformations",
+    context: "Shows how to find the density of Y = X squared: since both +sqrt(y) and -sqrt(y) map to y, you sum both contributions and adjust by the change-of-variable factor. A change-of-variables example.",
     hints: [
       { command: String.raw`\sqrt{ }`, name: "square root", example: String.raw`\sqrt{x}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -5061,6 +5495,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Distributions",
+    context: "The double-exponential distribution: symmetric around zero with heavier tails than the normal, decaying with the absolute value. Models data with occasional large deviations and underpins robust (L1) methods.",
     hints: [
       { command: String.raw`\in`, name: "element of", example: String.raw`\in` },
       { command: String.raw`\mathbb{ }`, name: "blackboard bold (e.g. E, R)", example: String.raw`\mathbb{E}` },
@@ -5073,6 +5508,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Transformations",
+    context: "Converts Cartesian coordinates to polar form using radius R and angle Theta. In probability it underlies the Box-Muller method for generating normal random variables from uniform ones.",
     hints: [
       { command: String.raw`\Theta`, name: "capital theta", example: String.raw`\Theta` },
     ],
@@ -5084,6 +5520,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Distributions",
+    context: "A two-variable density on the unit square where the constant c is fixed by requiring the total probability to integrate to one. A standard exercise in normalising and working with joint densities.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
     ],
@@ -5095,6 +5532,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Multivariate Statistics",
+    context: "Defines the covariance matrix as the expected outer product of the centred random vector, packaging every variable's variance and each pair's covariance into one matrix. Central to multivariate analysis and portfolio theory.",
     hints: [
       { command: String.raw`\Sigma`, name: "capital sigma", example: String.raw`\Sigma` },
       { command: String.raw`\top`, name: "transpose / top", example: String.raw`x^{\top}` },
@@ -5107,6 +5545,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Multivariate Statistics",
+    context: "For standard normal vectors, a suitably chosen quadratic form follows a chi-squared distribution with degrees of freedom equal to the projection's rank. This underlies many test statistics like sums of squared residuals.",
     hints: [
       { command: String.raw`\chi`, name: "chi", example: String.raw`\chi` },
       { command: String.raw`\implies`, name: "implies", example: String.raw`\implies` },
@@ -5121,6 +5560,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Moments",
+    context: "States a lower bound relating the variance of a product of variables to the product of their variances, highlighting how multiplying random quantities can amplify dispersion.",
     hints: [
       { command: String.raw`\geq`, name: "greater-or-equal", example: String.raw`\geq` },
       { command: String.raw`\mathrm{ }`, name: "upright roman", example: String.raw`\mathrm{d}` },
@@ -5133,6 +5573,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Inequalities",
+    context: "The harmonic mean never exceeds the geometric mean, which never exceeds the arithmetic mean. A fundamental inequality showing how different ways of averaging the same positive numbers rank.",
     hints: [
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
       { command: String.raw`\leq`, name: "less-or-equal", example: String.raw`\leq` },
@@ -5145,6 +5586,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Inequalities",
+    context: "A family of averages indexed by exponent r that unifies harmonic (r=-1), geometric (limit r to 0), arithmetic (r=1), and higher means. Larger r puts more weight on big values.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -5157,6 +5599,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Transformations",
+    context: "A Bernoulli switch X3 randomly selects between X1 and X2, producing a mixture variable. Models outcomes drawn from one of two regimes depending on a coin flip.",
     hints: [],
   },
   {
@@ -5166,6 +5609,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Asymptotics",
+    context: "As the sample grows, the sample average converges in probability to the true mean. Justifies using averages of many observations to estimate an unknown expected value.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -5178,6 +5622,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Asymptotics",
+    context: "An example where dividing a sum by n-squared (rather than n) makes it converge in probability to 1/2, illustrating how the right normalising factor governs a sequence's limiting behaviour.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -5190,6 +5635,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Asymptotics",
+    context: "Shows a sequence of CDFs converging in distribution to a unit exponential, using the classic limit (1-1/n)^n approaching e^{-x}. Demonstrates how discrete or finite-n models approach a continuous limit.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\mathrm{ }`, name: "upright roman", example: String.raw`\mathrm{d}` },
@@ -5202,6 +5648,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Asymptotics",
+    context: "Scaled by root-n, the estimation error of the sample mean converges to a normal distribution regardless of the underlying distribution's shape. The reason normal-based inference works so broadly.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\sqrt{ }`, name: "square root", example: String.raw`\sqrt{x}` },
@@ -5214,6 +5661,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Asymptotics",
+    context: "The delta method extends the CLT to smooth functions of an estimator (here the squared mean), giving its asymptotic normal distribution via a first-order Taylor expansion. Lets you find standard errors for transformed estimates.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -5226,6 +5674,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Asymptotics",
+    context: "The sample Sharpe ratio (mean over standard deviation) converges in probability to the true ratio, so with enough data it reliably estimates risk-adjusted return.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
@@ -5239,6 +5688,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Asymptotics",
+    context: "A moving-average process of order 2: today's value is a weighted sum of the current and two previous random shocks. Models short-lived, finite-memory dependence in time series.",
     hints: [],
   },
   {
@@ -5248,6 +5698,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Asymptotics",
+    context: "As sample size grows, the smallest observation from non-negative data converges in probability to zero, since more draws make an extremely small value increasingly likely. An extreme-value result.",
     hints: [
       { command: String.raw`\min`, name: "minimum", example: String.raw`\min` },
     ],
@@ -5259,6 +5710,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Asymptotics",
+    context: "When estimating the upper bound of a uniform distribution by the sample maximum, the rescaled estimation error converges to an exponential distribution rather than a normal one, reflecting how extreme-value estimators behave differently from averages.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -5272,6 +5724,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 7,
     topic: "Asymptotics",
+    context: "Shows that the sample geometric mean, suitably centered and scaled by root-n, is approximately normal around Euler's number e for large samples, letting you build confidence intervals for multiplicative averages.",
     hints: [
       { command: String.raw`\sqrt{ }`, name: "square root", example: String.raw`\sqrt{x}` },
     ],
@@ -5283,6 +5736,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Maximum Likelihood",
+    context: "The probability of a single yes/no outcome given success probability theta; it is the basic building block for estimating a proportion from binary data like coin flips or survey responses.",
     hints: [],
   },
   {
@@ -5292,6 +5746,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Estimation",
+    context: "Blends two estimators with weights summing to one, so you can trade off between them; choosing the weight optimally can reduce variance below either estimator alone.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
     ],
@@ -5303,6 +5758,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Estimation",
+    context: "The best linear predictor's slope equals the covariance of Y and X divided by X's variance, the population target that OLS regression estimates and the foundation of least-squares fitting.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\mathrm{ }`, name: "upright roman", example: String.raw`\mathrm{d}` },
@@ -5315,6 +5771,7 @@ export const problems: Problem[] = [
     difficulty: "hard",
     points: 8,
     topic: "Maximum Likelihood",
+    context: "Describes a positive variable whose logarithm is normally distributed; widely used for incomes, asset prices, and firm sizes because it is skewed right and never negative.",
     hints: [
       { command: String.raw`\sqrt{ }`, name: "square root", example: String.raw`\sqrt{x}` },
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
@@ -5328,6 +5785,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Maximum Likelihood",
+    context: "A heavy-tailed distribution where large values are rare but non-negligible, used to model wealth, city sizes, and other quantities following power laws and the '80/20' rule.",
     hints: [],
   },
   {
@@ -5337,6 +5795,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Maximum Likelihood",
+    context: "Gives the probability that the first success occurs on trial X in repeated independent attempts, modeling waiting times like the number of tries until an event happens.",
     hints: [
       { command: String.raw`\mid`, name: "vertical bar (given / such that)", example: String.raw`a \mid b` },
     ],
@@ -5348,6 +5807,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Maximum Likelihood",
+    context: "Models the waiting time until an event in a memoryless process, with mean theta; common for durations like time between arrivals or equipment failures.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\mid`, name: "vertical bar (given / such that)", example: String.raw`a \mid b` },
@@ -5360,6 +5820,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Estimation",
+    context: "For a gamma-distributed variable with shape gamma and scale theta, the mean is their product and variance scales with theta squared, summarizing this flexible distribution for positive, skewed data.",
     hints: [
       { command: String.raw`\mathrm{ }`, name: "upright roman", example: String.raw`\mathrm{d}` },
     ],
@@ -5371,6 +5832,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 6,
     topic: "Maximum Likelihood",
+    context: "A Poisson count distribution conditioned on at least one occurrence, rescaling probabilities to exclude zero; used when zero-count observations cannot be seen or recorded.",
     hints: [
       { command: String.raw`\frac{ }{ }`, name: "fraction", example: String.raw`\frac{a}{b}` },
       { command: String.raw`\mid`, name: "vertical bar (given / such that)", example: String.raw`a \mid b` },
@@ -5383,6 +5845,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Maximum Likelihood",
+    context: "The maximum likelihood estimate of a uniform distribution's upper endpoint is simply the largest observed value, since the true bound must be at least as big as every data point.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\max`, name: "maximum", example: String.raw`\max` },
@@ -5395,6 +5858,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 3,
     topic: "Hypothesis Testing",
+    context: "A signal-plus-noise setup where an observation equals an unknown parameter plus normal noise; a stylized detection problem for testing whether a true signal (e.g., a whale) is present.",
     hints: [
       { command: String.raw`\sim`, name: "similar / distributed as", example: String.raw`\sim` },
     ],
@@ -5406,6 +5870,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Hypothesis Testing",
+    context: "The outcome jumps depending on whether a covariate falls below an unknown threshold beta, modeling regime changes or cutoff effects where a relationship switches at a boundary.",
     hints: [
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
       { command: String.raw`\le`, name: "less-or-equal", example: String.raw`\le` },
@@ -5419,6 +5884,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Estimation",
+    context: "Recovers a parameter by applying the inverse normal CDF to the sample mean of a binary outcome, exploiting the probit link so the estimator converges to the true value as samples grow.",
     hints: [
       { command: String.raw`\hat{ }`, name: "hat accent", example: String.raw`\hat{x}` },
       { command: String.raw`\bar{ }`, name: "bar accent", example: String.raw`\bar{x}` },
@@ -5432,6 +5898,7 @@ export const problems: Problem[] = [
     difficulty: "medium",
     points: 5,
     topic: "Hypothesis Testing",
+    context: "Defines when to reject the null hypothesis: reject if the count of relevant successes exceeds a root-n threshold, illustrating how a decision rule trades off detection power against false alarms.",
     hints: [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\sqrt{ }`, name: "square root", example: String.raw`\sqrt{x}` },
@@ -5446,6 +5913,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Hypothesis Testing",
+    context: "Models a binary outcome's success probability as the normal CDF of an index theta, the core of the probit model linking a latent continuous score to observed yes/no choices.",
     hints: [
       { command: String.raw`\Phi`, name: "capital phi", example: String.raw`\Phi` },
     ],
@@ -5457,6 +5925,7 @@ export const problems: Problem[] = [
     difficulty: "easy",
     points: 4,
     topic: "Regression",
+    context: "A regression through the origin where Y depends on x plus independent normal noise; this benchmark model underpins OLS estimation, t-tests, and exact inference on the slope.",
     hints: [
       { command: String.raw`\varepsilon`, name: "var epsilon", example: String.raw`\varepsilon` },
       { command: String.raw`\sim`, name: "similar / distributed as", example: String.raw`\sim` },

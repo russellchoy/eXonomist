@@ -347,8 +347,15 @@ export function DailyChallenge() {
             )}
           </div>
 
-          <GlossaryPanel />
           <Target latex={current.latex} />
+          {current.context && (
+            <div className="border-2 border-black px-4 py-3">
+              <p className="mb-1 text-sm font-bold uppercase tracking-wide text-[var(--muted)]">
+                Context
+              </p>
+              <p className="text-base">{current.context}</p>
+            </div>
+          )}
           <Preview latex={input} shadowLatex={current.latex} shadow={shadow} />
           <LatexInput
             key={`${day}-${pos}-${current.id}`}
@@ -391,6 +398,7 @@ export function DailyChallenge() {
             </button>
           )}
           <HintList hints={current.hints} shown={hintsShown} />
+          <GlossaryPanel />
         </>
       )}
     </Shell>
