@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { LaTeX } from "@/components/Wordmark";
 import logo from "@/public/logo.png";
+import { problems } from "@/lib/problems";
 
 const notes = [
   <>
@@ -83,6 +84,10 @@ export default function Home() {
           an untimed game (zen mode)!
         </p>
       </div>
+
+      <p className="text-sm uppercase tracking-wide text-black/60">
+        {problems.length} questions in the bank
+      </p>
 
       <div className="flex flex-wrap justify-center gap-5">
         <Link
