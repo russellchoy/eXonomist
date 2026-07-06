@@ -180,5 +180,5 @@ function niceTicks(yMax: number, count: number): number[] {
   const step = niceNorm * mag;
   const ticks: number[] = [];
   for (let v = step; v <= yMax + 1e-9; v += step) ticks.push(Math.round(v));
-  return ticks;
+  return [...new Set(ticks)];
 }
