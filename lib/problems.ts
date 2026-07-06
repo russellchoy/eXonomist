@@ -5,9 +5,9 @@
 // canonical forms inferred from prose-only study aids (models named but not typeset).
 // Fully audited (equations + contexts) 2026-07-06; every problem carries a `context`
 // (1-2 sentence plain-English interpretation) and an auto-generated `hints` array.
-// Points (1-20) are computed by a calibrated complexity formula in
-// build-problems.mjs (`computedPoints`) — re-scored 2026-07-06 against ~30
-// hand-graded samples; re-copy from reference_images/latex/ after any rebuild.
+// Points (1-20) are BANDED by difficulty: easy 1-4, medium 5-11, hard 12-20. Within
+// each band a fixed complexity index (see build-problems.mjs) ranks problems, so the
+// difficulty label drives the mark. Re-copy from reference_images/latex/ after rebuild.
 // NOTE: `npm run import` regenerates this file from questions.txt and will
 // overwrite it — sync questions.txt (or re-copy from reference_images/latex/) first.
 // Regenerate with:  node build-problems.mjs
@@ -36,7 +36,7 @@ export const problems: Problem[] = [
     title: "Log-Likelihood Function",
     latex: String.raw`\ell(\theta; x) = \ln L(\theta; x) = \sum_{i=1}^{n} \ln f(x_i; \theta)`,
     difficulty: "easy",
-    points: 9,
+    points: 4,
     topic: "Maximum Likelihood",
     context: "The log-likelihood measures how well a parameter value explains the observed data, summing log-probabilities across independent observations. Maximizing it gives the maximum-likelihood estimate, a cornerstone method for fitting statistical models.",
     hints: [
@@ -49,7 +49,7 @@ export const problems: Problem[] = [
     title: "Cauchy Density",
     latex: String.raw`f(x; \theta) = \frac{1}{\pi\left[1 + (x - \theta)^2\right]}`,
     difficulty: "easy",
-    points: 6,
+    points: 3,
     topic: "Distributions",
     context: "The Cauchy distribution is a bell-shaped curve with tails so heavy that its mean and variance don't exist. It's a classic cautionary example where averaging samples fails to settle down.",
     hints: [
@@ -61,7 +61,7 @@ export const problems: Problem[] = [
     title: "Normal Density Function",
     latex: String.raw`f(x; \mu, \sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}}\exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)`,
     difficulty: "medium",
-    points: 12,
+    points: 10,
     topic: "Distributions",
     context: "The normal (Gaussian) distribution is the familiar bell curve describing many natural and economic quantities. Its dominance follows from the Central Limit Theorem, which is why it underpins so much of statistics.",
     hints: [
@@ -101,7 +101,7 @@ export const problems: Problem[] = [
     title: "Probit Link",
     latex: String.raw`P(Y_i = 1 \mid X_i) = 1 - \Phi(-X_i^\top\beta) = \Phi(X_i^\top\beta)`,
     difficulty: "easy",
-    points: 8,
+    points: 4,
     topic: "Discrete Choice",
     context: "The probit model uses the normal CDF to turn a linear index into a probability of a yes/no outcome. It's a standard tool for modeling binary choices like buying, voting, or defaulting.",
     hints: [
@@ -115,7 +115,7 @@ export const problems: Problem[] = [
     title: "Logistic CDF",
     latex: String.raw`\Lambda(x) = \frac{e^x}{1 + e^x} = \frac{1}{1 + e^{-x}}`,
     difficulty: "medium",
-    points: 7,
+    points: 9,
     topic: "Discrete Choice",
     context: "The logistic function squashes any real number into a probability between 0 and 1, giving the S-shaped curve at the heart of logistic regression and logit discrete-choice models.",
     hints: [
@@ -128,7 +128,7 @@ export const problems: Problem[] = [
     title: "ML Estimator of the Slope",
     latex: String.raw`\hat{\beta}_{\mathrm{ML}} = \frac{\sum_{i=1}^{n} x_i y_i}{\sum_{i=1}^{n} x_i^2} = \hat{\beta}_{\mathrm{OLS}}`,
     difficulty: "medium",
-    points: 13,
+    points: 11,
     topic: "Econometrics",
     context: "Under normally distributed errors, the maximum-likelihood slope estimate coincides exactly with ordinary least squares. This reassuring equivalence shows OLS is optimal in the classical regression setting.",
     hints: [
@@ -143,7 +143,7 @@ export const problems: Problem[] = [
     title: "Probit Average Marginal Effect",
     latex: String.raw`\mathrm{AME}_{\mathrm{inc}} = \frac{1}{n}\sum_{i=1}^{n} \beta_1\,\phi(X_i^\top\beta)`,
     difficulty: "medium",
-    points: 12,
+    points: 11,
     topic: "Discrete Choice",
     context: "In nonlinear probit models a coefficient isn't the effect on probability directly. The average marginal effect averages each observation's slope, giving an interpretable 'typical' impact of a regressor on the outcome probability.",
     hints: [
@@ -158,7 +158,7 @@ export const problems: Problem[] = [
     title: "Hausman Test Statistic",
     latex: String.raw`H = \frac{\left(\hat\beta_{1,\mathrm{OLS}} - \hat\beta_{1,\mathrm{FD}}\right)^2}{\widehat{\mathrm{Var}}\left(\hat\beta_{1,\mathrm{OLS}} - \hat\beta_{1,\mathrm{FD}}\right)} \sim \chi^2_1`,
     difficulty: "hard",
-    points: 13,
+    points: 19,
     topic: "Panel Data",
     context: "The Hausman test compares two estimators—one efficient, one robust—to check whether a modeling assumption holds. A large gap signals the simpler estimator is biased, guiding model choice in panel data.",
     hints: [
@@ -175,7 +175,7 @@ export const problems: Problem[] = [
     title: "Cluster-Robust Variance Estimator",
     latex: String.raw`\widehat{\mathrm{Var}}_{\mathrm{CR}}(\hat\beta) = (X^\top X)^{-1} \left( \sum_{g=1}^{G} X_g^\top \hat u_g \hat u_g^\top X_g \right) (X^\top X)^{-1}`,
     difficulty: "hard",
-    points: 14,
+    points: 18,
     topic: "Econometrics",
     context: "When errors are correlated within groups (like students in schools), ordinary standard errors are too optimistic. This sandwich estimator corrects them so hypothesis tests stay valid under clustering.",
     hints: [
@@ -191,7 +191,7 @@ export const problems: Problem[] = [
     title: "Fixed-Effects Logit Conditional Probability",
     latex: String.raw`P(R_{i1} = 1 \mid R_{i1} + R_{i2} = 1) = \frac{\exp\{\beta_1 Y_{i1} + \beta_2 G_{i1}\}}{\exp\{\beta_1 Y_{i1} + \beta_2 G_{i1}\} + \exp\{\beta_1 Y_{i2} + \beta_2 G_{i2}\}}`,
     difficulty: "hard",
-    points: 18,
+    points: 17,
     topic: "Panel Data",
     context: "In panel logit models, conditioning on the total outcome across periods lets you estimate effects while cancelling out unobserved individual traits. This clever trick sidesteps the incidental-parameters problem.",
     hints: [
@@ -204,7 +204,7 @@ export const problems: Problem[] = [
     title: "Population Autocorrelation Function",
     latex: String.raw`\rho(\tau) = \mathrm{Corr}(Y_t, Y_{t-\tau}) = \frac{\mathrm{Cov}(Y_t, Y_{t-\tau})}{\sqrt{\mathrm{Var}(Y_t)}\sqrt{\mathrm{Var}(Y_{t-\tau})}} = \frac{\gamma(\tau)}{\gamma(0)}`,
     difficulty: "medium",
-    points: 15,
+    points: 11,
     topic: "Time Series",
     context: "The autocorrelation function measures how strongly a time series relates to its own past values at different lags. It reveals persistence and cyclical structure, guiding time-series model selection.",
     hints: [
@@ -218,7 +218,7 @@ export const problems: Problem[] = [
     title: "Variance of a Stable AR(1)",
     latex: String.raw`\mathrm{Var}(Y_t) = \sum_{i=0}^{\infty} \phi^{2i} \sigma^2 = \frac{\sigma^2}{1 - \phi^2}`,
     difficulty: "easy",
-    points: 15,
+    points: 4,
     topic: "Time Series",
     context: "For a stationary AR(1) process, the long-run variance grows as the persistence parameter approaches one. This shows why highly persistent series have wide, slowly-settling fluctuations.",
     hints: [
@@ -233,7 +233,7 @@ export const problems: Problem[] = [
     title: "Autocorrelation Function of an MA(1)",
     latex: String.raw`\rho(\tau) = \begin{cases} 1 & \tau = 0 \\ \dfrac{\theta}{1 + \theta^2} & |\tau| = 1 \\ 0 & |\tau| > 1 \end{cases}`,
     difficulty: "medium",
-    points: 16,
+    points: 11,
     topic: "Time Series",
     context: "A moving-average MA(1) process has memory of only one period: it correlates with its immediate neighbor but nothing beyond. This sharp cutoff helps identify MA models from data.",
     hints: [
@@ -246,7 +246,7 @@ export const problems: Problem[] = [
     title: "Ljung-Box Q-Statistic",
     latex: String.raw`Q_{\mathrm{LB}} = T(T+2) \sum_{\tau=1}^{m} \frac{\hat{\rho}(\tau)^2}{T - \tau} \overset{a}{\sim} \chi^2_m`,
     difficulty: "medium",
-    points: 17,
+    points: 11,
     topic: "Time Series",
     context: "The Ljung-Box test checks whether a time series (or model residuals) shows any leftover autocorrelation. A large value signals remaining structure, meaning your model hasn't captured all the dynamics.",
     hints: [
@@ -264,7 +264,7 @@ export const problems: Problem[] = [
     title: "Durbin-Watson Statistic",
     latex: String.raw`\mathrm{DW} = \frac{\sum_{t=2}^T (\hat{\varepsilon}_t - \hat{\varepsilon}_{t-1})^2}{\sum_{t=1}^T \hat{\varepsilon}_t^2} \approx 2(1 - \hat{\rho})`,
     difficulty: "medium",
-    points: 17,
+    points: 11,
     topic: "Time Series",
     context: "The Durbin-Watson statistic detects first-order autocorrelation in regression residuals. Values near 2 suggest no serial correlation; departures warn that standard errors may be unreliable.",
     hints: [
@@ -281,7 +281,7 @@ export const problems: Problem[] = [
     title: "ARMA(p,q) Process",
     latex: String.raw`Y_t = \sum_{i=1}^{p} \phi_i Y_{t-i} + \sum_{i=0}^{q} \theta_i\varepsilon_{t-i} \iff \Phi(L)Y_t = \Theta(L)\varepsilon_t`,
     difficulty: "hard",
-    points: 18,
+    points: 16,
     topic: "Time Series",
     context: "ARMA models combine autoregressive terms (dependence on past values) and moving-average terms (dependence on past shocks) to flexibly describe stationary time series—a workhorse of forecasting.",
     hints: [
@@ -297,7 +297,7 @@ export const problems: Problem[] = [
     title: "Augmented Dickey-Fuller Regression",
     latex: String.raw`\Delta Y_t = \alpha + \delta t + \beta Y_{t-1} + \sum_{j=1}^p \gamma_j \Delta Y_{t-j} + \varepsilon_t`,
     difficulty: "medium",
-    points: 16,
+    points: 10,
     topic: "Time Series",
     context: "The augmented Dickey-Fuller regression tests whether a time series has a unit root, meaning it's non-stationary and wanders without reverting. This distinction is crucial before running time-series regressions.",
     hints: [
@@ -311,7 +311,7 @@ export const problems: Problem[] = [
     title: "Newey-West HAC Variance Estimator",
     latex: String.raw`\hat{V} = \sum_{t=1}^T \hat{a}_t^2 + 2\sum_{h=1}^{g}\frac{g+1-h}{g+1}\sum_{t=h+1}^{T}\hat{a}_t\hat{a}_{t-h}`,
     difficulty: "hard",
-    points: 13,
+    points: 17,
     topic: "Time Series",
     context: "Newey-West standard errors stay valid when errors are both heteroskedastic and autocorrelated. By down-weighting distant lags, it delivers reliable inference for time-series regressions.",
     hints: [
@@ -325,7 +325,7 @@ export const problems: Problem[] = [
     title: "Error Correction Model",
     latex: String.raw`\Delta Y_t = \alpha_0 + \alpha_1 \Delta X_t - \lambda (Y_{t-1} - \beta X_{t-1}) + \varepsilon_t`,
     difficulty: "medium",
-    points: 12,
+    points: 8,
     topic: "Time Series",
     context: "The error-correction model links short-run changes to a long-run equilibrium relationship between variables. When they drift apart, the term pulls them back, formalizing how cointegrated series co-move.",
     hints: [
@@ -338,7 +338,7 @@ export const problems: Problem[] = [
     title: "Akaike and Bayesian Information Criteria",
     latex: String.raw`\mathrm{AIC} = \exp\!\left(\frac{2k}{T}\right)\mathrm{MSE}, \qquad \mathrm{BIC} = \exp\!\left(\frac{k\ln T}{T}\right)\mathrm{MSE}`,
     difficulty: "medium",
-    points: 8,
+    points: 9,
     topic: "Time Series",
     context: "AIC and BIC score models by trading off fit against complexity, penalizing extra parameters. They guide model selection, with BIC penalizing size more heavily and favoring simpler models.",
     hints: [
@@ -351,7 +351,7 @@ export const problems: Problem[] = [
     title: "AR(1) Conditional Expectation",
     latex: String.raw`\mathrm{E}[W_{T+1} \mid W_1] = \alpha\,\frac{1 - \rho^{T}}{1 - \rho} + \rho^{T} W_1`,
     difficulty: "medium",
-    points: 11,
+    points: 10,
     topic: "Time Series",
     context: "This gives the best forecast of an AR(1) series given its history: a blend of the mean and a geometrically decaying influence of the starting value, showing how persistence fades over time.",
     hints: [
@@ -365,7 +365,7 @@ export const problems: Problem[] = [
     title: "Sample Mean and Variance Estimators",
     latex: String.raw`\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i, \qquad S^2_{n-1} = \frac{1}{n-1}\sum_{i=1}^n \left(X_i - \bar{X}_n\right)^2`,
     difficulty: "easy",
-    points: 12,
+    points: 4,
     topic: "Econometrics",
     context: "These formulas estimate a population's center and spread from data. Dividing the variance by n-1 (Bessel's correction) removes bias, making the sample variance an honest estimate.",
     hints: [
@@ -379,7 +379,7 @@ export const problems: Problem[] = [
     title: "t-Statistic for the Sample Mean",
     latex: String.raw`T = \frac{\bar{X}_n - \mu}{S_{n-1}/\sqrt{n}} \sim t_{n-1}`,
     difficulty: "medium",
-    points: 12,
+    points: 9,
     topic: "Econometrics",
     context: "The t-statistic tests whether a sample mean differs from a hypothesized value when the true variance is unknown. Following a t-distribution, it underlies everyday hypothesis testing and confidence intervals.",
     hints: [
@@ -394,7 +394,7 @@ export const problems: Problem[] = [
     title: "Chi-squared Distribution of the Variance Estimator",
     latex: String.raw`\frac{(n-1)S^2_{n-1}}{\sigma^2} \sim \chi^2_{n-1}`,
     difficulty: "easy",
-    points: 11,
+    points: 4,
     topic: "Econometrics",
     context: "When sampling from a normal population, the scaled sample variance follows a chi-squared distribution. This result lets you build confidence intervals and tests for an unknown population variance.",
     hints: [
@@ -437,7 +437,7 @@ export const problems: Problem[] = [
     title: "OLS Slope Estimator",
     latex: String.raw`\hat{\beta}_1 = \frac{\sum_{i=1}^n (X_i - \bar{X})(Y_i - \bar{Y})}{\sum_{i=1}^n (X_i - \bar{X})^2}`,
     difficulty: "medium",
-    points: 13,
+    points: 10,
     topic: "Econometrics",
     context: "The OLS slope is the ratio of the covariance between X and Y to the variance of X—the best-fitting line's steepness. It quantifies how much Y moves, on average, per unit change in X.",
     hints: [
@@ -452,7 +452,7 @@ export const problems: Problem[] = [
     title: "Closed-form OLS Estimator",
     latex: String.raw`\hat{\boldsymbol{\beta}} = (\mathbf{X}^\top \mathbf{X})^{-1}\mathbf{X}^\top \mathbf{Y}`,
     difficulty: "hard",
-    points: 9,
+    points: 14,
     topic: "Econometrics",
     context: "This matrix formula gives the least-squares coefficients for multiple regression in one shot, minimizing squared errors. It's the fundamental engine behind linear regression across statistics and econometrics.",
     hints: [
@@ -467,7 +467,7 @@ export const problems: Problem[] = [
     title: "Adjusted R-squared",
     latex: String.raw`\bar{R}^2 = 1 - \frac{n-1}{n-k-1}\left(1 - R^2\right)`,
     difficulty: "medium",
-    points: 5,
+    points: 7,
     topic: "Econometrics",
     context: "A version of R-squared that penalizes adding extra regressors, so it only rises when a new variable improves fit more than chance. It lets you compare models with different numbers of predictors fairly.",
     hints: [
@@ -480,7 +480,7 @@ export const problems: Problem[] = [
     title: "F-test for q Restrictions",
     latex: String.raw`W = \frac{(\mathrm{SSR}_r - \mathrm{SSR}_u)/q}{\mathrm{SSR}_u/(n-k-1)} = \frac{(R^2_u - R^2_r)/q}{(1-R^2_u)/(n-k-1)} \sim F_{q,\, n-k-1}`,
     difficulty: "hard",
-    points: 9,
+    points: 16,
     topic: "Econometrics",
     context: "Tests whether several regression coefficients are jointly zero by comparing how much fit worsens when you impose the restrictions. It's how you judge if a group of variables matters together, not just one at a time.",
     hints: [
@@ -494,7 +494,7 @@ export const problems: Problem[] = [
     title: "Prediction Interval Variance",
     latex: String.raw`\mathrm{Var}(y_0 - \hat{y}_0 \mid \mathbf{X}) = \sigma^2 \left[1 + \mathbf{x}_0^\top (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{x}_0\right]`,
     difficulty: "hard",
-    points: 12,
+    points: 16,
     topic: "Econometrics",
     context: "The uncertainty in forecasting a new individual outcome, combining the model's own error plus estimation error that grows for observations far from the data's center. It explains why predictions are least reliable at the edges.",
     hints: [
@@ -510,7 +510,7 @@ export const problems: Problem[] = [
     title: "MGF of the Normal Distribution",
     latex: String.raw`M_X(t) = e^{\mu t + \frac{1}{2}\sigma^2 t^2}`,
     difficulty: "medium",
-    points: 7,
+    points: 9,
     topic: "Distributions",
     context: "A compact formula that encodes every moment (mean, variance, etc.) of a normal distribution. It's a powerful tool for deriving properties and proving that sums of normals are again normal.",
     hints: [
@@ -522,7 +522,7 @@ export const problems: Problem[] = [
     title: "Omitted Variable Bias (Empirical)",
     latex: String.raw`\mathrm{Bias}(\hat{\gamma}_1) = \beta_2 \cdot \frac{\widehat{\mathrm{Cov}}(\mathrm{educ}_i,\,\mathrm{IQ}_i)}{\widehat{\mathrm{Var}}(\mathrm{educ}_i)}`,
     difficulty: "medium",
-    points: 13,
+    points: 10,
     topic: "Econometrics",
     context: "Shows how leaving out a relevant variable like IQ biases the estimated return to education, scaled by how strongly the omitted factor correlates with schooling. It warns that regressions can mislead when key controls are missing.",
     hints: [
@@ -538,7 +538,7 @@ export const problems: Problem[] = [
     title: "Excess Kurtosis",
     latex: String.raw`\kappa = \mathrm{Kurt}(u_i) = E\!\left[\left(\frac{u_i - \mu}{\sigma}\right)^{\!4}\right] - 3`,
     difficulty: "medium",
-    points: 10,
+    points: 9,
     topic: "Econometrics",
     context: "Measures how fat-tailed a distribution is relative to the normal, so positive values signal frequent extreme outliers. It matters for gauging risk, since heavy tails mean rare shocks happen more often than a bell curve predicts.",
     hints: [
@@ -551,7 +551,7 @@ export const problems: Problem[] = [
     title: "Quantile Regression Check Function",
     latex: String.raw`\rho_\tau(\hat{u}_i) = \begin{cases} \tau\, \hat{u}_i & \text{if } \hat{u}_i \geq 0, \\ (\tau - 1)\,\hat{u}_i & \text{if } \hat{u}_i < 0. \end{cases}`,
     difficulty: "medium",
-    points: 13,
+    points: 11,
     topic: "Econometrics",
     context: "An asymmetric loss that weights positive and negative errors differently to target a chosen quantile rather than the mean. It's the engine that lets regression describe the whole distribution, not just its average.",
     hints: [
@@ -566,7 +566,7 @@ export const problems: Problem[] = [
     title: "Median as Least Absolute Deviations",
     latex: String.raw`\hat{q}_{0.5} = \operatorname{med}(X_1, \ldots, X_n) = \arg\min_{m} \sum_{i=1}^{n}|X_i - m|`,
     difficulty: "easy",
-    points: 13,
+    points: 4,
     topic: "Econometrics",
     context: "Shows the median is the value minimizing total absolute distance to the data, which is why it resists outliers. This is the intuition behind why medians are more robust than means.",
     hints: [
@@ -574,7 +574,6 @@ export const problems: Problem[] = [
       { command: String.raw`\sum_{ }^{ }`, name: "summation", example: String.raw`\sum_{i=1}^{n}` },
       { command: String.raw`\operatorname{ }`, name: "named operator", example: String.raw`\operatorname{Var}` },
       { command: String.raw`\min`, name: "minimum", example: String.raw`\min` },
-      { command: String.raw`\arg\max`, name: "argmax / argmin", example: String.raw`\arg\max` },
     ],
   },
   {
@@ -582,7 +581,7 @@ export const problems: Problem[] = [
     title: "Quantile Regression Estimator",
     latex: String.raw`\hat{\boldsymbol{\beta}}^\tau = \arg\min_{\mathbf{b}} \sum_{i=1}^n \rho_\tau\!\left(y_i - \mathbf{x}_i^\top \mathbf{b}\right)`,
     difficulty: "medium",
-    points: 17,
+    points: 11,
     topic: "Econometrics",
     context: "Fits a regression line to a chosen quantile (e.g. the 10th or 90th percentile) by minimizing tilted absolute errors. It reveals how predictors affect the bottom or top of an outcome distribution, not just the middle.",
     hints: [
@@ -600,7 +599,7 @@ export const problems: Problem[] = [
     title: "Attenuation Bias",
     latex: String.raw`\operatorname{plim}\hat{\beta}_1 = \beta_1\!\left(1 - \frac{\sigma_e^2}{\sigma_{X^*}^2 + \sigma_e^2}\right) = \beta_1 \cdot \frac{\sigma_{X^*}^2}{\sigma_{X^*}^2 + \sigma_e^2}`,
     difficulty: "hard",
-    points: 16,
+    points: 18,
     topic: "Econometrics",
     context: "Shows that random measurement error in a regressor biases its estimated effect toward zero. It explains why noisy data systematically understate true relationships between variables.",
     hints: [
@@ -615,7 +614,7 @@ export const problems: Problem[] = [
     title: "Omitted Variable Bias",
     latex: String.raw`\hat{\gamma}_1 = \beta_1 + \beta_2 \cdot \frac{\widehat{\operatorname{Cov}}(X_{i1}, X_{i2})}{\widehat{\operatorname{Var}}(X_{i1})} = \beta_1 + \beta_2 \hat{\pi}_1`,
     difficulty: "medium",
-    points: 18,
+    points: 11,
     topic: "Econometrics",
     context: "Quantifies how a coefficient is distorted when a correlated variable is left out, equal to the true effect plus the omitted variable's effect times its correlation with the included one. It's the core reason correlation isn't causation.",
     hints: [
@@ -631,7 +630,7 @@ export const problems: Problem[] = [
     title: "Wald Estimator",
     latex: String.raw`\hat{\beta}_1^{\mathrm{IV}} = \frac{\sum_{i=1}^{n}(Z_i - \bar{Z})(Y_i - \bar{Y})}{\sum_{i=1}^{n}(Z_i - \bar{Z})(X_i - \bar{X})} = \frac{\bar{Y}_1 - \bar{Y}_0}{\bar{X}_1 - \bar{X}_0}`,
     difficulty: "medium",
-    points: 15,
+    points: 11,
     topic: "Econometrics",
     context: "The simplest instrumental variables estimator, recovering a causal effect by dividing the instrument's effect on the outcome by its effect on the treatment. It underlies how natural experiments identify causation despite confounding.",
     hints: [
@@ -647,7 +646,7 @@ export const problems: Problem[] = [
     title: "Asymptotic Variance of the IV Estimator",
     latex: String.raw`\operatorname{Avar}\!\left(\hat{\beta}_1^{\mathrm{IV}}\right) = \frac{\sigma_z^2 \sigma_u^2}{\sigma_{zx}^2} = \frac{1}{\rho_{zx}^2} \cdot \frac{\sigma_u^2}{\sigma_x^2}`,
     difficulty: "hard",
-    points: 18,
+    points: 19,
     topic: "Econometrics",
     context: "Shows the precision of an instrumental variables estimate falls sharply when the instrument correlates weakly with the regressor. It's why weak instruments produce dangerously imprecise causal estimates.",
     hints: [
@@ -663,7 +662,7 @@ export const problems: Problem[] = [
     title: "Euler Equation with Money",
     latex: String.raw`u'(c_t) = \beta\,\frac{1 + i^m_{t+1}}{1 + \pi_{t+1}}\,u'(c_{t+1})`,
     difficulty: "medium",
-    points: 10,
+    points: 8,
     topic: "Monetary Economics",
     context: "Describes how a household optimally trades off consuming today versus saving in money, balancing impatience against the real return on money adjusted for inflation. It's the core intertemporal condition in monetary models.",
     hints: [
@@ -675,7 +674,7 @@ export const problems: Problem[] = [
     title: "Fisher Equation (Monetary)",
     latex: String.raw`1 + \pi_{t+1} = \beta\,(1 + i^m_{t+1})`,
     difficulty: "easy",
-    points: 7,
+    points: 2,
     topic: "Monetary Economics",
     context: "Links the nominal return on money to expected inflation and the discount factor in equilibrium. It captures how anticipated inflation gets built into interest rates so real returns stay pinned down.",
     hints: [],
@@ -685,7 +684,7 @@ export const problems: Problem[] = [
     title: "Money Demand Schedule",
     latex: String.raw`\frac{h'(m_t/p_t)}{u'(c_t)} = \frac{i_{t+1}}{1 + i_{t+1}}`,
     difficulty: "medium",
-    points: 7,
+    points: 8,
     topic: "Monetary Economics",
     context: "Shows households hold money up to where its liquidity benefit equals the opportunity cost of forgone interest. It explains why money demand falls as nominal interest rates rise.",
     hints: [
@@ -709,7 +708,7 @@ export const problems: Problem[] = [
     title: "Money-in-Utility Lifetime Objective",
     latex: String.raw`U = \sum_{t=1}^{T} \beta^{t-1}\left[u(c_t) + h\!\left(\frac{m_t}{p_t}\right)\right]`,
     difficulty: "medium",
-    points: 10,
+    points: 9,
     topic: "Monetary Economics",
     context: "Models people as valuing real money balances directly alongside consumption over their lifetime. It's a tractable shortcut for capturing money's liquidity services in macro models.",
     hints: [
@@ -722,7 +721,7 @@ export const problems: Problem[] = [
     title: "CES Consumption Aggregate",
     latex: String.raw`c_t = \left[\frac{1}{N}\sum_{i=1}^{N}\left(c_t^i\right)^{\frac{\eta-1}{\eta}}\right]^{\frac{\eta}{\eta-1}}`,
     difficulty: "hard",
-    points: 10,
+    points: 19,
     topic: "Monetary Economics",
     context: "Bundles many differentiated goods into a single consumption index where the elasticity governs how substitutable varieties are. It's the standard way to model love-of-variety and demand across products.",
     hints: [
@@ -735,7 +734,7 @@ export const problems: Problem[] = [
     title: "Active Feedback Rule (Taylor Principle)",
     latex: String.raw`1 + i^m_{t+1} = \beta^{-1}(1 + \pi_t)^{\phi}`,
     difficulty: "medium",
-    points: 9,
+    points: 8,
     topic: "Monetary Economics",
     context: "A monetary policy rule where the central bank raises nominal rates more than one-for-one with inflation. Following this Taylor principle is what keeps inflation stable and determinate.",
     hints: [],
@@ -745,7 +744,7 @@ export const problems: Problem[] = [
     title: "Government Lifetime Budget with Seigniorage",
     latex: String.raw`\frac{b_0}{p_0} + \frac{m_0}{p_0} = \sum_{t=1}^{T} \Delta_t\left[\tau_t + \frac{i_t}{1+i_t}(1+r_t)\frac{m_{t-1}}{p_{t-1}}\right]`,
     difficulty: "hard",
-    points: 14,
+    points: 18,
     topic: "Monetary Economics",
     context: "States that the government's initial debt and money must be backed by the present value of future taxes plus revenue from printing money. It shows seigniorage as a fiscal financing source alongside taxation.",
     hints: [
@@ -759,7 +758,7 @@ export const problems: Problem[] = [
     title: "Autarky Real Interest Rate",
     latex: String.raw`1 + r^a = \frac{u'(y^y)}{\beta\,u'(y^o)}`,
     difficulty: "easy",
-    points: 6,
+    points: 3,
     topic: "Monetary Economics",
     context: "The interest rate that clears an isolated overlapping-generations economy, set by the young's and old's marginal utilities and impatience. It's the benchmark return when no outside store of value exists.",
     hints: [
@@ -771,7 +770,7 @@ export const problems: Problem[] = [
     title: "OLG Lifetime Budget Constraint",
     latex: String.raw`c^t_t + \frac{1}{1+r_{t+1}}\,c^t_{t+1} \leq y^y + \frac{1}{1+r_{t+1}}\,y^o`,
     difficulty: "medium",
-    points: 10,
+    points: 9,
     topic: "Monetary Economics",
     context: "Limits a generation's young-age and discounted old-age consumption to their discounted lifetime income. It's the backbone of overlapping-generations models of saving and interest.",
     hints: [
@@ -784,7 +783,7 @@ export const problems: Problem[] = [
     title: "Fiscal Theory of the Price Level",
     latex: String.raw`\frac{(b_0 + m_0)(1 + i_1)}{p_1} = \sum_{t=1}^{T} (1+r_1)\,\Delta_t\,\tau_t`,
     difficulty: "hard",
-    points: 10,
+    points: 15,
     topic: "Monetary Economics",
     context: "Argues the price level adjusts so that real government liabilities equal the present value of future surpluses. It flips conventional thinking: fiscal policy, not just money supply, can determine inflation.",
     hints: [
@@ -811,7 +810,7 @@ export const problems: Problem[] = [
     title: "Steady-State Seigniorage Funding Gap",
     latex: String.raw`r\!\left(\frac{b}{p} + \frac{m}{p}\right) - (\tau - g) = \frac{i}{1+i}(1+r)\frac{m}{p}`,
     difficulty: "hard",
-    points: 6,
+    points: 15,
     topic: "Monetary Economics",
     context: "Balances the government's steady-state financing needs against the seigniorage revenue money creation provides. It reveals the limits of funding deficits by printing money.",
     hints: [
@@ -823,7 +822,7 @@ export const problems: Problem[] = [
     title: "CRRA Utility with Labour Disutility",
     latex: String.raw`U = \mathbb{E}_1 \sum_{t=1}^{T} \beta^{t-1} \left[ \frac{c_t^{1-\sigma}}{1-\sigma} - \frac{l_t^{1+\varphi}}{1+\varphi} \right]`,
     difficulty: "hard",
-    points: 17,
+    points: 19,
     topic: "Real Business Cycles",
     context: "A lifetime preference specification balancing the satisfaction from consumption against the pain of working, with curvature controlling risk aversion. It's the standard household objective in business-cycle models.",
     hints: [
@@ -838,7 +837,7 @@ export const problems: Problem[] = [
     title: "Stochastic Euler Equation",
     latex: String.raw`c_t^{-\sigma} = \beta\,\mathbb{E}_t\bigl[(1+r_{t+1})c_{t+1}^{-\sigma}\bigr]`,
     difficulty: "medium",
-    points: 13,
+    points: 10,
     topic: "Real Business Cycles",
     context: "The optimal saving rule under uncertainty: today's marginal utility equals the discounted expected marginal utility of consuming tomorrow times the return. It governs how agents smooth consumption over time and states.",
     hints: [
@@ -850,7 +849,7 @@ export const problems: Problem[] = [
     title: "Cobb-Douglas Production (RBC)",
     latex: String.raw`y_t = A_t k_t^\alpha l_t^{1-\alpha}`,
     difficulty: "easy",
-    points: 5,
+    points: 3,
     topic: "Real Business Cycles",
     context: "Output is produced from capital and labor with a productivity shock, where the exponents give each factor's share. It's the workhorse production technology driving real business cycle fluctuations.",
     hints: [],
@@ -860,7 +859,7 @@ export const problems: Problem[] = [
     title: "Flow Budget Constraint",
     latex: String.raw`a_t + c_t \leq w_t l_t + (1+r_t)a_{t-1}`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Real Business Cycles",
     context: "Each period, a household's savings and consumption cannot exceed its labor income plus the return on prior wealth. It's the accounting rule linking one period's choices to the next.",
     hints: [
@@ -872,7 +871,7 @@ export const problems: Problem[] = [
     title: "Resource Constraint with Capital",
     latex: String.raw`A_t k_t^\alpha l_t^{1-\alpha} = c_t + k_{t+1} - (1-\delta)k_t`,
     difficulty: "medium",
-    points: 8,
+    points: 7,
     topic: "Real Business Cycles",
     context: "The economy's feasibility condition: total output each period must cover consumption plus investment, where investment is the new capital stock added minus what remains after depreciation.",
     hints: [],
@@ -882,7 +881,7 @@ export const problems: Problem[] = [
     title: "Marginal Product of Capital Condition",
     latex: String.raw`r_t + \delta = \alpha A_t k_t^{\alpha-1} l_t^{1-\alpha}`,
     difficulty: "medium",
-    points: 7,
+    points: 8,
     topic: "Real Business Cycles",
     context: "Firms rent capital until its marginal product equals its user cost — the real interest rate plus the depreciation rate. This pins down capital demand in the RBC model.",
     hints: [],
@@ -892,7 +891,7 @@ export const problems: Problem[] = [
     title: "Equilibrium Real Interest Rate (RBC)",
     latex: String.raw`r_2 = \frac{A_1^{-\sigma(1+\varphi)/(\sigma+\varphi)}}{\beta\,\mathbb{E}_1\!\left[A_2^{-\sigma(1+\varphi)/(\sigma+\varphi)}\right]} - 1`,
     difficulty: "hard",
-    points: 12,
+    points: 16,
     topic: "Real Business Cycles",
     context: "In RBC equilibrium the real interest rate is determined by expected productivity: households demand a higher return to save when future output is expected to be higher, smoothing consumption across time.",
     hints: [
@@ -920,7 +919,7 @@ export const problems: Problem[] = [
     title: "AR(1) Productivity Process",
     latex: String.raw`\ln A_t = \rho \ln A_{t-1} + \varepsilon_t`,
     difficulty: "easy",
-    points: 7,
+    points: 3,
     topic: "Real Business Cycles",
     context: "Technology evolves as a persistent random process — today's productivity is a fraction of yesterday's plus a shock. This persistent shock is the engine driving business cycles in RBC models.",
     hints: [
@@ -932,7 +931,7 @@ export const problems: Problem[] = [
     title: "Social Planner's Objective",
     latex: String.raw`\mathbb{E}_0\sum_{t=0}^{\infty}\beta^t \left[ \frac{c_t^{1-\sigma}}{1-\sigma} - \frac{l_t^{1+\varphi}}{1+\varphi} \right]`,
     difficulty: "medium",
-    points: 18,
+    points: 11,
     topic: "Real Business Cycles",
     context: "The welfare benchmark: a benevolent planner maximizes the expected discounted sum of household utility, weighing consumption against the disutility of labour across all future periods.",
     hints: [
@@ -948,7 +947,7 @@ export const problems: Problem[] = [
     title: "NK Consumer Utility",
     latex: String.raw`U = \mathbb{E}_1 \sum_{t=1}^{T} \beta^{t-1}\left[ \frac{c_t^{1-\sigma}}{1-\sigma} - \frac{l_t^{1+\phi}}{1+\phi}\right]`,
     difficulty: "medium",
-    points: 17,
+    points: 11,
     topic: "New Keynesian",
     context: "The New Keynesian household's lifetime objective: expected discounted utility from consumption minus the disutility of working, with σ governing risk aversion and φ the labour-supply elasticity.",
     hints: [
@@ -962,7 +961,7 @@ export const problems: Problem[] = [
     title: "Monopolistic Markup Pricing Rule",
     latex: String.raw`p_t^i = p_t \cdot \frac{\eta}{\eta-1} \cdot \frac{w_t}{A_t}`,
     difficulty: "easy",
-    points: 8,
+    points: 4,
     topic: "New Keynesian",
     context: "A firm with market power sets its price as a markup over marginal cost (wage divided by productivity). The markup η/(η−1) shrinks as demand becomes more elastic and competition intensifies.",
     hints: [
@@ -987,7 +986,7 @@ export const problems: Problem[] = [
     title: "Nonlinear NK Aggregate Supply",
     latex: String.raw`y_t = A_t^{\frac{1+\phi}{\sigma+\phi}}\left[\frac{\eta-1}{\eta} + \frac{\kappa}{\eta}(1+\pi_t)\pi_t\right]^{\frac{1}{\sigma+\phi}}`,
     difficulty: "hard",
-    points: 12,
+    points: 19,
     topic: "New Keynesian",
     context: "The New Keynesian supply relation linking output to productivity and inflation. Because prices are costly to change, higher inflation is associated with higher output — the core policy trade-off.",
     hints: [
@@ -999,7 +998,7 @@ export const problems: Problem[] = [
     title: "NK Consumption Euler Equation",
     latex: String.raw`y_t^{-\sigma} = \beta\,\mathbb{E}_t\left[\frac{1+i_{t+1}}{1+\pi_{t+1}}\,y_{t+1}^{-\sigma}\right]`,
     difficulty: "medium",
-    points: 15,
+    points: 10,
     topic: "New Keynesian",
     context: "The household's intertemporal optimality condition: consumption is smoothed according to the real interest rate, i.e. the nominal rate adjusted for expected inflation.",
     hints: [
@@ -1012,7 +1011,7 @@ export const problems: Problem[] = [
     title: "Natural Real Interest Rate",
     latex: String.raw`(y^f_t)^{-\sigma} = \beta(1+r^*_{t+1})\,\mathbb{E}_t\left[(y^f_{t+1})^{-\sigma}\right]`,
     difficulty: "medium",
-    points: 11,
+    points: 8,
     topic: "New Keynesian",
     context: "Defines the 'natural' real interest rate — the rate that would prevail if prices were fully flexible. It serves as the benchmark policymakers aim for to close the output gap.",
     hints: [
@@ -1024,7 +1023,7 @@ export const problems: Problem[] = [
     title: "Quadratic Loss Function",
     latex: String.raw`L_t = \pi_t^2 + \omega\,(y_t - y^*_t)^2`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "New Keynesian",
     context: "The central bank's objective, penalizing squared deviations of inflation from target and of output from its efficient level. The weight ω sets how much output stabilization is valued relative to inflation.",
     hints: [],
@@ -1034,7 +1033,7 @@ export const problems: Problem[] = [
     title: "Linearised NK Supply Curve",
     latex: String.raw`y_t - y^*_t = \alpha_\pi\,\pi_t + \alpha_\eta\,(\eta_t - \bar{\eta})`,
     difficulty: "medium",
-    points: 8,
+    points: 6,
     topic: "New Keynesian",
     context: "A log-linear approximation of New Keynesian supply, expressing the output gap as a linear function of inflation and shocks — the Phillips-curve trade-off in tractable form.",
     hints: [
@@ -1059,7 +1058,7 @@ export const problems: Problem[] = [
     title: "Two-Period Lifetime Budget Constraint",
     latex: String.raw`c_1 + \frac{1}{1+r}\,c_2 \leq y_1 + \frac{1}{1+r}\,y_2`,
     difficulty: "medium",
-    points: 6,
+    points: 9,
     topic: "Intertemporal Macro",
     context: "Over a lifetime, the present value of consumption cannot exceed the present value of income. Future amounts are discounted by the interest rate, tying together borrowing and saving.",
     hints: [
@@ -1072,7 +1071,7 @@ export const problems: Problem[] = [
     title: "Permanent Income",
     latex: String.raw`\bar{y} \equiv \frac{1+r}{2+r}\,y_1 + \frac{1}{2+r}\,y_2`,
     difficulty: "medium",
-    points: 7,
+    points: 9,
     topic: "Intertemporal Macro",
     context: "Defines permanent income as a weighted average of current and future income. The permanent-income hypothesis says consumption tracks this long-run measure, not transitory income fluctuations.",
     hints: [
@@ -1086,7 +1085,7 @@ export const problems: Problem[] = [
     title: "Additively Separable Lifetime Utility",
     latex: String.raw`U = \sum_{t=1}^{T} \beta^{t-1}\,u(c_t)`,
     difficulty: "easy",
-    points: 7,
+    points: 3,
     topic: "Intertemporal Macro",
     context: "Lifetime welfare is the discounted sum of each period's utility, with the discount factor β expressing impatience — future satisfaction counts for less than present satisfaction.",
     hints: [
@@ -1098,7 +1097,7 @@ export const problems: Problem[] = [
     title: "Consumption Euler Equation",
     latex: String.raw`u'(c_1) = \beta(1+r)\,u'(c_2)`,
     difficulty: "easy",
-    points: 3,
+    points: 2,
     topic: "Intertemporal Macro",
     context: "The optimal consumption-smoothing rule: marginal utility today equals discounted marginal utility tomorrow scaled by the gross return. It governs how households trade off consuming now versus later.",
     hints: [],
@@ -1108,7 +1107,7 @@ export const problems: Problem[] = [
     title: "CRRA Utility",
     latex: String.raw`u(c) = \begin{cases} \dfrac{c^{1-\sigma}-1}{1-\sigma} & \sigma \neq 1 \\ \ln c & \sigma = 1 \end{cases}`,
     difficulty: "medium",
-    points: 13,
+    points: 11,
     topic: "Intertemporal Macro",
     context: "Constant-relative-risk-aversion utility, the workhorse preference form. The parameter σ jointly governs risk aversion and the willingness to substitute consumption over time; it collapses to log utility when σ equals one.",
     hints: [
@@ -1122,7 +1121,7 @@ export const problems: Problem[] = [
     title: "Two-Period Consumption Function",
     latex: String.raw`c_1 = \frac{1}{1+\delta}\left[y_1 + \frac{1}{1+r}\,y_2\right]`,
     difficulty: "medium",
-    points: 6,
+    points: 9,
     topic: "Intertemporal Macro",
     context: "With log utility, optimal first-period consumption is a fixed fraction of lifetime wealth (current income plus discounted future income). The discount rate δ sets how much is consumed now versus saved.",
     hints: [
@@ -1134,7 +1133,7 @@ export const problems: Problem[] = [
     title: "T-Period Consumption Function",
     latex: String.raw`c_1 = \frac{1-\delta}{1-\delta^T}\left[a_0(1+r) + \sum_{t=1}^{T}\left(\frac{1}{1+r}\right)^{t-1}y_t\right]`,
     difficulty: "hard",
-    points: 10,
+    points: 17,
     topic: "Intertemporal Macro",
     context: "Generalizes consumption smoothing to many periods: the household consumes a constant fraction of total lifetime resources, including initial assets and the present value of all future income.",
     hints: [
@@ -1147,7 +1146,7 @@ export const problems: Problem[] = [
     title: "Euler Equation Under Uncertainty",
     latex: String.raw`u'(c_1) = \beta(1+r)\,\mathbb{E}\bigl[u'(c_2)\bigr]`,
     difficulty: "medium",
-    points: 7,
+    points: 9,
     topic: "Intertemporal Macro",
     context: "With an uncertain future, the consumption-smoothing condition holds in expectation: marginal utility today equals the discounted expected marginal utility tomorrow times the return.",
     hints: [
@@ -1159,7 +1158,7 @@ export const problems: Problem[] = [
     title: "Euler Equation with Nominal Assets",
     latex: String.raw`u'(c_1) = \beta\,\frac{1+i_2}{1+\pi_2}\,u'(c_2)`,
     difficulty: "medium",
-    points: 7,
+    points: 8,
     topic: "Intertemporal Macro",
     context: "Consumption smoothing when saving is held in nominal bonds. The relevant return is the nominal interest rate deflated by inflation, i.e. the real return on the asset.",
     hints: [
@@ -1171,7 +1170,7 @@ export const problems: Problem[] = [
     title: "Fisher Equation",
     latex: String.raw`(1+i_2) = (1+r_2)(1+\pi_2)`,
     difficulty: "easy",
-    points: 4,
+    points: 1,
     topic: "Intertemporal Macro",
     context: "The nominal interest rate compensates savers for both the real return and expected inflation. Rearranged, it shows the real rate is roughly the nominal rate minus inflation.",
     hints: [],
@@ -1181,7 +1180,7 @@ export const problems: Problem[] = [
     title: "Uncovered Interest Parity",
     latex: String.raw`(1+i_2) = (1+i^*_2)\cdot\frac{e_2}{e_1}`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Intertemporal Macro",
     context: "In equilibrium, returns on domestic and foreign bonds must be equal once the expected change in the exchange rate is accounted for — otherwise arbitrage would move capital across borders.",
     hints: [
@@ -1216,7 +1215,7 @@ export const problems: Problem[] = [
     title: "Equilibrium Hours Worked",
     latex: String.raw`l_t^* = A_t^{\frac{1-\sigma}{\sigma+\phi}}`,
     difficulty: "medium",
-    points: 7,
+    points: 9,
     topic: "Labour Supply",
     context: "Equilibrium labour supply responds to productivity, with the exponent's sign set by σ. It captures whether the income effect (work less when richer) or substitution effect (work more when wages rise) dominates.",
     hints: [
@@ -1228,7 +1227,7 @@ export const problems: Problem[] = [
     title: "Government Spending Multiplier",
     latex: String.raw`\frac{dy_t}{dg_t} = \frac{-A_t\,u''(y_t - g_t)}{\dfrac{1}{A_t}\,v''\!\left(\dfrac{y_t}{A_t}\right) - A_t\,u''(y_t - g_t)}`,
     difficulty: "hard",
-    points: 8,
+    points: 16,
     topic: "Fiscal Policy",
     context: "Measures how much output rises when government spending increases. Its size depends on the curvature of utility from consumption and the disutility of labour, which govern how households adjust work and consumption.",
     hints: [
@@ -1241,7 +1240,7 @@ export const problems: Problem[] = [
     title: "CES Price Index",
     latex: String.raw`p_t = \left[\frac{1}{N}\sum_{i=1}^{N}\left(p_t^i\right)^{1-\eta}\right]^{\frac{1}{1-\eta}}`,
     difficulty: "medium",
-    points: 10,
+    points: 11,
     topic: "Price Indices",
     context: "The price of a consumption basket when varieties are imperfect substitutes (elasticity η). It aggregates individual goods' prices into one index; the closer varieties are to identical, the more the cheapest ones dominate the overall price level.",
     hints: [
@@ -1279,7 +1278,7 @@ export const problems: Problem[] = [
     title: "Net Exports and Terms of Trade",
     latex: String.raw`nx_t = \left(\frac{p_t^i}{p_t}\right)^{1-\eta} c_t^* - c_t`,
     difficulty: "medium",
-    points: 7,
+    points: 9,
     topic: "Open Economy",
     context: "A country's net exports equal foreign demand for its goods (which depends on its relative price via elasticity η) minus its own consumption. Cheaper home goods boost exports; the terms of trade shape the trade balance.",
     hints: [
@@ -1291,7 +1290,7 @@ export const problems: Problem[] = [
     title: "Return to Capital",
     latex: String.raw`r^k_t = \alpha(1-\alpha)^{\frac{1-\alpha}{\alpha}} A_t^{1/\alpha}\, w_t^{-\frac{1-\alpha}{\alpha}}`,
     difficulty: "hard",
-    points: 8,
+    points: 18,
     topic: "Capital and Investment",
     context: "The rental rate capital earns in a Cobb-Douglas economy, expressed in terms of productivity and the wage. It shows how the payoff to capital rises with technology and falls when labour is more expensive.",
     hints: [
@@ -1303,7 +1302,7 @@ export const problems: Problem[] = [
     title: "Equilibrium Capital-to-Output Ratio",
     latex: String.raw`\frac{k_t}{y_t} = \frac{\alpha}{\beta^{-1}(1+g)^{\sigma} + \delta - 1}`,
     difficulty: "hard",
-    points: 12,
+    points: 17,
     topic: "Economic Growth",
     context: "The long-run ratio of capital to output in a growing economy. It rises with capital's share α and falls when households discount the future more, when growth is faster, or when capital depreciates quickly.",
     hints: [
@@ -1329,7 +1328,7 @@ export const problems: Problem[] = [
     title: "Nash Equilibrium Condition",
     latex: String.raw`u_i(a_i^*, a_{-i}^*) \geq u_i(a_i', a_{-i}^*) \text{ for all } a_i' \in A_i \text{ and all } i \in N`,
     difficulty: "medium",
-    points: 8,
+    points: 6,
     topic: "Game Theory",
     context: "A strategy profile is a Nash equilibrium when no player can gain by unilaterally switching actions, given what everyone else does. It captures a stable, self-enforcing outcome where all choices are mutually best responses.",
     hints: [
@@ -1343,7 +1342,7 @@ export const problems: Problem[] = [
     title: "Best-Response Correspondence",
     latex: String.raw`B_i(a_{-i}) = \{a_i \in A_i : u_i(a_i, a_{-i}) \geq u_i(a_i', a_{-i}) \text{ for all } a_i' \in A_i\}`,
     difficulty: "hard",
-    points: 11,
+    points: 14,
     topic: "Game Theory",
     context: "The set of actions that maximize a player's payoff given the opponents' choices. Nash equilibria are exactly the points where every player is simultaneously playing a best response to the others.",
     hints: [
@@ -1357,7 +1356,7 @@ export const problems: Problem[] = [
     title: "Mixed-Strategy Nash Equilibrium",
     latex: String.raw`U_i(\alpha_i, \alpha_{-i}) \geq U_i(\hat{\alpha}_i, \alpha_{-i}) \text{ for all } \hat{\alpha}_i \in \Delta(A_i) \text{ and for all } i`,
     difficulty: "medium",
-    points: 12,
+    points: 8,
     topic: "Game Theory",
     context: "Extends Nash equilibrium to randomized play: no player can improve by switching to any other probability mix over actions. This guarantees equilibria exist even in games with no stable pure-strategy outcome.",
     hints: [
@@ -1373,7 +1372,7 @@ export const problems: Problem[] = [
     title: "Mixed-Strategy Simplex",
     latex: String.raw`\Delta(A_i) \equiv \left\{ \alpha_i : \alpha_i(a_i) \in [0,1] \text{ and } \sum_{a_i \in A_i} \alpha_i(a_i) = 1 \right\}`,
     difficulty: "hard",
-    points: 13,
+    points: 17,
     topic: "Game Theory",
     context: "The set of all valid randomizations over a player's actions—probabilities that lie between 0 and 1 and sum to one. It is the strategy space a player chooses from when mixing over pure actions.",
     hints: [
@@ -1389,7 +1388,7 @@ export const problems: Problem[] = [
     title: "Number of Strategies",
     latex: String.raw`|S_i| = \prod_{h \in H_i} |A_i(h)|`,
     difficulty: "easy",
-    points: 6,
+    points: 3,
     topic: "Game Theory",
     context: "Counts a player's pure strategies in a game with sequential moves: multiply the number of available actions across every decision point. A full strategy prescribes an action at each situation the player could face.",
     hints: [
@@ -1402,7 +1401,7 @@ export const problems: Problem[] = [
     title: "Bertrand Profit Function",
     latex: String.raw`\pi_i(p_i, p_j) = \begin{cases} (p_i - c) D(p_i) & \text{if } p_i < p_j \\ \tfrac{1}{2}(p_i - c) D(p_i) & \text{if } p_i = p_j \\ 0 & \text{if } p_i > p_j \end{cases}`,
     difficulty: "hard",
-    points: 14,
+    points: 19,
     topic: "Game Theory",
     context: "In price competition, the firm charging less captures the whole market, ties split demand equally, and the pricier firm sells nothing. This winner-take-all structure drives prices down toward marginal cost.",
     hints: [
@@ -1415,7 +1414,7 @@ export const problems: Problem[] = [
     title: "Cournot Dominance-Solvable Outcome",
     latex: String.raw`q_1 = q_2 = \frac{1-c}{3} = \frac{2 q_M}{3}`,
     difficulty: "medium",
-    points: 5,
+    points: 8,
     topic: "Game Theory",
     context: "In Cournot duopoly, iteratively eliminating dominated quantities pins down each firm producing (1−c)/3—two-thirds of the monopoly quantity each, so total output exceeds the monopoly level. It shows rationality alone can single out the Cournot-Nash outcome.",
     hints: [
@@ -1427,7 +1426,7 @@ export const problems: Problem[] = [
     title: "Median Voter Theorem",
     latex: String.raw`\int_{0}^{M} f(t)\, dt = \frac{1}{2}`,
     difficulty: "medium",
-    points: 5,
+    points: 8,
     topic: "Game Theory",
     context: "With single-peaked preferences, the winning policy is the one preferred by the median voter M, the point splitting the electorate into two equal halves. Candidates converge toward this middle position to win majorities.",
     hints: [
@@ -1440,7 +1439,7 @@ export const problems: Problem[] = [
     title: "Free-Riding in the Volunteer's Dilemma",
     latex: String.raw`q = (1 - p)^n = \left(\frac{c}{v}\right)^{n/(n-1)}`,
     difficulty: "medium",
-    points: 5,
+    points: 8,
     topic: "Game Theory",
     context: "The probability nobody volunteers to provide a public good as group size n grows. Each person hopes others act, so the chance the task goes undone rises with the cost-benefit ratio and the crowd size.",
     hints: [
@@ -1452,7 +1451,7 @@ export const problems: Problem[] = [
     title: "Mixed-Strategy Entry Price CDF",
     latex: String.raw`F_1(p) = \begin{cases} 0 & \text{if } p < c + k \\ \dfrac{(v-c)(p-c-k)}{(v-c-k)(p-c)} & \text{if } p \in [c+k, v] \\ 1 & \text{if } p > v \end{cases}`,
     difficulty: "hard",
-    points: 13,
+    points: 19,
     topic: "Game Theory",
     context: "The equilibrium distribution of prices an incumbent charges when facing possible entry. Randomizing over prices between cost-plus-k and the choke price v keeps rivals indifferent, describing mixed-strategy pricing under entry threat.",
     hints: [
@@ -1467,7 +1466,7 @@ export const problems: Problem[] = [
     title: "Utilitarian Social Ordering",
     latex: String.raw`x \succeq y \iff \sum_{i \in N} u_i(x) \geq \sum_{i \in N} u_i(y)`,
     difficulty: "medium",
-    points: 12,
+    points: 10,
     topic: "Social Choice",
     context: "Society ranks outcome x above y whenever it delivers a higher sum of everyone's individual utilities. This utilitarian criterion judges policies purely by aggregate welfare, ignoring how gains are distributed across people.",
     hints: [
@@ -1497,7 +1496,7 @@ export const problems: Problem[] = [
     title: "Continuous Expected Utility",
     latex: String.raw`\mathbb{E}[u(x)] = \int_{\underline{x}}^{\bar{x}} u(x)\, f(x)\, dx`,
     difficulty: "medium",
-    points: 7,
+    points: 10,
     topic: "Decision Theory",
     context: "Extends expected utility to outcomes on a continuum: integrate utility against the probability density instead of summing. It gives the value of a gamble whose payoff can take any value in a range.",
     hints: [
@@ -1512,7 +1511,7 @@ export const problems: Problem[] = [
     title: "St. Petersburg Paradox",
     latex: String.raw`\mathbb{E}[x] = \sum_{k=1}^{\infty} \left(\frac{1}{2}\right)^{k} 2^{k-1} = \sum_{k=1}^{\infty} \frac{1}{2} = \infty`,
     difficulty: "hard",
-    points: 14,
+    points: 18,
     topic: "Decision Theory",
     context: "A game whose expected monetary payoff is infinite, yet people will pay only a little to play. It motivated expected-utility theory, showing that diminishing marginal utility explains why infinite expected value isn't infinitely valuable.",
     hints: [
@@ -1527,14 +1526,13 @@ export const problems: Problem[] = [
     title: "Certainty Equivalent",
     latex: String.raw`u(\mathrm{CE}(\ell)) = \mathbb{E}[u(x) \mid \ell]`,
     difficulty: "easy",
-    points: 7,
+    points: 3,
     topic: "Risk Aversion",
     context: "The guaranteed amount that leaves someone exactly as well off as taking a gamble. A risk-averse person's certainty equivalent falls below the gamble's expected value, and the gap measures their risk premium.",
     hints: [
       { command: String.raw`\ell`, name: "script l", example: String.raw`\ell` },
       { command: String.raw`\mid`, name: "vertical bar (given / such that)", example: String.raw`a \mid b` },
       { command: String.raw`\mathbb{ }`, name: "blackboard bold (e.g. E, R)", example: String.raw`\mathbb{E}` },
-      { command: String.raw`\mathrm{ }`, name: "upright roman", example: String.raw`\mathrm{d}` },
     ],
   },
   {
@@ -1542,7 +1540,7 @@ export const problems: Problem[] = [
     title: "Arrow-Pratt Absolute Risk Aversion",
     latex: String.raw`A(x) = -\frac{u''(x)}{u'(x)}`,
     difficulty: "medium",
-    points: 3,
+    points: 6,
     topic: "Risk Aversion",
     context: "A measure of how much a person dislikes risk over fixed dollar stakes, based on the curvature of their utility function. Higher values mean stronger aversion and a larger premium demanded to bear risk.",
     hints: [
@@ -1554,7 +1552,7 @@ export const problems: Problem[] = [
     title: "Coefficient of Relative Risk Aversion",
     latex: String.raw`R(x) = -x\, \frac{u''(x)}{u'(x)}`,
     difficulty: "medium",
-    points: 3,
+    points: 6,
     topic: "Risk Aversion",
     context: "Measures aversion to risks that are proportional to wealth by scaling utility's curvature by the wealth level. It gauges willingness to gamble percentage stakes and stays constant for widely used CRRA utility functions.",
     hints: [
@@ -1566,7 +1564,7 @@ export const problems: Problem[] = [
     title: "CARA Expected Payoff",
     latex: String.raw`\mathbb{E}[u(x)] = 1 - \tfrac{1}{2}(e^{a} + e^{-a})e^{-aw} = 1 - e^{-a(w-c)}`,
     difficulty: "hard",
-    points: 7,
+    points: 12,
     topic: "Risk Aversion",
     context: "The expected utility of a bet under constant-absolute-risk-aversion preferences. It reduces to a certain equivalent wealth w−c, showing that with CARA utility risk attitudes are independent of the person's wealth level.",
     hints: [
@@ -1578,7 +1576,7 @@ export const problems: Problem[] = [
     title: "Optimal Investment in a Risky Asset",
     latex: String.raw`a^* = \frac{w_0\, r_f\left[(1-p)r_2 + p r_1 - r_f\right]}{(r_2 - r_f)(r_f - r_1)}`,
     difficulty: "hard",
-    points: 5,
+    points: 13,
     topic: "Portfolio Choice",
     context: "The amount an investor optimally places in a risky asset given the risk-free return and the two possible payoffs. It balances the asset's expected excess return against downside risk to set the best exposure.",
     hints: [
@@ -1590,7 +1588,7 @@ export const problems: Problem[] = [
     title: "Second-Price Auction Payoff",
     latex: String.raw`u_i(b_i, b_{-i}, \theta_i) = \begin{cases} \theta_i - \hat{b}_j & \text{if } b_i > b_j \text{ for all } j \neq i \\ 0 & \text{if } b_i \leq b_j \text{ for some } j \neq i \end{cases}`,
     difficulty: "medium",
-    points: 14,
+    points: 11,
     topic: "Auctions",
     context: "In a second-price (Vickrey) auction the winner pays the runner-up's bid and earns value minus that price; losers get zero. This payoff structure makes bidding your true value a dominant strategy.",
     hints: [
@@ -1619,7 +1617,7 @@ export const problems: Problem[] = [
     title: "First-Price Auction Expected Payoff",
     latex: String.raw`\mathbb{E}_{\theta_{-i}}\!\left[u_i(b_i, s_{-i}(\theta_{-i}), \theta_i)\right] = \prod_{j \neq i} F\!\left(s_j^{-1}(b_i)\right)(\theta_i - b_i)`,
     difficulty: "medium",
-    points: 14,
+    points: 10,
     topic: "Auctions",
     context: "A bidder's expected gain in a first-price auction: the surplus (value minus bid) times the probability the bid beats all rivals' strategies. Bidders choose bids to balance winning chances against surplus captured.",
     hints: [
@@ -1633,7 +1631,7 @@ export const problems: Problem[] = [
     title: "Symmetric BNE Expected Payoff",
     latex: String.raw`\mathbb{E}_{\theta_{-i}}\!\left[u_i(b, s_{-i}(\theta_{-i}), \theta_i)\right] = \left[F(s^{-1}(b))\right]^{n-1}(\theta_i - b)`,
     difficulty: "medium",
-    points: 10,
+    points: 8,
     topic: "Auctions",
     context: "The expected payoff when all n bidders use the same equilibrium bidding rule. Winning requires topping n−1 rivals, so the probability term is raised to that power; this pins down symmetric equilibrium bids.",
     hints: [
@@ -1645,7 +1643,7 @@ export const problems: Problem[] = [
     title: "First-Price Equilibrium Bidding Strategy",
     latex: String.raw`s(\theta_i) = \theta_i - \frac{\displaystyle\int_{\underline{\theta}}^{\theta_i} F(x)^{n-1}\, dx}{F(\theta_i)^{n-1}}`,
     difficulty: "hard",
-    points: 13,
+    points: 19,
     topic: "Auctions",
     context: "In a first-price sealed-bid auction, each bidder shades their bid below their true value by an amount that depends on how many rivals there are; the equilibrium strategy balances winning probability against the surplus kept.",
     hints: [
@@ -1672,7 +1670,7 @@ export const problems: Problem[] = [
     title: "Conditional Expected Value",
     latex: String.raw`\mathbb{E}[v \mid \theta_i = H] = \tfrac{1}{2}(20) + \tfrac{1}{2}(30) = 25`,
     difficulty: "easy",
-    points: 7,
+    points: 3,
     topic: "Auctions",
     context: "After observing a private signal (here type H), a bidder updates their belief about the item's common value using a probability-weighted average, the basis for reasoning in common-value auctions.",
     hints: [
@@ -1698,7 +1696,7 @@ export const problems: Problem[] = [
     title: "Buyer's Expected Utility",
     latex: String.raw`\mathrm{EU}_B(p)=\int_0^1 \mathbf{1}_{\{\theta \leq p\}}(a+b\theta-p)\,d\theta`,
     difficulty: "medium",
-    points: 11,
+    points: 10,
     topic: "Adverse Selection",
     context: "A buyer's expected payoff when only sellers whose quality falls below the offered price agree to trade; the indicator captures which types accept, the root of adverse selection.",
     hints: [
@@ -1727,7 +1725,7 @@ export const problems: Problem[] = [
     title: "Optimal Price Offer",
     latex: String.raw`p^{*}=\dfrac{a}{2-b}`,
     difficulty: "easy",
-    points: 3,
+    points: 2,
     topic: "Adverse Selection",
     context: "The buyer's profit-maximizing take-it-or-leave-it price in a lemons market; the denominator (2-b) reflects how quality's dependence on type distorts the optimal offer.",
     hints: [
@@ -1739,7 +1737,7 @@ export const problems: Problem[] = [
     title: "Seller's Valuation by Type",
     latex: String.raw`v_2(\theta_1)=\begin{cases}14 & \text{if } \theta_1 = L \\ 24 & \text{if } \theta_1 = M \\ 34 & \text{if } \theta_1 = H\end{cases}`,
     difficulty: "medium",
-    points: 12,
+    points: 11,
     topic: "Adverse Selection",
     context: "Maps each hidden seller type (low, medium, high quality) to their reservation value, showing the private information a buyer cannot observe under adverse selection.",
     hints: [
@@ -1752,7 +1750,7 @@ export const problems: Problem[] = [
     title: "Buyer's Acceptance Payoff",
     latex: String.raw`u_B(p,A;\theta)=a+b\theta-p`,
     difficulty: "easy",
-    points: 3,
+    points: 1,
     topic: "Market for Lemons",
     context: "The buyer's payoff if a trade is accepted: intrinsic value plus quality tied to the seller's type, minus the price paid. The building block for lemons-market analysis.",
     hints: [],
@@ -1762,7 +1760,7 @@ export const problems: Problem[] = [
     title: "Buyer's Quasilinear Payoff",
     latex: String.raw`u(q, T, \theta) = \theta v(q) - T`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Contract Theory",
     context: "A quasilinear payoff where a buyer of type theta values quantity q through v(q) and pays transfer T; the type multiplies willingness to pay, central to screening contracts.",
     hints: [],
@@ -1772,7 +1770,7 @@ export const problems: Problem[] = [
     title: "First-Best Contract (Full Information)",
     latex: String.raw`\theta_i v'(\tilde{q}_i) = c, \qquad \tilde{T}_i = \theta_i v(\tilde{q}_i)`,
     difficulty: "medium",
-    points: 5,
+    points: 6,
     topic: "Contract Theory",
     context: "Under full information the firm sets quantity where marginal value equals marginal cost and extracts all surplus via the transfer, the efficient benchmark before hidden types distort things.",
     hints: [
@@ -1784,7 +1782,7 @@ export const problems: Problem[] = [
     title: "Incentive Compatibility (High Type)",
     latex: String.raw`\theta_H v(q_H) - T_H \geq \theta_H v(q_L) - T_L`,
     difficulty: "medium",
-    points: 5,
+    points: 6,
     topic: "Contract Theory",
     context: "The condition ensuring a high-value buyer prefers their own contract to mimicking the low type; incentive compatibility is what forces firms to leave rents to informed agents.",
     hints: [
@@ -1796,7 +1794,7 @@ export const problems: Problem[] = [
     title: "High Type's Informational Rent",
     latex: String.raw`\theta_H v(\tilde{q}_L) - \tilde{T}_L = (\theta_H - \theta_L)\, v(\tilde{q}_L) > 0`,
     difficulty: "medium",
-    points: 5,
+    points: 6,
     topic: "Contract Theory",
     context: "The extra surplus a high type earns by having private information: because they could mimic the low type, the firm must pay them a rent proportional to the type gap.",
     hints: [
@@ -1808,7 +1806,7 @@ export const problems: Problem[] = [
     title: "Second-Best Distortion at the Bottom",
     latex: String.raw`\theta_L v'(q_L^*) = \frac{\beta\theta_L}{\beta\theta_L - (1-\beta)(\theta_H - \theta_L)}\, c > c`,
     difficulty: "hard",
-    points: 7,
+    points: 14,
     topic: "Contract Theory",
     context: "With hidden types the firm distorts the low type's quantity below efficient (marginal value exceeds cost) to reduce the rent paid to high types, the 'no distortion at the top, distortion below' result.",
     hints: [
@@ -1820,7 +1818,7 @@ export const problems: Problem[] = [
     title: "Condition for Inducing High Effort",
     latex: String.raw`p_h - p_l > u^{-1}\!\left(\frac{h^2}{2}\right) - u^{-1}\!\left(\frac{l^2}{2}\right) > 0`,
     difficulty: "medium",
-    points: 7,
+    points: 9,
     topic: "Moral Hazard",
     context: "For a principal to make high effort worthwhile, the gain in success probability must exceed the worker's extra cost of effort measured in wage terms, the core moral-hazard tradeoff.",
     hints: [
@@ -1832,7 +1830,7 @@ export const problems: Problem[] = [
     title: "Incentive Compatibility Wage Spread",
     latex: String.raw`(p_h - p_l)\bigl[u(w_1) - u(w_0)\bigr] \geq \frac{h^2}{2} - \frac{l^2}{2}`,
     difficulty: "medium",
-    points: 9,
+    points: 11,
     topic: "Moral Hazard",
     context: "To induce high effort, the wage difference between success and failure (in utility terms) must be large enough to offset the worker's higher effort cost, so pay must be tied to outcomes.",
     hints: [
@@ -1845,7 +1843,7 @@ export const problems: Problem[] = [
     title: "Optimal High-Effort Success Wage",
     latex: String.raw`u(w_1) = \frac{(1 - p_l)h^2 - (1 - p_h)l^2}{2(p_h - p_l)}`,
     difficulty: "hard",
-    points: 5,
+    points: 13,
     topic: "Moral Hazard",
     context: "The utility the principal must promise on success to just induce high effort at minimum cost, balancing effort incentives against the risk premium paid to a risk-averse worker.",
     hints: [
@@ -1857,7 +1855,7 @@ export const problems: Problem[] = [
     title: "Optimal Wage under Limited Liability",
     latex: String.raw`w_0 = 0, \qquad w_1 = \max\!\left\{\frac{h^2}{2p_h},\; \frac{h^2 - l^2}{2(p_h - p_l)}\right\}`,
     difficulty: "hard",
-    points: 9,
+    points: 17,
     topic: "Moral Hazard",
     context: "When the worker cannot be paid below zero, the failure wage is fixed at zero and the success wage takes whichever binding constraint (participation or incentive) is larger, leaving the worker a rent.",
     hints: [
@@ -1870,7 +1868,7 @@ export const problems: Problem[] = [
     title: "Bayesian Game Definition",
     latex: String.raw`G = (N, \{A_i\}_{i=1}^n, \{\Theta_i\}_{i=1}^n, \{u_i\}_{i=1}^n, p)`,
     difficulty: "medium",
-    points: 10,
+    points: 8,
     topic: "Bayesian Games",
     context: "Formal description of a game with incomplete information: players, actions, private types, payoffs, and a common prior over types, the framework for modeling strategic uncertainty.",
     hints: [
@@ -1882,7 +1880,7 @@ export const problems: Problem[] = [
     title: "Bayes Rule (Total Probability)",
     latex: String.raw`\Pr(A \mid B) = \frac{\Pr(A)\Pr(B \mid A)}{\Pr(A)\Pr(B \mid A) + \Pr(\neg A)\Pr(B \mid \neg A)}`,
     difficulty: "medium",
-    points: 7,
+    points: 10,
     topic: "Bayesian Games",
     context: "Bayes' rule for updating the probability of event A after observing B, with the denominator expanded by the law of total probability, the engine for belief updating in Bayesian games.",
     hints: [
@@ -1896,7 +1894,7 @@ export const problems: Problem[] = [
     title: "Expected Payoff over Types",
     latex: String.raw`\sum_{\theta_{-i}} p(\theta_{-i} \mid \theta_i)\, u_i\left(s_i(\theta_i),\, s_{-i}(\theta_{-i}),\, \theta_i\right)`,
     difficulty: "medium",
-    points: 11,
+    points: 10,
     topic: "Bayesian Games",
     context: "A player's expected payoff, averaging over rivals' possible types using beliefs conditioned on their own type, what each player maximizes in a game of incomplete information.",
     hints: [
@@ -1909,7 +1907,7 @@ export const problems: Problem[] = [
     title: "Bayesian Nash Equilibrium",
     latex: String.raw`\sum_{\theta_{-i} \in \Theta_{-i}} p(\theta_{-i} \mid \theta_i)\, u_i(s_i^*(\theta_i), s_{-i}^*(\theta_{-i}), \theta_i) \geq \sum_{\theta_{-i} \in \Theta_{-i}} p(\theta_{-i} \mid \theta_i)\, u_i(s_i'(\theta_i), s_{-i}^*(\theta_{-i}), \theta_i) \quad \forall\, s_i' \in S_i`,
     difficulty: "hard",
-    points: 19,
+    points: 18,
     topic: "Bayesian Games",
     context: "Defines equilibrium in a Bayesian game: each type's strategy maximizes expected payoff given beliefs about rivals' types and their equilibrium strategies, so no type wants to deviate.",
     hints: [
@@ -1926,7 +1924,7 @@ export const problems: Problem[] = [
     title: "BNE in Expectation Form",
     latex: String.raw`\mathbb{E}_{\theta_{-i}}\left[u_i(s_i^*(\theta_i), s_{-i}^*(\theta_{-i}), \theta_i) \;\middle|\; \theta_i\right] \geq \mathbb{E}_{\theta_{-i}}\left[u_i(s_i'(\theta_i), s_{-i}^*(\theta_{-i}), \theta_i) \;\middle|\; \theta_i\right] \quad \forall\, s_i' \in S_i`,
     difficulty: "hard",
-    points: 18,
+    points: 16,
     topic: "Bayesian Games",
     context: "The same Bayesian Nash equilibrium condition written with expectation operators: each type's chosen strategy yields at least as much expected utility as any alternative, given rivals' play.",
     hints: [
@@ -1941,7 +1939,7 @@ export const problems: Problem[] = [
     title: "Conflict over a Resource Payoff Matrix",
     latex: String.raw`\begin{array}{c|cc} & F & R \\ \hline F & (-c_A, -c_B) & (1-c_A, 0) \\ R & (0, 1-c_B) & (0,0) \end{array}`,
     difficulty: "medium",
-    points: 12,
+    points: 11,
     topic: "Bayesian Games",
     context: "A hawk-dove style payoff matrix for contesting a resource: mutual fighting is costly to both, while yielding avoids conflict, the setup for analyzing conflict under incomplete information.",
     hints: [
@@ -1953,7 +1951,7 @@ export const problems: Problem[] = [
     title: "Threshold-Strategy Expected Payoff",
     latex: String.raw`\mathbb{E}[u_A \mid F] = \alpha(-c_A) + (1-\alpha)(1-c_A) = 1 - c_A - \alpha`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Bayesian Games",
     context: "A player's expected payoff from fighting when the rival fights with probability alpha; used to find the belief threshold at which a type is indifferent between fighting and retreating.",
     hints: [
@@ -1966,7 +1964,7 @@ export const problems: Problem[] = [
     title: "Cournot Profit Function",
     latex: String.raw`u_1(q_1, q_2) = \bigl(a - (q_1 + q_2) - c\bigr)q_1`,
     difficulty: "easy",
-    points: 5,
+    points: 3,
     topic: "Industrial Organization",
     context: "A Cournot firm's profit: price (set by total industry output via inverse demand) minus unit cost, times its own quantity. The firm chooses output knowing its choice moves the market price.",
     hints: [],
@@ -1976,7 +1974,7 @@ export const problems: Problem[] = [
     title: "Cournot Best Response",
     latex: String.raw`q_1 = \frac{a - q_2 - c}{2}`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Industrial Organization",
     context: "A firm's profit-maximizing output given its rival's quantity; the downward slope shows outputs are strategic substitutes, more rival production means you produce less.",
     hints: [
@@ -1988,7 +1986,7 @@ export const problems: Problem[] = [
     title: "Cournot Nash Equilibrium",
     latex: String.raw`q_1^* = q_2^* = \frac{a - c}{3}`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Industrial Organization",
     context: "The symmetric equilibrium where each duopolist produces (a-c)/3; total output exceeds monopoly but falls short of perfect competition, illustrating imperfect-competition markups.",
     hints: [
@@ -2000,7 +1998,7 @@ export const problems: Problem[] = [
     title: "Cournot Equilibrium with Asymmetric Costs",
     latex: String.raw`q_1^* = \frac{a - 2c + c_l}{3}, \qquad q_2^* = \frac{a - 2c_l + c}{3}`,
     difficulty: "medium",
-    points: 5,
+    points: 9,
     topic: "Industrial Organization",
     context: "Cournot outputs when firms have different marginal costs: the lower-cost firm produces more, showing how cost advantages translate into larger market share in equilibrium.",
     hints: [
@@ -2012,7 +2010,7 @@ export const problems: Problem[] = [
     title: "Bayesian Cournot Equilibrium Quantity",
     latex: String.raw`q_1^* = \frac{a - 2c + \mu c_h + (1-\mu) c_l}{3}`,
     difficulty: "medium",
-    points: 6,
+    points: 8,
     topic: "Bayesian Games",
     context: "A Cournot firm's optimal output when uncertain about a rival's cost type; it responds to the expected cost, weighting high- and low-cost possibilities by their probabilities.",
     hints: [
@@ -2024,7 +2022,7 @@ export const problems: Problem[] = [
     title: "Public Good Threshold Condition",
     latex: String.raw`v^* \bigl(F(v^*)\bigr)^{n-1} = c`,
     difficulty: "medium",
-    points: 5,
+    points: 7,
     topic: "Public Goods",
     context: "In private-provision games, a public good is funded only if someone's value exceeds a cutoff v*. This equilibrium condition equates the marginal contributor's value, weighted by the chance they are pivotal, to the cost c.",
     hints: [],
@@ -2034,7 +2032,7 @@ export const problems: Problem[] = [
     title: "Volunteer's Dilemma Mixed Strategy",
     latex: String.raw`p = 1 - \left(\frac{c}{v}\right)^{\frac{1}{n-1}}`,
     difficulty: "medium",
-    points: 4,
+    points: 9,
     topic: "Voting",
     context: "When n people could each provide a benefit v at private cost c, this gives the probability p each volunteers in equilibrium. As the group grows, each person volunteers less, so provision can fail despite more potential helpers.",
     hints: [
@@ -2046,7 +2044,7 @@ export const problems: Problem[] = [
     title: "Pivotal Juror Posterior",
     latex: String.raw`\Pr(G \mid \theta_1 = \theta_G,\, \theta_2 = \theta_G) = \frac{qp^2}{qp^2 + (1-q)(1-p)^2}`,
     difficulty: "hard",
-    points: 9,
+    points: 17,
     topic: "Voting",
     context: "Using Bayes' rule, this updates the probability a defendant is guilty after two jurors receive guilty signals. It shows how strategic voters should condition on being pivotal rather than trusting their own signal naively.",
     hints: [
@@ -2059,7 +2057,7 @@ export const problems: Problem[] = [
     title: "Planned Expenditure",
     latex: String.raw`E=\bar{C} + c(Y-T) + I(r) + G`,
     difficulty: "medium",
-    points: 2,
+    points: 5,
     topic: "Short-Run Macro",
     context: "Total desired spending in the economy: autonomous consumption, consumption from disposable income, investment (falling with interest rates), and government spending. The Keynesian-cross building block where output adjusts to meet planned demand.",
     hints: [
@@ -2071,7 +2069,7 @@ export const problems: Problem[] = [
     title: "Keynesian Multiplier",
     latex: String.raw`Y = \frac{1}{1-c}\left(\bar{C}-cT+I(r)+G\right)`,
     difficulty: "medium",
-    points: 4,
+    points: 6,
     topic: "Short-Run Macro",
     context: "Solving the Keynesian cross for equilibrium output. Because spending feeds income which feeds more spending, an autonomous demand change is amplified by 1/(1-c), where c is the marginal propensity to consume.",
     hints: [
@@ -2084,7 +2082,7 @@ export const problems: Problem[] = [
     title: "Tax Multiplier",
     latex: String.raw`\Delta Y = \frac{-c}{1-c}\,\Delta T`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Short-Run Macro",
     context: "A tax increase lowers output, but by less than an equal spending cut, because part of the tax hit is absorbed by reduced saving. The multiplier is -c/(1-c), smaller in magnitude than the spending multiplier.",
     hints: [
@@ -2097,7 +2095,7 @@ export const problems: Problem[] = [
     title: "Fisher Equation (Approximation)",
     latex: String.raw`i \simeq r + \pi^e`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Short-Run Macro",
     context: "The nominal interest rate roughly equals the real rate plus expected inflation. Lenders demand compensation for expected erosion of purchasing power, so this links money returns to real returns.",
     hints: [],
@@ -2107,7 +2105,7 @@ export const problems: Problem[] = [
     title: "Taylor Rule",
     latex: String.raw`R = \bar{r} + m_\pi(\pi - \pi^T) + m_Y(Y-\bar{Y})`,
     difficulty: "medium",
-    points: 5,
+    points: 6,
     topic: "Short-Run Macro",
     context: "A monetary policy rule: the central bank sets its interest rate above the neutral rate when inflation exceeds target or output exceeds potential. It formalizes how central banks systematically respond to economic conditions.",
     hints: [
@@ -2119,7 +2117,7 @@ export const problems: Problem[] = [
     title: "Money Demand (LM)",
     latex: String.raw`\left(\frac{M}{P}\right)^{d} = L(i^-, Y^+)`,
     difficulty: "medium",
-    points: 4,
+    points: 6,
     topic: "Short-Run Macro",
     context: "Real money demand falls when interest rates rise (holding cash is costlier) and rises with income (more transactions). The behavioural relationship underlying the LM curve in IS-LM analysis.",
     hints: [
@@ -2131,7 +2129,7 @@ export const problems: Problem[] = [
     title: "LM Curve",
     latex: String.raw`i = \frac{1}{\gamma}\left[\alpha - \frac{M}{P} + \beta Y\right]`,
     difficulty: "medium",
-    points: 8,
+    points: 9,
     topic: "Short-Run Macro",
     context: "Combinations of interest rate and output that clear the money market. Solving money-market equilibrium for the interest rate shows it rises with income and falls with the real money supply.",
     hints: [
@@ -2155,7 +2153,7 @@ export const problems: Problem[] = [
     title: "Fiscal Multiplier with MP Feedback",
     latex: String.raw`\frac{dY}{dG} = \frac{1}{1-c+\beta m_Y}`,
     difficulty: "hard",
-    points: 6,
+    points: 14,
     topic: "Short-Run Macro",
     context: "The spending multiplier shrinks once the central bank responds. As government spending raises output, the bank raises rates (via m_Y), crowding out investment and dampening the fiscal boost.",
     hints: [
@@ -2167,7 +2165,7 @@ export const problems: Problem[] = [
     title: "Liquidity-Trap Policy Rule",
     latex: String.raw`R = \max\left[\bar{r} + m_\pi(\pi - \pi^T) + m_Y(Y - \bar{Y}),\; r_{LB}\right]`,
     difficulty: "hard",
-    points: 7,
+    points: 12,
     topic: "Short-Run Macro",
     context: "The policy rate cannot fall below an effective lower bound r_LB. This shows the central bank's rate as the maximum of its desired rule and that floor, capturing the constraint that limits stimulus in deep slumps.",
     hints: [
@@ -2180,7 +2178,7 @@ export const problems: Problem[] = [
     title: "ZLB Output Ceiling",
     latex: String.raw`\tilde{Y} = \frac{1}{1-c}\left[\bar{C}-cT + I(-\pi^e) + G\right]`,
     difficulty: "hard",
-    points: 8,
+    points: 14,
     topic: "Short-Run Macro",
     context: "At the zero lower bound the nominal rate is stuck, so the real rate equals minus expected inflation. This pins down the maximum output achievable when monetary policy can no longer cut rates to boost demand.",
     hints: [
@@ -2194,7 +2192,7 @@ export const problems: Problem[] = [
     title: "Sticky-Price Aggregate Supply",
     latex: String.raw`P = P^e + a\,\frac{1-s}{s}(Y - \bar{Y})`,
     difficulty: "hard",
-    points: 5,
+    points: 13,
     topic: "Short-Run Macro",
     context: "With a fraction s of firms holding prices fixed at expectations and the remaining 1−s setting prices flexibly, the price level rises above expectations when output exceeds potential. It derives upward-sloping aggregate supply from the sticky-price share s.",
     hints: [
@@ -2207,7 +2205,7 @@ export const problems: Problem[] = [
     title: "Real Exchange Rate",
     latex: String.raw`\epsilon = \frac{eP}{P^*}`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Short-Run Macro",
     context: "The price of domestic goods relative to foreign, converting via the nominal exchange rate. It measures international competitiveness: a higher value makes home goods relatively expensive and dampens net exports.",
     hints: [
@@ -2220,7 +2218,7 @@ export const problems: Problem[] = [
     title: "Open-Economy IS with Risk Premium",
     latex: String.raw`Y = \frac{1}{1-c}\left[\bar{C} + I(r^* + \theta) + G + NX(\bar{e})\right]`,
     difficulty: "hard",
-    points: 6,
+    points: 13,
     topic: "Short-Run Macro",
     context: "Equilibrium output in an open economy where investment depends on the world rate plus a country risk premium θ, and net exports depend on the exchange rate. A rising risk premium contracts investment and output.",
     hints: [
@@ -2233,7 +2231,7 @@ export const problems: Problem[] = [
     title: "Cobb-Douglas Production Function",
     latex: String.raw`Y = AK^{\alpha}L^{1-\alpha}`,
     difficulty: "easy",
-    points: 5,
+    points: 3,
     topic: "Long-Run Macro",
     context: "Output from capital and labour with a technology factor A and constant returns to scale. The exponent α is capital's income share; the workhorse production function of growth theory.",
     hints: [],
@@ -2243,7 +2241,7 @@ export const problems: Problem[] = [
     title: "Factor Payment Exhaustion",
     latex: String.raw`Y = MPK \cdot K + MPL \cdot L`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Long-Run Macro",
     context: "Under constant returns and competitive markets, paying capital and labour their marginal products exactly uses up total output (Euler's theorem). There are no leftover profits to distribute.",
     hints: [
@@ -2255,7 +2253,7 @@ export const problems: Problem[] = [
     title: "Solow Equation of Motion",
     latex: String.raw`\Delta k = s f(k) - \delta k`,
     difficulty: "easy",
-    points: 4,
+    points: 1,
     topic: "Long-Run Macro",
     context: "Capital per worker grows when saved output exceeds depreciation. This law of motion drives the Solow model toward a steady state where investment just replaces worn-out capital.",
     hints: [
@@ -2267,7 +2265,7 @@ export const problems: Problem[] = [
     title: "Capital Accumulation with Population Growth",
     latex: String.raw`\Delta k = s f(k) - (\delta + n)k`,
     difficulty: "medium",
-    points: 4,
+    points: 5,
     topic: "Long-Run Macro",
     context: "With a growing workforce, capital per worker is diluted by new workers as well as depreciation. Saving must cover both (δ+n)k just to keep capital per worker constant.",
     hints: [
@@ -2279,7 +2277,7 @@ export const problems: Problem[] = [
     title: "Augmented Solow with Technological Progress",
     latex: String.raw`\Delta k = s f(k) - (\delta + n + g)k`,
     difficulty: "medium",
-    points: 4,
+    points: 5,
     topic: "Long-Run Macro",
     context: "Adding labour-augmenting technical progress g, capital per effective worker is diluted by depreciation, population growth, and technology growth together. Growth in living standards ultimately comes from g.",
     hints: [
@@ -2291,7 +2289,7 @@ export const problems: Problem[] = [
     title: "Steady-State Capital per Worker",
     latex: String.raw`k^* = \bar{A}^{\frac{1}{1-\alpha}} \left( \frac{s}{\delta} \right)^{\frac{1}{1-\alpha}}`,
     difficulty: "medium",
-    points: 8,
+    points: 10,
     topic: "Long-Run Macro",
     context: "The long-run capital-labour ratio in the basic Solow model, rising with the saving rate and falling with depreciation. Higher thrift builds a larger capital stock but not faster permanent growth.",
     hints: [
@@ -2304,7 +2302,7 @@ export const problems: Problem[] = [
     title: "Steady-State Output per Worker",
     latex: String.raw`y^* = \bar{A}^{\frac{1}{1-\alpha}} \left( \frac{s}{\delta + n} \right)^{\frac{\alpha}{1-\alpha}}`,
     difficulty: "hard",
-    points: 8,
+    points: 18,
     topic: "Long-Run Macro",
     context: "Long-run output per worker, increasing in the saving rate and technology and decreasing in depreciation and population growth. It explains cross-country income differences via saving and demographics.",
     hints: [
@@ -2317,7 +2315,7 @@ export const problems: Problem[] = [
     title: "Long-Run Capital Stock",
     latex: String.raw`K^* = \bar{A}^{\frac{1}{1-\alpha}} \left( \frac{s}{\delta + n} \right)^{\frac{1}{1-\alpha}} \bar{L}`,
     difficulty: "hard",
-    points: 8,
+    points: 17,
     topic: "Long-Run Macro",
     context: "The economy's total steady-state capital, scaling the per-worker result by the labour force. It shows aggregate capital grows with saving, technology, and workforce size.",
     hints: [
@@ -2330,7 +2328,7 @@ export const problems: Problem[] = [
     title: "Golden Rule Consumption",
     latex: String.raw`c^* = f(k^*) - (\delta + n)k^*`,
     difficulty: "medium",
-    points: 2,
+    points: 5,
     topic: "Long-Run Macro",
     context: "Steady-state consumption equals output minus the investment needed to maintain capital. Maximizing this over capital identifies the saving rate that delivers the highest sustainable consumption.",
     hints: [],
@@ -2340,7 +2338,7 @@ export const problems: Problem[] = [
     title: "Golden Rule Condition",
     latex: String.raw`f'(k^*) = MPK = \delta + n`,
     difficulty: "medium",
-    points: 2,
+    points: 5,
     topic: "Long-Run Macro",
     context: "The consumption-maximizing steady state occurs where capital's marginal product equals depreciation plus population growth. Beyond this point, extra capital costs more to maintain than it produces.",
     hints: [],
@@ -2350,7 +2348,7 @@ export const problems: Problem[] = [
     title: "Solow Transition Dynamics",
     latex: String.raw`g_k = s \cdot \frac{f(k)}{k} - (\delta + n)`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Long-Run Macro",
     context: "The growth rate of capital per worker equals saving times average product minus dilution. Because average product falls as capital rises, poorer economies grow faster — the convergence mechanism.",
     hints: [
@@ -2363,7 +2361,7 @@ export const problems: Problem[] = [
     title: "Growth Accounting per Hour",
     latex: String.raw`g_Y - g_H = g_A + \frac{1}{3}(g_K - g_H) + \frac{2}{3}(g_L - g_H)`,
     difficulty: "hard",
-    points: 5,
+    points: 14,
     topic: "Long-Run Macro",
     context: "Decomposes labour-productivity growth into technology (Solow residual) and capital deepening, using factor shares of 1/3 and 2/3. It attributes measured growth to inputs versus unexplained technical progress.",
     hints: [
@@ -2375,7 +2373,7 @@ export const problems: Problem[] = [
     title: "Simple Linear Regression Model",
     latex: String.raw`y_i = \beta_0 + \beta_1 x_i + u_i, \quad i = 1, \dots, n`,
     difficulty: "easy",
-    points: 5,
+    points: 3,
     topic: "OLS",
     context: "The basic model relating outcome y to a single regressor x plus a random error. It is the foundation of regression: β1 is the slope effect and u captures everything else affecting y.",
     hints: [],
@@ -2385,7 +2383,7 @@ export const problems: Problem[] = [
     title: "OLS Slope Estimator",
     latex: String.raw`\widehat{\beta}_1 = \frac{\sum_{i=1}^n (x_i - \bar{x}) y_i}{\sum_{i=1}^n (x_i - \bar{x})^2}`,
     difficulty: "medium",
-    points: 13,
+    points: 11,
     topic: "OLS",
     context: "The OLS formula for the slope in simple regression, written using the deviation of x from its mean times y. It measures how much y changes on average per unit increase in x.",
     hints: [
@@ -2400,7 +2398,7 @@ export const problems: Problem[] = [
     title: "OLS Slope Decomposition",
     latex: String.raw`\widehat{\beta}_1 = \beta_1 + \frac{\sum_{i=1}^n (x_i - \bar{x}) u_i}{\sum_{i=1}^n (x_i - \bar{x})^2}`,
     difficulty: "medium",
-    points: 13,
+    points: 11,
     topic: "OLS",
     context: "Shows the estimated slope equals the true slope plus an error term driven by the covariance between x and the disturbances. It reveals why OLS is unbiased only when regressors are uncorrelated with the errors.",
     hints: [
@@ -2415,7 +2413,7 @@ export const problems: Problem[] = [
     title: "iid Error Assumption",
     latex: String.raw`u_i \sim \text{iid}(0, \sigma^2)`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Econometrics",
     context: "The classical assumption that regression errors are independent, identically distributed draws with zero mean and constant variance. This underpins the standard properties and inference of OLS estimators.",
     hints: [
@@ -2428,7 +2426,7 @@ export const problems: Problem[] = [
     title: "Three-Point Slope Estimator",
     latex: String.raw`\widetilde{\beta}_1 = \frac{Y_3 + Y_1 - 2Y_2}{X_3 + X_1 - 2X_2}`,
     difficulty: "medium",
-    points: 7,
+    points: 9,
     topic: "Estimation",
     context: "An alternative slope estimator built from just three data points arranged symmetrically. It illustrates that many linear estimators exist, though OLS is typically the efficient choice.",
     hints: [
@@ -2441,7 +2439,7 @@ export const problems: Problem[] = [
     title: "General Linear Estimator",
     latex: String.raw`\beta_1^* = \left( \sum_{i=1}^n a_i Y_i \right) \left( \sum_{i=1}^n a_i X_i \right)^{-1}`,
     difficulty: "hard",
-    points: 9,
+    points: 14,
     topic: "Estimation",
     context: "A generic class of estimators forming a weighted combination of the outcomes, with arbitrary weights. OLS is the special case whose weights minimise variance among unbiased linear estimators.",
     hints: [
@@ -2453,7 +2451,7 @@ export const problems: Problem[] = [
     title: "Pairwise-Difference Estimator",
     latex: String.raw`\widetilde{\beta}_1 = \frac{2}{n} \left\{ \frac{Y_1 - Y_2}{X_1 - X_2} + \frac{Y_3 - Y_4}{X_3 - X_4} + \dots + \frac{Y_{n-1} - Y_n}{X_{n-1} - X_n} \right\}`,
     difficulty: "hard",
-    points: 15,
+    points: 19,
     topic: "Inference",
     context: "Estimates the slope by averaging slopes computed from disjoint pairs of observations. A simple, intuitive alternative to OLS that trades efficiency for transparency.",
     hints: [
@@ -2466,7 +2464,7 @@ export const problems: Problem[] = [
     title: "Split-Sample Slope Estimator",
     latex: String.raw`\bar{\beta}_1 = \frac{\bar{Y}_H - \bar{Y}_L}{\bar{X}_H - \bar{X}_L}`,
     difficulty: "easy",
-    points: 7,
+    points: 4,
     topic: "Inference",
     context: "Estimates the slope by splitting data into high-x and low-x groups and comparing their average outcomes. A crude but consistent way to gauge the relationship between x and y.",
     hints: [
@@ -2479,7 +2477,7 @@ export const problems: Problem[] = [
     title: "Low-Group Sample Means",
     latex: String.raw`\bar{X}_L = \frac{1}{N/2} \sum_{i=1}^{N/2} X_i, \quad \bar{Y}_L = \frac{1}{N/2} \sum_{i=1}^{N/2} Y_i`,
     difficulty: "medium",
-    points: 13,
+    points: 11,
     topic: "Inference",
     context: "Defines the average x and y within the lower half of the sample, used in the split-sample estimator. These group means anchor the comparison between low- and high-x observations.",
     hints: [
@@ -2493,7 +2491,7 @@ export const problems: Problem[] = [
     title: "Simple Two-Observation Estimator",
     latex: String.raw`\widetilde{\beta}_1 = \frac{Y_3 - Y_2}{X_3 - X_2}`,
     difficulty: "easy",
-    points: 7,
+    points: 4,
     topic: "Inference",
     context: "The most basic slope estimate: the change in y divided by the change in x between two points. It captures the geometric idea of slope but is highly sensitive to noise.",
     hints: [
@@ -2506,7 +2504,7 @@ export const problems: Problem[] = [
     title: "Belgian Earnings Regression",
     latex: String.raw`\widehat{\ln(\text{wage})} = \underset{\scriptscriptstyle(0.0347)}{5.0123} + \underset{\scriptscriptstyle(0.0153)}{0.1145}\,\textit{male} + \underset{\scriptscriptstyle(0.0064)}{0.1643}\,\textit{educ} + \underset{\scriptscriptstyle(0.0025)}{0.0343}\,\textit{exper} - \underset{\scriptscriptstyle(0.00006)}{0.00049}\,\textit{exper}^2`,
     difficulty: "hard",
-    points: 9,
+    points: 17,
     topic: "Heteroskedasticity",
     context: "An estimated log-wage equation (with standard errors) showing returns to being male, education, and experience, plus a diminishing experience effect. Coefficients approximate percentage effects on wages.",
     hints: [
@@ -2521,7 +2519,7 @@ export const problems: Problem[] = [
     title: "Food Expenditure Regression",
     latex: String.raw`\widehat{\log(\text{FOOD})} = \underset{\scriptscriptstyle(0.6805)}{4.7377} + \underset{\scriptscriptstyle(0.0899)}{0.3506} \log(\text{PDI}) - \underset{\scriptscriptstyle(0.1010)}{0.5086} \log(\text{PRICE})`,
     difficulty: "hard",
-    points: 7,
+    points: 15,
     topic: "Inference",
     context: "A log-log demand estimate where coefficients are elasticities: food spending rises about 0.35% per 1% income increase and falls with its own price. Illustrates income and price responsiveness.",
     hints: [
@@ -2535,7 +2533,7 @@ export const problems: Problem[] = [
     title: "TV-Watching Regression",
     latex: String.raw`ltvyest_i = \underset{\scriptscriptstyle(0.02)}{0.99} + \underset{\scriptscriptstyle(0.001)}{0.01}\,bmi_i + \underset{\scriptscriptstyle(0.011)}{0.018}\,age_i - \underset{\scriptscriptstyle(0.0005)}{0.0009}\,agesq_i - \underset{\scriptscriptstyle(0.012)}{0.034}\,female_i + U_i`,
     difficulty: "hard",
-    points: 5,
+    points: 14,
     topic: "Inference",
     context: "A fitted regression of TV-watching on body mass, age, and sex, with standard errors reported. Demonstrates interpreting multiple regressors and a quadratic age effect simultaneously.",
     hints: [
@@ -2547,7 +2545,7 @@ export const problems: Problem[] = [
     title: "Total and Residual Sum of Squares",
     latex: String.raw`\text{SST} = \sum_{i=1}^n (y_i - \bar{y})^2, \qquad \text{SSR} = \sum_{i=1}^n e_i^2`,
     difficulty: "easy",
-    points: 8,
+    points: 4,
     topic: "Inference",
     context: "SST measures total variation in y around its mean; SSR measures variation left unexplained by the model. Their ratio underlies goodness-of-fit measures like R-squared.",
     hints: [
@@ -2561,7 +2559,7 @@ export const problems: Problem[] = [
     title: "Conditional Mean Independence",
     latex: String.raw`\mathbb{E}[u_i \mid \text{exp}_i, \text{lon}_i] = 0`,
     difficulty: "easy",
-    points: 5,
+    points: 3,
     topic: "Inference",
     context: "The key exogeneity assumption that, given the regressors, the error has zero expected value. It is what allows OLS to recover unbiased causal or predictive effects.",
     hints: [
@@ -2575,7 +2573,7 @@ export const problems: Problem[] = [
     title: "Wald IV Estimator (Draft Lottery)",
     latex: String.raw`\widehat{\beta}_{IV} = \frac{\bar{y}^e - \bar{y}^n}{\hat{p}^e - \hat{p}^n}`,
     difficulty: "medium",
-    points: 11,
+    points: 10,
     topic: "Instrumental Variables",
     context: "Estimates a causal effect by dividing the difference in outcomes by the difference in treatment rates across instrument groups, as in the Vietnam draft-lottery study. It isolates variation driven purely by the instrument.",
     hints: [
@@ -2590,7 +2588,7 @@ export const problems: Problem[] = [
     title: "IV Slope as Covariance Ratio",
     latex: String.raw`\beta_1 = \frac{\mathrm{Cov}(Z, Y)}{\mathrm{Cov}(Z, X)}`,
     difficulty: "easy",
-    points: 6,
+    points: 3,
     topic: "Instrumental Variables",
     context: "Expresses the instrumental-variables slope as the covariance of instrument with outcome divided by covariance of instrument with the regressor. It shows IV extracts only the instrument-driven part of x.",
     hints: [
@@ -2603,7 +2601,7 @@ export const problems: Problem[] = [
     title: "Covariance with a Binary Instrument",
     latex: String.raw`\mathrm{Cov}(Z, W) = \pi(1 - \pi)\bigl[E(W \mid Z = 1) - E(W \mid Z = 0)\bigr]`,
     difficulty: "medium",
-    points: 8,
+    points: 9,
     topic: "Instrumental Variables",
     context: "For a binary instrument, its covariance with a variable reduces to the group probability spread times the difference in means across instrument values. A convenient building block for IV calculations.",
     hints: [
@@ -2616,7 +2614,7 @@ export const problems: Problem[] = [
     title: "Wald Estimator with a Binary Instrument",
     latex: String.raw`\beta_1 = \frac{E(Y \mid Z = 1) - E(Y \mid Z = 0)}{E(X \mid Z = 1) - E(X \mid Z = 0)}`,
     difficulty: "medium",
-    points: 6,
+    points: 9,
     topic: "Instrumental Variables",
     context: "With a 0/1 instrument, the IV estimate equals the outcome difference divided by the treatment difference between the two instrument groups. This is the classic Wald ratio for causal identification.",
     hints: [
@@ -2629,7 +2627,7 @@ export const problems: Problem[] = [
     title: "IV Estimator from Subsample Means",
     latex: String.raw`\widehat{\beta}_1^{IV} = \frac{\bar{y}_1 - \bar{y}_0}{\bar{x}_1 - \bar{x}_0}`,
     difficulty: "medium",
-    points: 10,
+    points: 9,
     topic: "Instrumental Variables",
     context: "Computes the IV slope from average outcomes and average regressor values in two instrument-defined subsamples. A practical version of the Wald estimator using group means.",
     hints: [
@@ -2643,7 +2641,7 @@ export const problems: Problem[] = [
     title: "Classical Measurement-Error Model",
     latex: String.raw`Y_i = \beta_0 + \beta_1 X_i^* + u_i, \quad X_i = X_i^* + e_i`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Measurement Error",
     context: "Models a mismeasured regressor as the true value plus random noise. This error biases OLS toward zero (attenuation), motivating instrumental-variable corrections.",
     hints: [],
@@ -2653,7 +2651,7 @@ export const problems: Problem[] = [
     title: "Second Proxy as an Instrument",
     latex: String.raw`Z_i = X_i^* + \varepsilon_i`,
     difficulty: "easy",
-    points: 4,
+    points: 1,
     topic: "Measurement Error",
     context: "A second noisy measurement of the true variable can serve as an instrument, since it correlates with the truth but has independent measurement error. This helps overcome attenuation bias.",
     hints: [
@@ -2665,7 +2663,7 @@ export const problems: Problem[] = [
     title: "Treatment Regression with Controls",
     latex: String.raw`Y_i = \alpha + \gamma D_i + \mathbf{x}_i^{\mathsf{T}} \boldsymbol{\beta} + u_i`,
     difficulty: "medium",
-    points: 11,
+    points: 10,
     topic: "Instrumental Variables",
     context: "A regression estimating a treatment effect (gamma) while adjusting for other covariates. Controls help isolate the treatment's effect from confounding characteristics.",
     hints: [
@@ -2678,7 +2676,7 @@ export const problems: Problem[] = [
     title: "Wage Equation with Ability",
     latex: String.raw`\log(wage) = \alpha + \beta_1\, educ + \beta_2\, ability + u`,
     difficulty: "easy",
-    points: 6,
+    points: 3,
     topic: "Proxy Variables",
     context: "A wage model including unobserved ability alongside education. Because ability is usually unmeasured, omitting it biases the estimated return to schooling.",
     hints: [],
@@ -2688,7 +2686,7 @@ export const problems: Problem[] = [
     title: "Log-Wage Structural Equation",
     latex: String.raw`lwage = \beta_0 + \beta_1 sch + \beta_2 exp + \beta_3 exp^2 + \beta_4 black + \beta_5 south + \beta_6 met + \varepsilon_i`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Instrumental Variables",
     context: "A detailed log-wage model with schooling, experience, and demographic controls. Schooling is suspected endogenous, motivating instrumental-variable estimation of its return.",
     hints: [
@@ -2700,7 +2698,7 @@ export const problems: Problem[] = [
     title: "Reduced-Form Schooling Equation",
     latex: String.raw`sch = \pi_0 + \pi_1 nearcol + \pi_2 exp + \pi_3 exp^2 + \pi_4 black + \pi_5 south + \pi_6 met + v`,
     difficulty: "medium",
-    points: 4,
+    points: 7,
     topic: "Instrumental Variables",
     context: "The first-stage regression predicting schooling from proximity to college (the instrument) and controls. A strong nearcol effect validates college distance as an instrument for education.",
     hints: [],
@@ -2722,7 +2720,7 @@ export const problems: Problem[] = [
     title: "Two-Equation Structural System",
     latex: String.raw`\begin{aligned} y_1 &= \beta_{10} + \alpha_1 y_2 + \beta_{11} x_1 + u_1 \\ y_2 &= \beta_{20} + \alpha_2 y_1 + \beta_{21} x_1 + u_2 \end{aligned}`,
     difficulty: "medium",
-    points: 15,
+    points: 11,
     topic: "Simultaneous Equations",
     context: "A generic simultaneous-equations model where two outcomes each enter the other's equation. Simultaneity requires system methods rather than plain OLS for consistent estimates.",
     hints: [
@@ -2734,7 +2732,7 @@ export const problems: Problem[] = [
     title: "Beer Demand and Supply System",
     latex: String.raw`\begin{aligned} \text{Demand: } y_1 &= \beta_{10} + \alpha_1 y_2 + \beta_{11} x + u_1 \\ \text{Supply: } y_2 &= \beta_{20} + \alpha_2 y_1 + \beta_{21} x + u_2 \end{aligned}`,
     difficulty: "medium",
-    points: 15,
+    points: 11,
     topic: "Simultaneous Equations",
     context: "Demand and supply equations where price and quantity are jointly determined. This classic identification problem shows why exogenous shifters are needed to separate the two curves.",
     hints: [
@@ -2747,7 +2745,7 @@ export const problems: Problem[] = [
     title: "Siblings' Study Hours System",
     latex: String.raw`\begin{aligned} y_{i1} &= \beta_{10} + \alpha_1 y_{i2} + \beta_{11} x_{i1} + \beta_{12} x_{i2} + u_{i1} \\ y_{i2} &= \beta_{20} + \alpha_2 y_{i1} + \beta_{21} x_{i1} + \beta_{22} x_{i2} + u_{i2} \end{aligned}`,
     difficulty: "hard",
-    points: 17,
+    points: 18,
     topic: "Simultaneous Equations",
     context: "A simultaneous system of two siblings' study hours, each influencing the other, with individual controls. Illustrates peer/interaction effects requiring simultaneous-equation techniques.",
     hints: [
@@ -2759,7 +2757,7 @@ export const problems: Problem[] = [
     title: "Labour Demand and Supply System",
     latex: String.raw`\begin{aligned} wage &= \beta_0 + \beta_1 hrs + \beta_2 Educ + \beta_3 Exper + \beta_4 kids + u \\ hrs &= \gamma_0 + \gamma_1 wage + \gamma_2 Educ + \gamma_3 Exper + \gamma_4 kids + v \end{aligned}`,
     difficulty: "hard",
-    points: 10,
+    points: 18,
     topic: "Simultaneous Equations",
     context: "A wage-hours system where wages and hours worked are mutually determined by demand and supply. Jointly determined outcomes make each equation's OLS estimate biased without instruments.",
     hints: [
@@ -2796,7 +2794,7 @@ export const problems: Problem[] = [
     title: "Women's Hours-Wage System",
     latex: String.raw`\begin{aligned} hours &= b_0 + b_1 wage + b_2 kids + u \\ wage &= c_0 + c_1 hours + c_2 kids + v \end{aligned}`,
     difficulty: "medium",
-    points: 7,
+    points: 10,
     topic: "Simultaneous Equations",
     context: "Hours worked and the wage rate feed back on each other: higher wages induce more work, and more experience raises wages. The simultaneity illustrates why labour-supply estimates need methods that handle mutual causation.",
     hints: [
@@ -2808,7 +2806,7 @@ export const problems: Problem[] = [
     title: "Within-Between Variance Decomposition",
     latex: String.raw`\sum_{i=1}^{N}\sum_{t=1}^{T}(y_{it}-\bar{y})^2 = \sum_{i=1}^{N}\sum_{t=1}^{T}(y_{it}-\bar{y}_i)^2 + \sum_{i=1}^{N}\sum_{t=1}^{T}(\bar{y}_i-\bar{y})^2`,
     difficulty: "hard",
-    points: 14,
+    points: 15,
     topic: "Panel Data",
     context: "Total variation in panel data splits into 'within' variation (how each unit changes over time) plus 'between' variation (how units differ on average). This decomposition underlies the choice between fixed- and random-effects estimators.",
     hints: [
@@ -2821,7 +2819,7 @@ export const problems: Problem[] = [
     title: "Fixed-Effects Panel Model",
     latex: String.raw`Y_{it} = \beta_0 + \beta_1 X_{it} + \alpha_i + \varepsilon_{it}`,
     difficulty: "easy",
-    points: 10,
+    points: 3,
     topic: "Panel Data",
     context: "A panel regression where each unit has its own intercept (alpha_i) absorbing all time-invariant traits. This controls for unobserved, unchanging characteristics, so the slope is identified purely from within-unit variation over time.",
     hints: [
@@ -2833,7 +2831,7 @@ export const problems: Problem[] = [
     title: "Crime-Rate Panel Regression",
     latex: String.raw`\text{crmrte}_{it} = \beta_0\,\mathbf{1}(t=2010) + \beta_1\,\text{police}_{it} + \beta_2\,\text{poverty}_{it} + a_i + u_{it}`,
     difficulty: "medium",
-    points: 10,
+    points: 7,
     topic: "Panel Data",
     context: "A fixed-effects model explaining city crime rates from policing and poverty while a unit-specific term absorbs fixed local features. It isolates how changes in policing relate to crime, netting out permanent differences between cities.",
     hints: [
@@ -2846,7 +2844,7 @@ export const problems: Problem[] = [
     title: "Difference-in-Differences Model",
     latex: String.raw`\text{wage} = \beta_0 + \beta_1\,\text{after} + \beta_2\,\text{women} + \beta_3(\text{after}\times\text{women}) + u`,
     difficulty: "medium",
-    points: 5,
+    points: 7,
     topic: "Treatment Effects",
     context: "Estimates a policy effect by comparing the before-after change for a treated group (women) against an untreated group. The interaction coefficient beta_3 is the causal effect, differencing out common trends and fixed group gaps.",
     hints: [
@@ -2859,7 +2857,7 @@ export const problems: Problem[] = [
     title: "Triple-Difference Model",
     latex: String.raw`\text{wage} = \gamma_0 + \gamma_1\,\text{after} + \gamma_2\,\text{women} + \gamma_3(\text{after}\times\text{women}) + \gamma_4 F + \gamma_5(\text{after}\times F) + \gamma_6(\text{women}\times F) + \gamma_7(\text{after}\times\text{women}\times F) + u`,
     difficulty: "hard",
-    points: 6,
+    points: 13,
     topic: "Treatment Effects",
     context: "Extends difference-in-differences with a third dimension (F), comparing the treatment effect across an extra subgroup. The triple-interaction coefficient nets out confounding trends that a simple DiD might wrongly attribute to the policy.",
     hints: [
@@ -2872,7 +2870,7 @@ export const problems: Problem[] = [
     title: "Bicycle-Theft Fixed-Effects Model",
     latex: String.raw`\text{Theft}_{it} = \alpha_i + \beta_1\,\text{Unem}_{it} + \beta_2\,\text{Youth}_{it} + u_{it}`,
     difficulty: "easy",
-    points: 10,
+    points: 3,
     topic: "Panel Data",
     context: "A fixed-effects panel linking local bicycle thefts to unemployment and youth share, with alpha_i absorbing permanent area differences. It shows whether within-area economic changes drive crime, not just cross-area comparisons.",
     hints: [
@@ -2884,7 +2882,7 @@ export const problems: Problem[] = [
     title: "Dynarski Difference-in-Differences",
     latex: String.raw`S = \alpha + \beta\,(\text{father\_deceased}\times\text{Before}) + \delta\,\text{father\_deceased} + \theta\,\text{Before} + v`,
     difficulty: "medium",
-    points: 9,
+    points: 7,
     topic: "Treatment Effects",
     context: "A difference-in-differences design evaluating how a student-aid program affected schooling of children with deceased fathers. The interaction coefficient beta captures the policy's causal effect on educational attainment.",
     hints: [
@@ -2897,7 +2895,7 @@ export const problems: Problem[] = [
     title: "First-Differenced Model with Time Dummy",
     latex: String.raw`\text{weight}_{it} = \delta D_t + x_{it}'\beta + a_i + u_{it}`,
     difficulty: "medium",
-    points: 8,
+    points: 6,
     topic: "Panel Data",
     context: "A panel model estimated in first differences to eliminate the fixed effect a_i, with a time dummy capturing aggregate shifts. Differencing removes unobserved individual heterogeneity so the slope reflects genuine within-unit change.",
     hints: [
@@ -2909,7 +2907,7 @@ export const problems: Problem[] = [
     title: "Panel Cobb-Douglas Production Function",
     latex: String.raw`\ln Y_{it} = \alpha + \beta\ln X_{it} + \gamma\ln S_{it} + u_{it}`,
     difficulty: "easy",
-    points: 11,
+    points: 3,
     topic: "Panel Data",
     context: "A log-linear production function estimated across firms and time, giving output elasticities directly as coefficients. Panel structure lets unobserved firm heterogeneity be controlled while estimating returns to inputs.",
     hints: [],
@@ -2919,7 +2917,7 @@ export const problems: Problem[] = [
     title: "Second-Differenced Regressor",
     latex: String.raw`(Y_{i3}-Y_{i2})-(Y_{i2}-Y_{i1})`,
     difficulty: "easy",
-    points: 6,
+    points: 2,
     topic: "Panel Data",
     context: "Differencing a variable twice measures the change in its change, i.e. acceleration. In panel and time-series work it removes both fixed levels and linear trends, isolating turning points in the series.",
     hints: [],
@@ -2929,7 +2927,7 @@ export const problems: Problem[] = [
     title: "Latent Variable Binary Choice Model",
     latex: String.raw`\text{First}_i = \begin{cases} 1 & \text{if } \beta_0 + \beta_1 \text{Female}_i + U_i > 0 \\ 0 & \text{otherwise} \end{cases}`,
     difficulty: "medium",
-    points: 8,
+    points: 10,
     topic: "Discrete Choice",
     context: "A binary outcome is driven by an unobserved continuous 'index' crossing zero. This latent-variable framing gives probit and logit their structure: we see only the 0/1 choice, but model the underlying propensity.",
     hints: [
@@ -2942,7 +2940,7 @@ export const problems: Problem[] = [
     title: "Probit Model",
     latex: String.raw`\Pr(Y_i = 1 \mid HI_i) = \Phi(\alpha_0 + \alpha_1 HI_i)`,
     difficulty: "easy",
-    points: 8,
+    points: 4,
     topic: "Discrete Choice",
     context: "Models the probability of a yes/no outcome as the normal CDF of a linear index. It keeps predicted probabilities between 0 and 1, unlike a linear probability model, and is estimated by maximum likelihood.",
     hints: [
@@ -2969,7 +2967,7 @@ export const problems: Problem[] = [
     title: "AR(1) Process with Normal Innovations",
     latex: String.raw`z_t = \rho z_{t-1} + \varepsilon_t, \qquad \varepsilon_t \sim NID(0, \sigma^2)`,
     difficulty: "easy",
-    points: 9,
+    points: 3,
     topic: "Time Series",
     context: "A first-order autoregression: today's value is a fraction rho of yesterday's plus a fresh normal shock. It is the workhorse model of persistence, stationary when |rho|<1, capturing how disturbances fade gradually.",
     hints: [
@@ -2982,7 +2980,7 @@ export const problems: Problem[] = [
     title: "Quadratic Price-Adjustment Cost",
     latex: String.raw`C_t = \lambda(\Delta p_t - \Delta p_t^*)^2 + (1-\lambda)(\Delta p_t - \Delta p_{t-1})^2`,
     difficulty: "medium",
-    points: 7,
+    points: 6,
     topic: "Time Series",
     context: "Firms face costs both for deviating from their target price change and from last period's price change. Balancing these costs generates sluggish, smoothed price adjustment, a microfoundation for inflation inertia.",
     hints: [
@@ -2994,7 +2992,7 @@ export const problems: Problem[] = [
     title: "ADL(1,1) Model",
     latex: String.raw`\Delta p_t = \beta_0 + \beta_1 \Delta m_t + \beta_2 \Delta m_{t-1} + \beta_3 \Delta p_{t-1} + u_t`,
     difficulty: "medium",
-    points: 8,
+    points: 7,
     topic: "Time Series",
     context: "An autoregressive distributed-lag model: inflation depends on current and lagged money growth plus its own lag. It flexibly captures short-run dynamics and, in the long run, embeds a steady-state relationship.",
     hints: [
@@ -3006,7 +3004,7 @@ export const problems: Problem[] = [
     title: "Bivariate VAR",
     latex: String.raw`\begin{aligned} \Delta p_t &= \alpha_{p0} + \alpha_{p1}\Delta m_t + \alpha_{p2}\Delta p_{t-1} + \alpha_{p3}\Delta m_{t-1} + \varepsilon_{pt} \\ \Delta m_t &= \alpha_{m0} + \alpha_{m1}\Delta p_t + \alpha_{m2}\Delta p_{t-1} + \alpha_{m3}\Delta m_{t-1} + \varepsilon_{mt} \end{aligned}`,
     difficulty: "hard",
-    points: 18,
+    points: 19,
     topic: "Time Series",
     context: "A two-variable vector autoregression where inflation and money growth each depend on current and lagged values of both. VARs let data determine the dynamic interrelationships without imposing which variable is exogenous.",
     hints: [
@@ -3020,7 +3018,7 @@ export const problems: Problem[] = [
     title: "Expectations-Augmented Phillips Curve",
     latex: String.raw`\pi_t - \pi_t^e = \beta(U_t - \mu) + e_t`,
     difficulty: "medium",
-    points: 7,
+    points: 6,
     topic: "Time Series",
     context: "Inflation surprises (actual minus expected) relate to the unemployment gap from its natural rate mu. It embeds the natural-rate hypothesis: there is no permanent inflation-unemployment trade-off once expectations adjust.",
     hints: [],
@@ -3030,7 +3028,7 @@ export const problems: Problem[] = [
     title: "AR(2) Process",
     latex: String.raw`y_t = \alpha + \beta_1 y_{t-1} + \beta_2 y_{t-2} + \varepsilon_t`,
     difficulty: "easy",
-    points: 9,
+    points: 3,
     topic: "Time Series",
     context: "A second-order autoregression where today's value depends on the two previous periods. The extra lag lets the series display richer dynamics such as cycles or oscillations, unlike a plain AR(1).",
     hints: [
@@ -3042,7 +3040,7 @@ export const problems: Problem[] = [
     title: "Second Difference Operator",
     latex: String.raw`\Delta^2 vc_t = \Delta vc_t - \Delta vc_{t-1} = vc_t - 2 vc_{t-1} + vc_{t-2}`,
     difficulty: "medium",
-    points: 7,
+    points: 6,
     topic: "Time Series",
     context: "The second difference equals the change in the change, expanding to a weighted combination of three consecutive values. Applied twice, differencing removes quadratic trends and helps render a series stationary.",
     hints: [
@@ -3054,7 +3052,7 @@ export const problems: Problem[] = [
     title: "AR(1) with AR(1) Errors",
     latex: String.raw`Y_t = \beta_0 + \beta_1 Y_{t-1} + \varepsilon_t, \qquad \varepsilon_t = \phi \varepsilon_{t-1} + v_t`,
     difficulty: "medium",
-    points: 9,
+    points: 7,
     topic: "Time Series",
     context: "An autoregressive model whose error term is itself autocorrelated. This serial correlation in residuals biases inference if ignored, and signals the dynamic specification may be incomplete.",
     hints: [
@@ -3066,7 +3064,7 @@ export const problems: Problem[] = [
     title: "AR(1) Autocorrelation Function",
     latex: String.raw`\mathrm{corr}(Y_t, Y_{t-h}) = \beta_1^h, \quad h = 1, 2, \dots`,
     difficulty: "easy",
-    points: 8,
+    points: 3,
     topic: "Time Series",
     context: "For a stationary AR(1), the correlation between observations h periods apart is beta_1 raised to the power h. It decays geometrically, showing how persistence fades smoothly as the time gap widens.",
     hints: [
@@ -3078,7 +3076,7 @@ export const problems: Problem[] = [
     title: "Autoregression with Exogenous Regressor",
     latex: String.raw`Y_t = \beta_0 + \beta_1 Y_{t-1} + \gamma X_t + u_t`,
     difficulty: "easy",
-    points: 6,
+    points: 3,
     topic: "Time Series",
     context: "An autoregressive model augmented with an external explanatory variable X. It combines a variable's own momentum with the influence of outside drivers, blending persistence and structural effects.",
     hints: [],
@@ -3088,7 +3086,7 @@ export const problems: Problem[] = [
     title: "ADL(1,1) Consumption Model",
     latex: String.raw`c_t = \beta_0 + \beta_1 y_t + \beta_2 y_{t-1} + \beta_3 c_{t-1} + \varepsilon_t`,
     difficulty: "medium",
-    points: 8,
+    points: 7,
     topic: "Time Series",
     context: "An autoregressive distributed-lag consumption function: spending depends on current and past income and on its own lag. It captures habit-like smoothing and yields a long-run marginal propensity to consume.",
     hints: [
@@ -3100,7 +3098,7 @@ export const problems: Problem[] = [
     title: "Trend-Stationary AR(1) Model",
     latex: String.raw`lCO2_t = \alpha_0 + \alpha_1 t + \alpha_2\, lCO2_{t-1} + u_t`,
     difficulty: "medium",
-    points: 5,
+    points: 6,
     topic: "Time Series",
     context: "Log CO2 modelled with a deterministic time trend plus an autoregressive term. If the series fluctuates around a trend rather than wandering, it is trend-stationary, meaning shocks are temporary around a predictable path.",
     hints: [],
@@ -3110,7 +3108,7 @@ export const problems: Problem[] = [
     title: "Augmented Dickey-Fuller Regression",
     latex: String.raw`\widehat{\Delta SweER_t} = \underset{\scriptscriptstyle(0.142)}{0.332} - \underset{\scriptscriptstyle(0.0191)}{0.0436}\, SweER_{t-1} + \underset{\scriptscriptstyle(0.084)}{0.421}\, \Delta SweER_{t-1}`,
     difficulty: "hard",
-    points: 10,
+    points: 16,
     topic: "Unit Roots",
     context: "An estimated ADF test regression (with standard errors) for a unit root in an exchange rate. A significantly negative coefficient on the lagged level rejects a random walk, implying the series is stationary.",
     hints: [
@@ -3124,7 +3122,7 @@ export const problems: Problem[] = [
     title: "Regression with Trend and Lag",
     latex: String.raw`y_t = \alpha + \beta t + \gamma y_{t-1} + \varepsilon_t`,
     difficulty: "easy",
-    points: 9,
+    points: 3,
     topic: "Time Series",
     context: "A time-series regression combining a deterministic trend with a lagged dependent variable. It distinguishes trend-stationary behaviour from a unit root, a key step in diagnosing whether shocks are permanent.",
     hints: [
@@ -3148,7 +3146,7 @@ export const problems: Problem[] = [
     title: "PPP Cointegrating Regression",
     latex: String.raw`e_t = 2.645 + 0.987\, r_t + \hat{u}_t`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Cointegration",
     context: "An estimated long-run relationship linking a nominal exchange rate to relative prices, testing purchasing power parity: the near-unit slope suggests prices and the exchange rate move together over time, i.e. they are cointegrated.",
     hints: [
@@ -3160,7 +3158,7 @@ export const problems: Problem[] = [
     title: "Error-Correction Model",
     latex: String.raw`\Delta e_t = \underset{\scriptscriptstyle(0.336)}{0.913} + \underset{\scriptscriptstyle(0.121)}{1.647}\, \Delta r_t - \underset{\scriptscriptstyle(0.194)}{0.851}\, \Delta r_{t-1} - \underset{\scriptscriptstyle(0.102)}{0.275}(e_{t-1} - r_{t-1}) + \hat{\varepsilon}_t`,
     difficulty: "hard",
-    points: 13,
+    points: 16,
     topic: "Cointegration",
     context: "An estimated model where the exchange rate's short-run changes respond to price changes plus a correction term that pulls it back toward its long-run equilibrium; the negative coefficient measures how fast deviations are undone.",
     hints: [
@@ -3175,7 +3173,7 @@ export const problems: Problem[] = [
     title: "Spurious Cash-Demand Regression",
     latex: String.raw`\widehat{\log M_t} = \underset{\scriptscriptstyle(0.26)}{0.596} + \underset{\scriptscriptstyle(0.026)}{1.10}\, \log C_t`,
     difficulty: "medium",
-    points: 7,
+    points: 10,
     topic: "Cointegration",
     context: "An example of a spurious regression: two trending (non-stationary) series appear strongly related, but the tight fit is an artifact of shared trends, not a genuine economic link — a classic time-series pitfall.",
     hints: [
@@ -3203,7 +3201,7 @@ export const problems: Problem[] = [
     title: "ADF with Lagged Differences",
     latex: String.raw`\Delta \log(\text{price}_t) = \underset{\scriptscriptstyle(0.0198)}{0.0482} + \underset{\scriptscriptstyle(0.00003)}{0.00005}\, t - \underset{\scriptscriptstyle(0.0042)}{0.0094}\log(\text{price}_{t-1}) + \sum_{j=1}^{12} \widehat{\gamma}_j\, \Delta \log(\text{price}_{t-j})`,
     difficulty: "hard",
-    points: 17,
+    points: 18,
     topic: "Unit Roots",
     context: "An Augmented Dickey-Fuller regression testing whether a price series has a unit root (is non-stationary), including a trend and lagged differences to soak up serial correlation so the test is valid.",
     hints: [
@@ -3232,7 +3230,7 @@ export const problems: Problem[] = [
     title: "Public-Good Tree Utility",
     latex: String.raw`U = 4\log(X) + 2\log(T)`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Game Theory",
     context: "A player's utility from a private good X and a shared public good T (e.g. trees), with log form giving diminishing returns; used in game-theory models of voluntary contribution to public goods.",
     hints: [],
@@ -3255,7 +3253,7 @@ export const problems: Problem[] = [
     title: "Ordered Cost Parameters",
     latex: String.raw`\lambda_1 > \lambda_2 > \cdots > \lambda_n > 1`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Game Theory",
     context: "A ranking of players by their cost sensitivity parameters, all exceeding one; ordering the types this way structures the analysis of who acts first or contributes most in a game.",
     hints: [],
@@ -3265,7 +3263,7 @@ export const problems: Problem[] = [
     title: "Rivals' Aggregate Pollution",
     latex: String.raw`Q_{-i} = \sum_{k \neq i} q_k`,
     difficulty: "easy",
-    points: 6,
+    points: 3,
     topic: "Game Theory",
     context: "The total pollution (or output) produced by everyone except player i — the strategic externality each player reacts to when choosing their own emissions in a game.",
     hints: [
@@ -3288,7 +3286,7 @@ export const problems: Problem[] = [
     title: "Team Output",
     latex: String.raw`y(e) = \sum_{i=1}^{n} e_i`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Game Theory",
     context: "Total team output is simply the sum of individual efforts, so each member's contribution adds directly but is enjoyed by all — the setup that generates free-riding in team production.",
     hints: [
@@ -3300,7 +3298,7 @@ export const problems: Problem[] = [
     title: "Relative Consumption Utility",
     latex: String.raw`U_i(x_i, x_j) = (x_i - \alpha_i x_j)^{\frac{1}{2}} - c x_i`,
     difficulty: "medium",
-    points: 6,
+    points: 9,
     topic: "Game Theory",
     context: "Utility depending not just on own consumption but on it relative to a rival's, minus a cost — modeling envy or status concerns where others' consumption erodes your satisfaction.",
     hints: [
@@ -3312,7 +3310,7 @@ export const problems: Problem[] = [
     title: "Conspicuous Consumption Payoff",
     latex: String.raw`u_i(x_i, z_i, z_j) = x_i - \frac{1}{2} x_i^2 + \alpha z_i + \lambda (z_i - z_j) \mathbf{1}_{z_i < z_j}`,
     difficulty: "hard",
-    points: 11,
+    points: 14,
     topic: "Game Theory",
     context: "A payoff for status-seeking: ordinary utility from consumption plus a bonus from visible spending, with an extra penalty when you visibly consume less than a rival — capturing keeping-up-with-the-Joneses.",
     hints: [
@@ -3325,7 +3323,7 @@ export const problems: Problem[] = [
     title: "Truncated Linear Inverse Demand",
     latex: String.raw`p(q) = \begin{cases} a - q & q \leq a \\ 0 & q > a \end{cases}`,
     difficulty: "medium",
-    points: 7,
+    points: 10,
     topic: "Oligopoly",
     context: "A linear demand curve where price falls as quantity rises but cannot go negative — it hits zero once the market is saturated. A standard building block for oligopoly models.",
     hints: [
@@ -3338,7 +3336,7 @@ export const problems: Problem[] = [
     title: "Cournot Duopoly Inverse Demand",
     latex: String.raw`p = \max\{1 - q_1 - q_2, \, 0\}`,
     difficulty: "easy",
-    points: 5,
+    points: 3,
     topic: "Oligopoly",
     context: "Market price in a two-firm Cournot model, set by combined output and floored at zero: the more both firms produce, the lower the price they jointly face.",
     hints: [
@@ -3350,7 +3348,7 @@ export const problems: Problem[] = [
     title: "Hotelling Consumer Payoff",
     latex: String.raw`v - (l - x_i)^2\, t - p_i`,
     difficulty: "medium",
-    points: 2,
+    points: 5,
     topic: "Oligopoly",
     context: "A consumer's payoff in Hotelling spatial competition: gross value minus a quadratic 'travel' cost of distance from the firm's location and minus its price — capturing preference for nearby or better-matched products.",
     hints: [],
@@ -3360,7 +3358,7 @@ export const problems: Problem[] = [
     title: "Probability of Capture",
     latex: String.raw`p_l r_l^2 + p_a r_a^2 + p_s r_s^2`,
     difficulty: "medium",
-    points: 3,
+    points: 5,
     topic: "Game Theory",
     context: "An expected value combining probabilities of different states with squared payoff terms, used in a game-theory model to compute the likelihood of an outcome like capture or success across scenarios.",
     hints: [],
@@ -3370,7 +3368,7 @@ export const problems: Problem[] = [
     title: "Mixed-Strategy Indifference Conditions",
     latex: String.raw`\begin{aligned} F_2(e_1 + \tau) &= \frac{\pi_1 + e_1}{B} \\ F_1(e_2 - \tau) &= \frac{\pi_2 + e_2}{B} \end{aligned}`,
     difficulty: "hard",
-    points: 13,
+    points: 19,
     topic: "Game Theory",
     context: "The indifference conditions pinning down a mixed-strategy equilibrium in a contest: each player randomizes so that rivals are indifferent across efforts, equating expected marginal gains via the rivals' effort distributions.",
     hints: [
@@ -3383,7 +3381,7 @@ export const problems: Problem[] = [
     title: "Effort Handicap Parameter",
     latex: String.raw`\tau \equiv a_1 - a_2 - \phi`,
     difficulty: "easy",
-    points: 6,
+    points: 2,
     topic: "Game Theory",
     context: "A parameter measuring the net asymmetry between two contestants — the difference in their abilities adjusted by a handicap — that shifts each player's effective advantage in a contest game.",
     hints: [
@@ -3395,7 +3393,7 @@ export const problems: Problem[] = [
     title: "Number Game Payoff",
     latex: String.raw`u_1(x_1, x_2) = \begin{cases} x_1 & x_1 > x_2 \text{ and } x_2 < 10 \\ x_1 & x_1 < x_2 \text{ and } x_2 = 10 \\ 0 & \text{otherwise} \end{cases}`,
     difficulty: "hard",
-    points: 11,
+    points: 18,
     topic: "Game Theory",
     context: "A payoff rule for a strategic number-guessing game with quirky tie-breaking around the number 10, designed to illustrate how best responses and equilibria depend on discontinuous, rule-based payoffs.",
     hints: [
@@ -3408,7 +3406,7 @@ export const problems: Problem[] = [
     title: "Matching Payoff Function",
     latex: String.raw`u_2(x_1, x_2) = \begin{cases} 1 & x_2 = x_1 \\ 0 & \text{otherwise} \end{cases}`,
     difficulty: "easy",
-    points: 7,
+    points: 4,
     topic: "Game Theory",
     context: "A coordination payoff: player 2 wins only by exactly matching player 1's choice, otherwise gets nothing — a matching game where the incentive is to anticipate and align with the other.",
     hints: [
@@ -3421,7 +3419,7 @@ export const problems: Problem[] = [
     title: "Present Value of a Geometric Stream",
     latex: String.raw`\sum_{t=0}^{\infty} r^t = \frac{1}{1-r}`,
     difficulty: "easy",
-    points: 8,
+    points: 4,
     topic: "Repeated Games",
     context: "The geometric series formula giving the present value of a constant payoff received every period forever; foundational for discounting future payoffs in repeated games and asset pricing.",
     hints: [
@@ -3435,7 +3433,7 @@ export const problems: Problem[] = [
     title: "Even-Period Discounted Sum",
     latex: String.raw`\sum_{t=0}^{\infty} r^{2t} = \frac{1}{1-r^2}`,
     difficulty: "easy",
-    points: 10,
+    points: 4,
     topic: "Repeated Games",
     context: "The discounted sum of payoffs received only in even periods, a geometric series in the squared discount factor — used when a strategy delivers rewards on alternating rounds of a repeated game.",
     hints: [
@@ -3449,7 +3447,7 @@ export const problems: Problem[] = [
     title: "Normalized Discounted Repeated-Game Payoff",
     latex: String.raw`U_i\bigl((a_t)_t\bigr) = (1-\delta)\sum_{t=0}^{\infty} \delta^t\, u_i(a_t)`,
     difficulty: "medium",
-    points: 12,
+    points: 11,
     topic: "Repeated Games",
     context: "The normalized average payoff in a repeated game: the (1-δ) factor rescales the discounted sum so it's comparable to a single-period payoff, making patience effects easier to interpret.",
     hints: [
@@ -3462,7 +3460,7 @@ export const problems: Problem[] = [
     title: "Bertrand Profit of the Low-Cost Firm",
     latex: String.raw`\pi_1(p_1,p_2) = \begin{cases} (p_1-c_1)\,Q(p_1) & \text{if } p_1 < p_2 \\ 0 & \text{otherwise} \end{cases}`,
     difficulty: "medium",
-    points: 9,
+    points: 10,
     topic: "Bertrand Competition",
     context: "Profit for the cheaper firm in Bertrand price competition: it captures the whole market by undercutting, earning margin times demand only when it strictly sets the lower price.",
     hints: [
@@ -3475,7 +3473,7 @@ export const problems: Problem[] = [
     title: "Bertrand Profit of the Rival Firm",
     latex: String.raw`\pi_2(p_1,p_2) = \begin{cases} (p_2-c_2)\,Q(p_2) & \text{if } p_2 \leq p_1 \\ 0 & \text{otherwise} \end{cases}`,
     difficulty: "medium",
-    points: 10,
+    points: 11,
     topic: "Bertrand Competition",
     context: "The rival firm's profit in Bertrand competition, winning all demand when its price weakly undercuts; the tie-breaking asymmetry with the low-cost firm shapes the equilibrium where price is driven to cost.",
     hints: [
@@ -3489,7 +3487,7 @@ export const problems: Problem[] = [
     title: "Monopoly Price",
     latex: String.raw`p^{M} = \operatorname*{arg\,max}_{p \geq 0}\, (p-c)\,Q(p)`,
     difficulty: "medium",
-    points: 6,
+    points: 8,
     topic: "Bertrand Competition",
     context: "The profit-maximizing monopoly price, chosen to maximize margin times quantity demanded; it serves as the benchmark upper bound firms would charge absent competitive pressure.",
     hints: [
@@ -3502,7 +3500,7 @@ export const problems: Problem[] = [
     title: "Cournot Inverse Demand",
     latex: String.raw`P(Q) = \max(A - Q,\, 0), \qquad Q = q_1 + q_2`,
     difficulty: "easy",
-    points: 3,
+    points: 2,
     topic: "Cournot Competition",
     context: "Market price in Cournot competition as a function of total quantity produced by both firms, floored at zero — the demand side that firms internalize when choosing outputs strategically.",
     hints: [
@@ -3514,7 +3512,7 @@ export const problems: Problem[] = [
     title: "Stochastic Inverse Demand",
     latex: String.raw`P(Q) = \max(\alpha_t - Q,\, 0)`,
     difficulty: "medium",
-    points: 4,
+    points: 5,
     topic: "Repeated Games",
     context: "Market price falls one-for-one as total output Q rises, but a random demand shock α_t shifts the whole curve each period; price never goes below zero. Captures uncertain demand in repeated oligopoly games.",
     hints: [
@@ -3536,7 +3534,7 @@ export const problems: Problem[] = [
     title: "Quadratic Voter Payoff",
     latex: String.raw`1 - (l_i - x_j)^2`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Voting",
     context: "A voter earns a baseline of 1 minus the squared gap between their ideal point and the chosen policy, so payoff is highest when the policy exactly matches their preference and declines sharply as it diverges.",
     hints: [],
@@ -3546,7 +3544,7 @@ export const problems: Problem[] = [
     title: "Cost-of-Voting Payoff",
     latex: String.raw`1 - (y_j - x_i)^2 - c`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Voting",
     context: "Payoff from a policy outcome minus the squared distance from the voter's ideal, less a fixed cost c of actually voting. Explains why some rational citizens abstain when voting is costly.",
     hints: [],
@@ -3556,7 +3554,7 @@ export const problems: Problem[] = [
     title: "Vote with Cases",
     latex: String.raw`v_i = \begin{cases} 1 & \text{adopt the policy} \\ -1 & \text{maintain status quo} \\ 0 & \text{abstain} \end{cases}`,
     difficulty: "medium",
-    points: 10,
+    points: 11,
     topic: "Social Choice",
     context: "Formalizes a single citizen's choice as three options: vote for the policy (+1), for the status quo (−1), or abstain (0). Basis for aggregating individual votes into a collective decision.",
     hints: [
@@ -3569,7 +3567,7 @@ export const problems: Problem[] = [
     title: "Voting Rule as a Mapping",
     latex: String.raw`f : \{1, 0, -1\}^n \to \{1, 0, -1\}`,
     difficulty: "medium",
-    points: 5,
+    points: 7,
     topic: "Social Choice",
     context: "A voting rule is a function taking every citizen's ballot (yes/abstain/no) and returning one collective decision. This abstraction lets social choice theory study which rules are fair or consistent.",
     hints: [
@@ -3581,7 +3579,7 @@ export const problems: Problem[] = [
     title: "Neutrality Axiom",
     latex: String.raw`f(v_1, \ldots, v_n) = -f(-v_1, \ldots, -v_n)`,
     difficulty: "medium",
-    points: 4,
+    points: 6,
     topic: "Social Choice",
     context: "A voting rule treats both alternatives symmetrically: flipping everyone's vote flips the outcome. No option gets a built-in advantage, ruling out bias toward the status quo.",
     hints: [],
@@ -3591,7 +3589,7 @@ export const problems: Problem[] = [
     title: "Anonymity Axiom",
     latex: String.raw`f(v_1, \ldots, v_n) = f(w_1, \ldots, w_n)`,
     difficulty: "medium",
-    points: 4,
+    points: 5,
     topic: "Social Choice",
     context: "A voting rule depends only on the votes cast, not on who casts them, so relabeling voters leaves the outcome unchanged. Every voter counts equally.",
     hints: [],
@@ -3601,7 +3599,7 @@ export const problems: Problem[] = [
     title: "Counting Votes in Favour",
     latex: String.raw`|\{i : v_i = 1\}| = |\{i : v'_i = 1\}|`,
     difficulty: "medium",
-    points: 4,
+    points: 6,
     topic: "Social Choice",
     context: "Two vote profiles with the same number of supporters are treated identically, reflecting that under anonymous rules only vote tallies matter, not individual identities.",
     hints: [],
@@ -3611,7 +3609,7 @@ export const problems: Problem[] = [
     title: "Balanced Profile Yields No Decision",
     latex: String.raw`\sum_i v'_i = 0 \implies f(v') = 0`,
     difficulty: "medium",
-    points: 5,
+    points: 6,
     topic: "Social Choice",
     context: "If votes for and against exactly cancel out, a neutral and anonymous rule must return no decision (abstention). Ties produce deadlock rather than an arbitrary winner.",
     hints: [
@@ -3624,7 +3622,7 @@ export const problems: Problem[] = [
     title: "Majority Rule Tips the Decision",
     latex: String.raw`\sum_i \tilde{v}_i = 1 \implies f(\tilde{v}) = 1`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Social Choice",
     context: "Adding one extra net vote in favour breaks a tie and forces the collective decision to 'adopt.' Shows how majority rule responds to the marginal decisive voter.",
     hints: [
@@ -3638,7 +3636,7 @@ export const problems: Problem[] = [
     title: "Sincere Voting Condition",
     latex: String.raw`(y_j - L_K)^2 < (y_j - L_R)^2`,
     difficulty: "medium",
-    points: 3,
+    points: 5,
     topic: "Voting",
     context: "A voter supports candidate K over R when K's platform is closer to the voter's ideal point y_j. Justifies honest voting: back whichever option minimizes squared distance.",
     hints: [],
@@ -3648,7 +3646,7 @@ export const problems: Problem[] = [
     title: "Aggregation of Strict Preferences",
     latex: String.raw`x \succ_s y \quad \text{for all } y \neq x`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Social Choice",
     context: "Alternative x is a strict social winner when it is ranked above every other option y. Describes when collective preferences pick a clear best choice from individual rankings.",
     hints: [
@@ -3662,7 +3660,7 @@ export const problems: Problem[] = [
     title: "CRRA (Power) vNM Utility",
     latex: String.raw`u(x) = \frac{x^{1-\rho}}{1-\rho}`,
     difficulty: "medium",
-    points: 6,
+    points: 8,
     topic: "Risk Aversion",
     context: "Standard utility with constant relative risk aversion ρ: how a person values wealth curves so that risk attitude stays proportionally the same at every wealth level. Widely used in finance and macro.",
     hints: [
@@ -3674,7 +3672,7 @@ export const problems: Problem[] = [
     title: "CARA Utility Function",
     latex: String.raw`u(x) = -\frac{1}{\alpha}\,e^{-\alpha x}`,
     difficulty: "medium",
-    points: 6,
+    points: 8,
     topic: "Risk Aversion",
     context: "Exponential utility whose absolute risk aversion α is constant regardless of wealth, so the dollar amount a person will risk doesn't change as they get richer. Convenient for tractable models.",
     hints: [
@@ -3686,7 +3684,7 @@ export const problems: Problem[] = [
     title: "Negative Exponential Utility",
     latex: String.raw`u(w) = -e^{-\alpha w}`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Risk Aversion",
     context: "The simplest constant-absolute-risk-aversion utility over wealth w; more concave for larger α, meaning greater risk aversion. Often paired with normal returns for closed-form portfolio results.",
     hints: [],
@@ -3696,7 +3694,7 @@ export const problems: Problem[] = [
     title: "Power Utility (RRA form)",
     latex: String.raw`u(x) = \frac{1}{1-\beta}\,x^{1-\beta}`,
     difficulty: "medium",
-    points: 6,
+    points: 8,
     topic: "Risk Aversion",
     context: "Power (isoelastic) utility with constant relative risk aversion β. The curvature parameter governs both willingness to bear risk and, in dynamic models, the desire to smooth consumption over time.",
     hints: [
@@ -3708,7 +3706,7 @@ export const problems: Problem[] = [
     title: "Coefficient of Relative Risk Aversion",
     latex: String.raw`R(x) = -\frac{x\,u''(x)}{u'(x)}`,
     difficulty: "medium",
-    points: 3,
+    points: 6,
     topic: "Risk Aversion",
     context: "Measures aversion to gambles proportional to wealth, scaling the Arrow-Pratt absolute measure by wealth x. Higher values mean a person more strongly avoids percentage risks to their fortune.",
     hints: [
@@ -3720,7 +3718,7 @@ export const problems: Problem[] = [
     title: "Arrow-Pratt ARA Family",
     latex: String.raw`\frac{-u''(x)}{u'(x)} = \alpha x^{-\beta}`,
     difficulty: "hard",
-    points: 7,
+    points: 14,
     topic: "Risk Aversion",
     context: "A flexible class where absolute risk aversion declines with wealth as a power function, nesting CARA (β=0) and letting richer agents take larger absolute risks. Generalizes standard utility forms.",
     hints: [
@@ -3732,7 +3730,7 @@ export const problems: Problem[] = [
     title: "Geometric Series Sum",
     latex: String.raw`\sum_{n=0}^{\infty} (1-p)^n = \frac{1}{p}`,
     difficulty: "easy",
-    points: 8,
+    points: 4,
     topic: "Expected Utility",
     context: "The infinite sum of success-failure probabilities collapses to 1/p, the expected number of trials until a first success. Underlies expected-utility and repeated-game calculations with geometric timing.",
     hints: [
@@ -3746,7 +3744,7 @@ export const problems: Problem[] = [
     title: "Mixed-Strategy Bayes-Nash Equilibrium",
     latex: String.raw`\left\{\, \sigma_1 = \frac{1}{4};\ \left(\sigma_2^{\mathcal{A}} = 0,\ \sigma_2^{\mathcal{B}} = 1\right) \right\}`,
     difficulty: "medium",
-    points: 9,
+    points: 11,
     topic: "Bayesian Games",
     context: "A solution of a Bayesian game specifying randomization probabilities for each player type; here player 1 mixes with probability 1/4 while player 2 plays purely by type. Each strategy is a best response given beliefs.",
     hints: [
@@ -3759,7 +3757,7 @@ export const problems: Problem[] = [
     title: "Type-Dependent Payoffs",
     latex: String.raw`\left(6 + \frac{2 - t_F}{2},\; 5 + \frac{t_F - 3}{2}\right), \quad t_F \in \{1, 2\}`,
     difficulty: "medium",
-    points: 8,
+    points: 10,
     topic: "Bayesian Games",
     context: "Players' payoffs depend on firm F's privately known type t_F, so the same actions yield different rewards under different types. Captures how private information shapes outcomes in Bayesian games.",
     hints: [
@@ -3772,7 +3770,7 @@ export const problems: Problem[] = [
     title: "Player Belief over Games",
     latex: String.raw`\mu_1 = \frac{1}{2}, \qquad 1 - \mu_1 = \frac{1}{2}`,
     difficulty: "easy",
-    points: 6,
+    points: 4,
     topic: "Bayesian Games",
     context: "Player 1 assigns equal probability 1/2 to each possible version of the game (opponent type). These beliefs drive expected-payoff calculations when the true situation is uncertain.",
     hints: [
@@ -3784,7 +3782,7 @@ export const problems: Problem[] = [
     title: "Type Spaces of the Two Players",
     latex: String.raw`T_1 = \{a, b\}, \qquad T_2 = \{A, B\}`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Bayesian Games",
     context: "Lists the possible private information each player can have: player 1 is type a or b, player 2 type A or B. The type spaces define all information scenarios in the Bayesian game.",
     hints: [],
@@ -3794,7 +3792,7 @@ export const problems: Problem[] = [
     title: "Common Prior over Type Profiles",
     latex: String.raw`\Pr(t_1 = a,\ t_2 = A) = \frac{1}{6}`,
     difficulty: "easy",
-    points: 5,
+    points: 4,
     topic: "Bayesian Games",
     context: "The shared probability that player 1 is type a and player 2 type A is 1/6. A common prior lets both players form consistent beliefs about each other's hidden types.",
     hints: [
@@ -3806,7 +3804,7 @@ export const problems: Problem[] = [
     title: "Cournot Inverse Demand (Duopoly)",
     latex: String.raw`p = \begin{cases} 4 - q_1 - q_2, & q_1 + q_2 \le 4 \\ 0, & q_1 + q_2 > 4 \end{cases}`,
     difficulty: "medium",
-    points: 9,
+    points: 10,
     topic: "Bayesian Games",
     context: "Market price falls with combined output of two firms until demand is exhausted at Q=4, after which price is zero. The demand side of a Cournot quantity-competition game.",
     hints: [
@@ -3819,7 +3817,7 @@ export const problems: Problem[] = [
     title: "Inverse Market Demand",
     latex: String.raw`p = \max\{\,2 - q_1 - q_2,\ 0\,\}`,
     difficulty: "easy",
-    points: 5,
+    points: 3,
     topic: "Bayesian Games",
     context: "Price equals 2 minus total quantity supplied by the two firms, floored at zero. Sets how aggregate output depresses price in a duopoly model.",
     hints: [
@@ -3831,7 +3829,7 @@ export const problems: Problem[] = [
     title: "Convex Cost Function",
     latex: String.raw`C_1(q_1) = q_1^2 + 2 q_1`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Bayesian Games",
     context: "Firm 1's total cost rises more than proportionally with output due to the squared term, reflecting increasing marginal cost. Convex costs make firms reluctant to expand production without limit.",
     hints: [],
@@ -3841,7 +3839,7 @@ export const problems: Problem[] = [
     title: "Firm 2's Low/High Cost Technology",
     latex: String.raw`C_2^L(q_2^L) = 2 q_2^L, \quad C_2^H(q_2^H) = 6 q_2^H`,
     difficulty: "easy",
-    points: 3,
+    points: 2,
     topic: "Bayesian Games",
     context: "Firm 2 privately has either low (marginal cost 2) or high (marginal cost 6) technology. This cost uncertainty is the private information driving a Bayesian Cournot game.",
     hints: [],
@@ -3851,7 +3849,7 @@ export const problems: Problem[] = [
     title: "Monopolist's Stochastic Marginal Cost",
     latex: String.raw`c = k + \varepsilon`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Bayesian Games",
     context: "The monopolist's marginal cost is a known base k plus a random shock ε, so cost is uncertain when decisions are made. Models production under stochastic cost conditions.",
     hints: [
@@ -3863,7 +3861,7 @@ export const problems: Problem[] = [
     title: "Two-Part Tariff Random Profit",
     latex: String.raw`\Pi = T + (p - c)\,q`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Bayesian Games",
     context: "A monopolist's profit under a two-part tariff combines the fixed access fee T with the per-unit markup (p−c) times quantity q sold. It separates revenue from membership versus usage.",
     hints: [
@@ -3875,7 +3873,7 @@ export const problems: Problem[] = [
     title: "Two-Part Tariff Fixed Fee",
     latex: String.raw`T = \int_p^a \left( \frac{a}{b} - \frac{1}{b}\,x \right) dx`,
     difficulty: "medium",
-    points: 6,
+    points: 9,
     topic: "Bayesian Games",
     context: "Sets the fixed entry fee equal to the consumer surplus a buyer enjoys at usage price p, the area under the linear demand curve above p. This lets the firm extract that surplus upfront.",
     hints: [
@@ -3888,7 +3886,7 @@ export const problems: Problem[] = [
     title: "Public Good Provision Threshold",
     latex: String.raw`v^* \left( F(v^*) \right)^{n-1} = c`,
     difficulty: "medium",
-    points: 2,
+    points: 5,
     topic: "Public Goods",
     context: "The threshold valuation v* at which a person is just willing to fund a public good alone: the probability everyone else values it below v* (raised to n−1) times v* equals the cost. Free-riding raises the threshold.",
     hints: [],
@@ -3898,7 +3896,7 @@ export const problems: Problem[] = [
     title: "First-Price Auction Symmetric Bid",
     latex: String.raw`b_i(v_i) = \tfrac{2}{3}\, v_i`,
     difficulty: "easy",
-    points: 4,
+    points: 1,
     topic: "Auctions",
     context: "In a symmetric first-price auction with three bidders and independent uniform values, the equilibrium strategy is to bid two-thirds of your true valuation—the (n−1)/n rule. Bidders shade bids below value to keep a positive surplus.",
     hints: [],
@@ -3908,7 +3906,7 @@ export const problems: Problem[] = [
     title: "Lemons Equilibrium Price",
     latex: String.raw`p = \frac{a}{2 - b}`,
     difficulty: "easy",
-    points: 3,
+    points: 2,
     topic: "Adverse Selection",
     context: "Akerlof's market-for-lemons equilibrium price when quality is unobserved: adverse selection drives price down as buyer skepticism (parameter b) rises, potentially collapsing the market for good-quality goods.",
     hints: [
@@ -3920,7 +3918,7 @@ export const problems: Problem[] = [
     title: "Employer's Signalling Payoff",
     latex: String.raw`u_E(r, t) = \begin{cases} r - t & \text{if } t \geq r \\ t - r & \text{if } t < r \end{cases}`,
     difficulty: "medium",
-    points: 7,
+    points: 10,
     topic: "Signalling",
     context: "The employer's payoff in a signalling game peaks when its action t matches the worker's true type r; mismatches in either direction reduce utility. Captures the cost of misjudging worker ability.",
     hints: [
@@ -3934,7 +3932,7 @@ export const problems: Problem[] = [
     title: "Student's Signalling Payoff",
     latex: String.raw`u_S(r, t) = \begin{cases} r - (t + 4) & \text{if } t + 4 \geq r \\ (t + 4) - r & \text{if } t + 4 < r \end{cases}`,
     difficulty: "medium",
-    points: 7,
+    points: 10,
     topic: "Signalling",
     context: "The student's payoff depends on how close t+4 (their signal-adjusted position) is to their type r, with a built-in offset of 4. Illustrates the private incentives shaping education signals.",
     hints: [
@@ -3948,7 +3946,7 @@ export const problems: Problem[] = [
     title: "Pooling Contract Price",
     latex: String.raw`p_E = \frac{V_H + V_L}{2}`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Adverse Selection",
     context: "In a pooling equilibrium the insurer or buyer offers one price equal to the average valuation of high- and low-type agents, since types cannot be distinguished. Both types face the same terms.",
     hints: [
@@ -3960,7 +3958,7 @@ export const problems: Problem[] = [
     title: "High-Type Consumer Utility",
     latex: String.raw`U_H(q_H) = 100 \sqrt{q_H} - P_H(q_H)`,
     difficulty: "medium",
-    points: 4,
+    points: 5,
     topic: "Contract Theory",
     context: "A high-demand consumer's net utility under nonlinear pricing: gross benefit 100√q from consuming q minus the total charge P_H(q). The square root captures diminishing marginal benefit.",
     hints: [
@@ -3972,7 +3970,7 @@ export const problems: Problem[] = [
     title: "Monopolist Profit on High Type",
     latex: String.raw`\Pi_H(q_H) = P_H(q_H) - c\,q_H = P_H(q_H) - 5 q_H`,
     difficulty: "medium",
-    points: 4,
+    points: 5,
     topic: "Contract Theory",
     context: "The monopolist's profit from serving the high type: revenue P_H(q) minus production cost of 5 per unit. Used in screening problems to design menus that maximize extracted surplus.",
     hints: [
@@ -3984,7 +3982,7 @@ export const problems: Problem[] = [
     title: "Two-Part Tariff Menu",
     latex: String.raw`\mathcal{M} = \{(T_H, p_H, q_H);\, (T_L, p_L, q_L)\}`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Contract Theory",
     context: "A screening menu offering each type a distinct package of fixed fee, unit price, and quantity. By self-selecting, consumers reveal their hidden type, letting the seller price-discriminate.",
     hints: [
@@ -3996,7 +3994,7 @@ export const problems: Problem[] = [
     title: "Screening Screener's Charge",
     latex: String.raw`P_H(q_H) = T_H + p_H q_H, \quad P_L(q_L) = T_L + p_L q_L`,
     difficulty: "medium",
-    points: 3,
+    points: 5,
     topic: "Contract Theory",
     context: "Defines the total payment each type makes under a two-part tariff menu: a fixed fee plus a per-unit price times quantity. The screener designs these to induce truthful self-selection.",
     hints: [],
@@ -4006,7 +4004,7 @@ export const problems: Problem[] = [
     title: "Principal's Expected Payoff",
     latex: String.raw`\Pi(w \mid e) = 9 \Pr(q = 9 \mid e) - w`,
     difficulty: "medium",
-    points: 5,
+    points: 7,
     topic: "Moral Hazard",
     context: "The principal's expected profit when the agent chooses effort e: the value 9 times the probability of a good outcome, minus the wage w paid. Higher effort raises success odds but may require higher pay.",
     hints: [
@@ -4019,7 +4017,7 @@ export const problems: Problem[] = [
     title: "Risk-Averse Agent Payoff",
     latex: String.raw`v(w, e) = \sqrt{w} - e`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Moral Hazard",
     context: "A risk-averse agent values wage w through a concave √w and subtracts the disutility of effort e. Concavity means the agent dislikes income variability, shaping optimal incentive contracts.",
     hints: [
@@ -4031,7 +4029,7 @@ export const problems: Problem[] = [
     title: "Effort-Contingent Success Probabilities",
     latex: String.raw`\Pr(R = 100 \mid e = 5) = \frac{3}{4}, \quad \Pr(R = 100 \mid e = 0) = \frac{1}{2}`,
     difficulty: "medium",
-    points: 6,
+    points: 10,
     topic: "Moral Hazard",
     context: "Effort shifts the odds of a high return: working (e=5) yields success probability 3/4 versus 1/2 when shirking. This gap is what incentive pay must exploit to motivate effort.",
     hints: [
@@ -4044,7 +4042,7 @@ export const problems: Problem[] = [
     title: "Partnership Success Probability",
     latex: String.raw`\Pr\{V = 1\} = e_1 + e_2`,
     difficulty: "easy",
-    points: 5,
+    points: 4,
     topic: "Contract Theory",
     context: "In a team-production partnership, project success probability is the sum of the two partners' efforts. Because each bears full effort cost but shares output, individual free-riding underprovides effort.",
     hints: [],
@@ -4054,12 +4052,11 @@ export const problems: Problem[] = [
     title: "Innovator's Project Returns",
     latex: String.raw`\Pi(e) = 16 \sqrt{e}`,
     difficulty: "easy",
-    points: 4,
+    points: 1,
     topic: "Moral Hazard",
     context: "The innovator's expected return rises with effort e via 16√e, exhibiting diminishing returns. Balancing this concave payoff against effort cost determines the optimal investment level.",
     hints: [
       { command: String.raw`\Pi`, name: "capital pi", example: String.raw`\Pi` },
-      { command: String.raw`\sqrt{ }`, name: "square root", example: String.raw`\sqrt{x}` },
     ],
   },
   {
@@ -4067,7 +4064,7 @@ export const problems: Problem[] = [
     title: "Quadratic Cost of Effort",
     latex: String.raw`c(e) = \frac{\lambda}{2} e^2, \quad y < \lambda`,
     difficulty: "easy",
-    points: 5,
+    points: 3,
     topic: "Moral Hazard",
     context: "Effort is costly with quadratic disutility, so marginal cost rises linearly with e; the condition y<λ ensures the cost grows fast enough that an interior optimum exists.",
     hints: [
@@ -4079,7 +4076,7 @@ export const problems: Problem[] = [
     title: "Budget Constraint",
     latex: String.raw`p_1 x_1 + p_2 x_2 = m`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Consumer Theory",
     context: "The consumer's spending on two goods must exhaust income m: price times quantity for each good sums to m. It defines the affordable set the consumer optimizes over.",
     hints: [],
@@ -4089,7 +4086,7 @@ export const problems: Problem[] = [
     title: "Consumer Optimum (Tangency Condition)",
     latex: String.raw`MRS_{12} = \frac{\partial u/\partial x_1}{\partial u/\partial x_2} = \frac{p_1}{p_2}`,
     difficulty: "medium",
-    points: 8,
+    points: 9,
     topic: "Consumer Theory",
     context: "At the optimal bundle the marginal rate of substitution (ratio of marginal utilities) equals the price ratio. Intuitively, the consumer trades goods at the same rate the market does.",
     hints: [
@@ -4102,7 +4099,7 @@ export const problems: Problem[] = [
     title: "Cobb-Douglas Utility",
     latex: String.raw`u(x_1, x_2) = x_1^{a}\, x_2^{1-a}`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Consumer Theory",
     context: "The Cobb-Douglas utility function, where exponents a and 1−a are the fixed expenditure shares each good commands. It gives smooth, well-behaved indifference curves widely used in demand theory.",
     hints: [],
@@ -4112,7 +4109,7 @@ export const problems: Problem[] = [
     title: "Cobb-Douglas Marshallian Demand",
     latex: String.raw`x_1^*(p, m) = \frac{a}{a+b}\frac{m}{p_1}, \qquad x_2^*(p, m) = \frac{b}{a+b}\frac{m}{p_2}`,
     difficulty: "medium",
-    points: 6,
+    points: 10,
     topic: "Consumer Theory",
     context: "With Cobb-Douglas preferences, each good's demand spends a constant share of income on it, independent of the other good's price. Demand equals the budget share divided by the good's price.",
     hints: [
@@ -4124,7 +4121,7 @@ export const problems: Problem[] = [
     title: "CES Utility Function",
     latex: String.raw`u(x_1, x_2) = \left(\alpha x_1^{\rho} + (1-\alpha) x_2^{\rho}\right)^{1/\rho}`,
     difficulty: "medium",
-    points: 8,
+    points: 9,
     topic: "Consumer Theory",
     context: "The constant-elasticity-of-substitution utility function nests perfect substitutes, Cobb-Douglas, and perfect complements as the parameter ρ varies. It sets a fixed substitutability between the two goods.",
     hints: [],
@@ -4134,7 +4131,7 @@ export const problems: Problem[] = [
     title: "Perfect-Complements Demand",
     latex: String.raw`x_1 = x_2 = \frac{m}{p_1 + p_2}`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Consumer Theory",
     context: "For goods consumed in fixed one-to-one proportions (like left and right shoes), the consumer buys equal amounts, spending income across the combined per-pair price. Demand ignores relative prices.",
     hints: [
@@ -4146,7 +4143,7 @@ export const problems: Problem[] = [
     title: "Quasilinear Demand",
     latex: String.raw`v'(x_1) = \frac{p_1}{p_2}`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Consumer Theory",
     context: "With quasilinear utility, the marginal utility of good 1 alone pins down demand at the price ratio, so demand for good 1 is independent of income. Income effects fall entirely on the numeraire good.",
     hints: [
@@ -4158,7 +4155,7 @@ export const problems: Problem[] = [
     title: "Cobb-Douglas Indirect Utility",
     latex: String.raw`v(p, m) = a^{a}(1-a)^{1-a}\,\frac{m}{p_1^{a}\, p_2^{1-a}}`,
     difficulty: "hard",
-    points: 7,
+    points: 13,
     topic: "Duality",
     context: "The maximum Cobb-Douglas utility achievable given prices and income m, expressed as real income deflated by a price index. It shows welfare falling as either price rises.",
     hints: [
@@ -4184,7 +4181,7 @@ export const problems: Problem[] = [
     title: "Roy's Identity",
     latex: String.raw`x_i(p, m) = -\frac{\partial v/\partial p_i}{\partial v/\partial m}`,
     difficulty: "hard",
-    points: 5,
+    points: 13,
     topic: "Duality",
     context: "Roy's identity recovers Marshallian demand directly from the indirect utility function as the ratio of its price and income derivatives. It links observable demand to the value function without re-solving the optimization.",
     hints: [
@@ -4197,7 +4194,7 @@ export const problems: Problem[] = [
     title: "Shephard's Lemma",
     latex: String.raw`h_i(p, u) = \frac{\partial e(p, u)}{\partial p_i}`,
     difficulty: "medium",
-    points: 5,
+    points: 7,
     topic: "Duality",
     context: "Shephard's lemma states that differentiating the expenditure function with respect to a good's price yields the Hicksian (compensated) demand for that good. A clean shortcut from cost to demand.",
     hints: [
@@ -4210,7 +4207,7 @@ export const problems: Problem[] = [
     title: "Hicksian-Marshallian Identity",
     latex: String.raw`h_i(p, u) = x_i\bigl(p,\, e(p, u)\bigr)`,
     difficulty: "medium",
-    points: 5,
+    points: 7,
     topic: "Duality",
     context: "This identity links the two demand concepts: compensated demand at utility u equals ordinary demand evaluated at the income just sufficient to afford u. It grounds the Slutsky decomposition of price effects.",
     hints: [],
@@ -4220,7 +4217,7 @@ export const problems: Problem[] = [
     title: "Slutsky Equation",
     latex: String.raw`\frac{\partial x_i}{\partial p_j} = \frac{\partial h_i}{\partial p_j} - x_j\,\frac{\partial x_i}{\partial m}`,
     difficulty: "hard",
-    points: 7,
+    points: 16,
     topic: "Comparative Statics",
     context: "Decomposes how demand for a good responds to a price change into a substitution effect (movement along an indifference curve) and an income effect (the change in purchasing power), central to comparative statics in consumer theory.",
     hints: [
@@ -4233,7 +4230,7 @@ export const problems: Problem[] = [
     title: "Own-Price Elasticity of Demand",
     latex: String.raw`\varepsilon = \frac{\partial x}{\partial p}\cdot\frac{p}{x}`,
     difficulty: "easy",
-    points: 8,
+    points: 4,
     topic: "Comparative Statics",
     context: "Measures the percentage change in quantity demanded for a one-percent change in the good's own price, capturing how price-sensitive buyers are; values below -1 mean demand is elastic.",
     hints: [
@@ -4248,7 +4245,7 @@ export const problems: Problem[] = [
     title: "Income Elasticity of Demand",
     latex: String.raw`\eta = \frac{\partial x}{\partial m}\cdot\frac{m}{x}`,
     difficulty: "easy",
-    points: 8,
+    points: 4,
     topic: "Comparative Statics",
     context: "Measures the percentage change in quantity demanded for a one-percent change in income, distinguishing normal goods (positive) from inferior goods (negative) and luxuries (greater than one).",
     hints: [
@@ -4262,7 +4259,7 @@ export const problems: Problem[] = [
     title: "Engel Aggregation",
     latex: String.raw`\sum_{i} p_i\,\frac{\partial x_i}{\partial m} = 1`,
     difficulty: "medium",
-    points: 7,
+    points: 9,
     topic: "Comparative Statics",
     context: "An adding-up condition stating that the extra spending across all goods from one more unit of income must sum to exactly one dollar, since the whole budget is allocated.",
     hints: [
@@ -4289,7 +4286,7 @@ export const problems: Problem[] = [
     title: "Compensating and Equivalent Variation",
     latex: String.raw`CV = e(p', u^0) - e(p'', u^0), \qquad EV = e(p', u^1) - e(p'', u^1)`,
     difficulty: "medium",
-    points: 2,
+    points: 5,
     topic: "Welfare",
     context: "Two exact money-metric measures of welfare change from a price change: compensating variation uses the original utility level, equivalent variation uses the new one, both based on the expenditure function.",
     hints: [],
@@ -4299,7 +4296,7 @@ export const problems: Problem[] = [
     title: "Intertemporal Budget Constraint",
     latex: String.raw`c_1 + \frac{c_2}{1+r} = x_1 + \frac{x_2}{1+r}`,
     difficulty: "medium",
-    points: 5,
+    points: 8,
     topic: "Consumer Theory",
     context: "States that the present value of lifetime consumption cannot exceed the present value of lifetime income, letting consumers borrow and save across two periods at interest rate r.",
     hints: [
@@ -4311,7 +4308,7 @@ export const problems: Problem[] = [
     title: "Two-Period Euler Equation",
     latex: String.raw`u'(c_1) = (1+r)\, u'(c_2)`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Consumer Theory",
     context: "The optimality condition for saving: at the consumer's best plan, the marginal utility of consuming today equals the interest-adjusted marginal utility of consuming tomorrow, so no reallocation improves welfare.",
     hints: [],
@@ -4333,7 +4330,7 @@ export const problems: Problem[] = [
     title: "Labour-Leisure Optimum",
     latex: String.raw`MRS_{\ell, c} = w`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Labour Supply",
     context: "At the optimal labour supply, the worker's marginal rate of substitution between leisure and consumption equals the wage, the market price of an hour of leisure forgone.",
     hints: [
@@ -4345,7 +4342,7 @@ export const problems: Problem[] = [
     title: "Returns to Scale",
     latex: String.raw`f(tK, tL) = t^{k} f(K, L)`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Producer Theory",
     context: "Describes how output responds when all inputs are scaled by a common factor: k greater than one means increasing returns, k equal to one constant, and k less than one decreasing returns to scale.",
     hints: [],
@@ -4355,7 +4352,7 @@ export const problems: Problem[] = [
     title: "Cost-Minimisation Condition",
     latex: String.raw`MRTS_{LK} = \frac{MP_L}{MP_K} = \frac{w}{r}`,
     difficulty: "medium",
-    points: 6,
+    points: 8,
     topic: "Producer Theory",
     context: "To produce output at least cost, a firm equates the marginal rate of technical substitution between labour and capital to the ratio of their prices, balancing productivity per dollar across inputs.",
     hints: [
@@ -4367,7 +4364,7 @@ export const problems: Problem[] = [
     title: "Shephard's Lemma for Cost",
     latex: String.raw`x_i(w, q) = \frac{\partial C(w, q)}{\partial w_i}`,
     difficulty: "medium",
-    points: 5,
+    points: 7,
     topic: "Producer Theory",
     context: "States that the derivative of the cost function with respect to an input's price gives the firm's conditional (cost-minimising) demand for that input, a convenient shortcut for recovering factor demands.",
     hints: [
@@ -4380,7 +4377,7 @@ export const problems: Problem[] = [
     title: "Cost, Average and Marginal Cost",
     latex: String.raw`C(q) = w L(q) + r K(q), \qquad AC = \frac{C(q)}{q}, \qquad MC = \frac{dC}{dq}`,
     difficulty: "medium",
-    points: 4,
+    points: 8,
     topic: "Producer Theory",
     context: "Defines total cost as spending on labour and capital, average cost as cost per unit of output, and marginal cost as the added cost of one more unit, the core cost concepts of the firm.",
     hints: [
@@ -4392,7 +4389,7 @@ export const problems: Problem[] = [
     title: "Cost Function for a Symmetric Technology",
     latex: String.raw`C(q) = 2q\sqrt{wr}`,
     difficulty: "medium",
-    points: 2,
+    points: 5,
     topic: "Producer Theory",
     context: "The minimised cost of producing output q under a symmetric technology, rising linearly in output and in the geometric mean of the two input prices, illustrating how factor prices shape costs.",
     hints: [
@@ -4404,7 +4401,7 @@ export const problems: Problem[] = [
     title: "Long-Run Cost Envelope",
     latex: String.raw`AC_{LR}(q) = \min_{K} AC_{SR}(q, K)`,
     difficulty: "medium",
-    points: 5,
+    points: 6,
     topic: "Producer Theory",
     context: "The long-run average cost curve is the lower envelope of short-run average cost curves, since in the long run the firm can choose the plant size (capital) that minimises cost at each output.",
     hints: [
@@ -4416,12 +4413,11 @@ export const problems: Problem[] = [
     title: "Competitive Firm Supply",
     latex: String.raw`p = MC(q), \qquad p \ge \min AVC`,
     difficulty: "easy",
-    points: 4,
+    points: 1,
     topic: "Producer Theory",
     context: "A price-taking firm supplies where price equals marginal cost, but only produces if price covers average variable cost; otherwise it shuts down to avoid losses exceeding fixed costs.",
     hints: [
       { command: String.raw`\ge`, name: "greater-or-equal", example: String.raw`\ge` },
-      { command: String.raw`\min`, name: "minimum", example: String.raw`\min` },
     ],
   },
   {
@@ -4429,7 +4425,7 @@ export const problems: Problem[] = [
     title: "Free-Entry Zero-Profit Condition",
     latex: String.raw`p^{LR} = \min_{q} AC(q) \implies \pi = 0`,
     difficulty: "easy",
-    points: 7,
+    points: 3,
     topic: "Producer Theory",
     context: "With free entry, competition drives the long-run price down to the minimum of average cost, leaving each firm with zero economic profit, the hallmark of long-run competitive equilibrium.",
     hints: [
@@ -4442,7 +4438,7 @@ export const problems: Problem[] = [
     title: "Amoroso-Robinson Relation",
     latex: String.raw`MR = p\left(1 + \frac{1}{\varepsilon}\right) = MC`,
     difficulty: "medium",
-    points: 4,
+    points: 6,
     topic: "Monopoly",
     context: "Links a monopolist's marginal revenue to price and demand elasticity, and setting it equal to marginal cost gives the profit-maximising rule; less elastic demand means a bigger markup.",
     hints: [
@@ -4455,7 +4451,7 @@ export const problems: Problem[] = [
     title: "Lerner Index",
     latex: String.raw`\frac{p - MC}{p} = -\frac{1}{\varepsilon}`,
     difficulty: "medium",
-    points: 5,
+    points: 8,
     topic: "Monopoly",
     context: "Measures a firm's market power as the markup of price over marginal cost relative to price, equal to the inverse of demand elasticity; higher values signal greater monopoly power.",
     hints: [
@@ -4468,7 +4464,7 @@ export const problems: Problem[] = [
     title: "Monopoly Optimum with Linear Demand",
     latex: String.raw`Q^* = \frac{a - c}{2b}, \qquad p^* = \frac{a + c}{2}`,
     difficulty: "medium",
-    points: 4,
+    points: 7,
     topic: "Monopoly",
     context: "For linear demand and constant marginal cost, gives the profit-maximising monopoly quantity and price, showing the monopolist restricts output and charges above cost, unlike competition.",
     hints: [
@@ -4480,7 +4476,7 @@ export const problems: Problem[] = [
     title: "Third-Degree Price Discrimination",
     latex: String.raw`MR_A = MR_B = MC`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Monopoly",
     context: "A monopolist selling to separable markets maximises profit by equating marginal revenue in each market to marginal cost, charging different prices to groups with different demand elasticities.",
     hints: [],
@@ -4490,7 +4486,7 @@ export const problems: Problem[] = [
     title: "Inverse-Elasticity Pricing Ratio",
     latex: String.raw`\frac{p_A}{p_B} = \frac{1 + 1/\varepsilon_B}{1 + 1/\varepsilon_A}`,
     difficulty: "hard",
-    points: 6,
+    points: 14,
     topic: "Monopoly",
     context: "Under price discrimination, the ratio of prices across two markets depends on their demand elasticities, so the group with less elastic (more captive) demand is charged the higher price.",
     hints: [
@@ -4503,7 +4499,7 @@ export const problems: Problem[] = [
     title: "Pareto Efficiency Condition",
     latex: String.raw`MRS^A_{xy} = MRS^B_{xy}`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "General Equilibrium",
     context: "An allocation is efficient in exchange when both consumers share the same marginal rate of substitution between goods, so no mutually beneficial trade remains, a key condition of general equilibrium.",
     hints: [],
@@ -4513,7 +4509,7 @@ export const problems: Problem[] = [
     title: "Exchange-Economy Market Clearing",
     latex: String.raw`x^A_g + x^B_g = \omega^A_g + \omega^B_g \quad \text{for each good } g`,
     difficulty: "medium",
-    points: 4,
+    points: 6,
     topic: "General Equilibrium",
     context: "Requires that total consumption of each good equals the total endowment, ensuring supply meets demand across the whole economy with no good left over or in shortage.",
     hints: [
@@ -4525,7 +4521,7 @@ export const problems: Problem[] = [
     title: "Walras' Law",
     latex: String.raw`\sum_{g} p_g\, z_g(p) = 0`,
     difficulty: "medium",
-    points: 4,
+    points: 6,
     topic: "General Equilibrium",
     context: "States that the total value of excess demand across all markets is always zero at any prices, implying that if all but one market clears, the last one must clear too.",
     hints: [
@@ -4537,7 +4533,7 @@ export const problems: Problem[] = [
     title: "Marginal Rate of Transformation",
     latex: String.raw`MRT_{xy} = \frac{\partial f/\partial x}{\partial f/\partial y}`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "General Equilibrium",
     context: "The slope of the production possibility frontier, showing how many units of one good must be given up to produce more of another, reflecting the economy's opportunity cost in production.",
     hints: [
@@ -4560,7 +4556,7 @@ export const problems: Problem[] = [
     title: "Production-Economy Equilibrium",
     latex: String.raw`MRS = MRT = \frac{p_x}{p_y}`,
     difficulty: "medium",
-    points: 4,
+    points: 7,
     topic: "General Equilibrium",
     context: "In a full production economy, efficiency requires the consumers' marginal rate of substitution to equal the marginal rate of transformation and the price ratio, aligning consumption and production choices.",
     hints: [
@@ -4572,7 +4568,7 @@ export const problems: Problem[] = [
     title: "Production Possibility Frontier",
     latex: String.raw`\sqrt{x} + \sqrt{y} = k`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "General Equilibrium",
     context: "A production possibility frontier showing the combinations of two goods the economy can produce given its resources; this particular frontier is bowed inward (convex to the origin), so the opportunity cost of good x falls as more of it is produced.",
     hints: [
@@ -4584,7 +4580,7 @@ export const problems: Problem[] = [
     title: "Samuelson Condition for Public Goods",
     latex: String.raw`\sum_{i=1}^{n} MRS_i = MRT`,
     difficulty: "medium",
-    points: 5,
+    points: 6,
     topic: "Public Goods",
     context: "The efficient level of a public good occurs where the sum of everyone's marginal willingness to pay (marginal rates of substitution) equals the marginal cost of production, because all consumers enjoy the good simultaneously.",
     hints: [
@@ -4606,7 +4602,7 @@ export const problems: Problem[] = [
     title: "Social Planner's Problem",
     latex: String.raw`\max_{x}\ \sum_{i} u^i(x^i) \quad \text{s.t.} \quad \sum_i x^i = \sum_i \omega^i`,
     difficulty: "medium",
-    points: 7,
+    points: 9,
     topic: "Externalities",
     context: "A benevolent planner chooses an allocation to maximize total welfare across individuals, subject to feasibility—that goods consumed cannot exceed the economy's total endowment. It defines the efficient benchmark.",
     hints: [
@@ -4620,7 +4616,7 @@ export const problems: Problem[] = [
     title: "Ricardian Comparative Advantage",
     latex: String.raw`\frac{a_{L1}}{a_{L2}} < \frac{a^*_{L1}}{a^*_{L2}}`,
     difficulty: "medium",
-    points: 9,
+    points: 8,
     topic: "International Trade",
     context: "A country exports the good in which its relative labor requirement is lower than the foreign country's. Comparative, not absolute, cost advantage determines the pattern of gainful trade.",
     hints: [
@@ -4632,7 +4628,7 @@ export const problems: Problem[] = [
     title: "Autarky Relative Price",
     latex: String.raw`\left(\frac{p_1}{p_2}\right)^{\!\text{aut}} = \frac{a_{L1}}{a_{L2}}`,
     difficulty: "easy",
-    points: 7,
+    points: 4,
     topic: "International Trade",
     context: "Without trade, the price ratio between two goods equals their relative labor requirements, since competitive prices reflect the labor cost of producing each good.",
     hints: [
@@ -4645,7 +4641,7 @@ export const problems: Problem[] = [
     title: "Relative-Wage Bounds under Trade",
     latex: String.raw`\frac{a^*_{L2}}{a_{L2}} < \frac{w}{w^*} < \frac{a^*_{L1}}{a_{L1}}`,
     difficulty: "hard",
-    points: 9,
+    points: 15,
     topic: "International Trade",
     context: "With trade, the ratio of home to foreign wages must lie between the two industries' relative productivities, ensuring each country specializes in its comparative-advantage good.",
     hints: [
@@ -4657,7 +4653,7 @@ export const problems: Problem[] = [
     title: "Parametrized Matrix Determinant",
     latex: String.raw`A=\begin{pmatrix}a&a&1\\2&2&0\\7&3&5\end{pmatrix}`,
     difficulty: "medium",
-    points: 9,
+    points: 11,
     topic: "Linear Algebra",
     context: "A matrix whose repeated-entry parameter cancels out of the determinant (det = −8 for every a), showing the matrix is invertible regardless of the parameter value.",
     hints: [
@@ -4669,7 +4665,7 @@ export const problems: Problem[] = [
     title: "Nonstandard Scalar Multiplication",
     latex: String.raw`\lambda\begin{pmatrix}v_1\\v_2\end{pmatrix}=\begin{pmatrix}0\\\lambda v_2\end{pmatrix}`,
     difficulty: "medium",
-    points: 13,
+    points: 11,
     topic: "Linear Algebra",
     context: "An example where scalar multiplication is redefined to zero out the first component. It illustrates how altered operations can violate the vector-space axioms.",
     hints: [
@@ -4681,7 +4677,7 @@ export const problems: Problem[] = [
     title: "Rotated Basis of a Space",
     latex: String.raw`\{e_1+e_2,\;e_2+e_3,\;e_3+e_1\}`,
     difficulty: "easy",
-    points: 5,
+    points: 3,
     topic: "Linear Algebra",
     context: "A set of vectors formed by summing pairs of standard basis vectors; checking whether they still span the space tests linear independence under a transformed basis.",
     hints: [],
@@ -4691,7 +4687,7 @@ export const problems: Problem[] = [
     title: "Symmetric Eigenvalue Matrix",
     latex: String.raw`A=\begin{pmatrix}2&0&-2\\0&4&-2\\-2&-2&3\end{pmatrix}`,
     difficulty: "medium",
-    points: 9,
+    points: 11,
     topic: "Linear Algebra",
     context: "A symmetric matrix, guaranteed to have real eigenvalues and orthogonal eigenvectors, used to practice diagonalization and spectral decomposition.",
     hints: [
@@ -4703,7 +4699,7 @@ export const problems: Problem[] = [
     title: "5x5 Parametrized Matrix",
     latex: String.raw`\begin{pmatrix}5&0&-1&0&0\\1&3&0&0&0\\2&-1&3&0&0\\4&-2&-2&c+2&0\\0&1&0&-1&c\end{pmatrix}`,
     difficulty: "hard",
-    points: 16,
+    points: 20,
     topic: "Linear Algebra",
     context: "A large block-structured matrix with a parameter, used to compute determinants or eigenvalues and see how they depend on the parameter value.",
     hints: [
@@ -4715,7 +4711,7 @@ export const problems: Problem[] = [
     title: "Determinant of a Product",
     latex: String.raw`\det(CD)=\det(C)\det(D)`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Linear Algebra",
     context: "The determinant of a product of matrices equals the product of their determinants—a key multiplicative property linking invertibility and scaling of volume under composition.",
     hints: [],
@@ -4725,7 +4721,7 @@ export const problems: Problem[] = [
     title: "Cyclic Property of the Trace",
     latex: String.raw`\mathrm{tr}(ABC)=\mathrm{tr}(CAB)=\mathrm{tr}(BCA)`,
     difficulty: "medium",
-    points: 2,
+    points: 5,
     topic: "Linear Algebra",
     context: "The trace of a product of matrices is invariant under cyclic reordering of the factors, a fact widely used to simplify expressions in statistics and econometrics.",
     hints: [
@@ -4737,7 +4733,7 @@ export const problems: Problem[] = [
     title: "Trace and Determinant via Eigenvalues",
     latex: String.raw`\mathrm{tr}(A)=\sum_i\lambda_i,\qquad \det(A)=\prod_i\lambda_i`,
     difficulty: "medium",
-    points: 10,
+    points: 9,
     topic: "Linear Algebra",
     context: "A matrix's trace equals the sum of its eigenvalues and its determinant equals their product, connecting simple matrix summaries to its spectral structure.",
     hints: [
@@ -4751,7 +4747,7 @@ export const problems: Problem[] = [
     title: "Idempotent Involution",
     latex: String.raw`M^2=M \implies (2M-I)^2=I`,
     difficulty: "medium",
-    points: 3,
+    points: 5,
     topic: "Linear Algebra",
     context: "If a matrix equals its own square (idempotent), then a simple linear transformation of it squares to the identity, showing idempotent matrices generate involutions.",
     hints: [
@@ -4763,7 +4759,7 @@ export const problems: Problem[] = [
     title: "Annihilator Matrix Determinant",
     latex: String.raw`\det\!\left(I-X(X^\top X)^{-1}X^\top\right)`,
     difficulty: "hard",
-    points: 5,
+    points: 12,
     topic: "Linear Algebra",
     context: "The residual-maker matrix from regression projects out fitted values; being a singular projection, its determinant is zero, reflecting that it collapses dimensions.",
     hints: [
@@ -4787,7 +4783,7 @@ export const problems: Problem[] = [
     title: "Limiting Power of a Matrix",
     latex: String.raw`\lim_{n\to\infty}D^n u,\quad D=\begin{pmatrix}\frac{1}{3}&\frac{2}{3}\\\frac{2}{3}&\frac{1}{3}\end{pmatrix}`,
     difficulty: "medium",
-    points: 15,
+    points: 11,
     topic: "Linear Algebra",
     context: "Repeatedly applying a stochastic-like matrix drives a vector toward a steady state determined by the dominant eigenvector, illustrating long-run behavior of iterated linear maps.",
     hints: [
@@ -4803,7 +4799,7 @@ export const problems: Problem[] = [
     title: "Eigenspace Equation",
     latex: String.raw`(B^{100}-B)x=0`,
     difficulty: "medium",
-    points: 2,
+    points: 5,
     topic: "Linear Algebra",
     context: "Solutions to this equation are vectors fixed by a high power of the matrix, identifying eigenspaces tied to eigenvalues that satisfy the polynomial relation.",
     hints: [],
@@ -4813,7 +4809,7 @@ export const problems: Problem[] = [
     title: "Rank-One Update Matrix",
     latex: String.raw`A=S-ss^{\top},\quad S=\operatorname{diag}(s)`,
     difficulty: "medium",
-    points: 5,
+    points: 8,
     topic: "Linear Algebra",
     context: "A diagonal matrix modified by subtracting a rank-one outer product; such structured updates appear in efficient recomputations of inverses and determinants.",
     hints: [
@@ -4826,7 +4822,7 @@ export const problems: Problem[] = [
     title: "Inverse of a Rank-One Perturbation",
     latex: String.raw`A^{-1}=S^{-1}+\frac{1}{1-s_0}\,\iota\iota^{\top}`,
     difficulty: "hard",
-    points: 9,
+    points: 16,
     topic: "Linear Algebra",
     context: "The explicit inverse of a rank-one perturbed matrix, an instance of the Sherman-Morrison formula that avoids recomputing an inverse from scratch.",
     hints: [
@@ -4855,7 +4851,7 @@ export const problems: Problem[] = [
     title: "Definition of Convergence",
     latex: String.raw`\lim_{k\to\infty}x_k=x\iff\forall\varepsilon>0\ \exists K\ \text{s.t.}\ \forall k\geq K,\ |x_k-x|<\varepsilon`,
     difficulty: "medium",
-    points: 14,
+    points: 10,
     topic: "Real Analysis",
     context: "The formal epsilon definition: a sequence approaches a limit if, past some point, all terms lie within any chosen tolerance of that limit.",
     hints: [
@@ -4891,7 +4887,7 @@ export const problems: Problem[] = [
     title: "Squeeze Theorem",
     latex: String.raw`x_k\geq z_k\geq y_k,\quad x_k\to a,\ y_k\to a\ \implies\ z_k\to a`,
     difficulty: "medium",
-    points: 7,
+    points: 6,
     topic: "Real Analysis",
     context: "If a sequence is trapped between two others that both converge to the same limit, it must converge to that limit too—a standard tool for hard limits.",
     hints: [
@@ -4905,7 +4901,7 @@ export const problems: Problem[] = [
     title: "Limit of a Product",
     latex: String.raw`x_k\to x,\ y_k\to y\ \implies\ x_ky_k\to xy`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Real Analysis",
     context: "The limit of a product of two convergent sequences equals the product of their limits, one of the basic algebraic rules that make limits tractable.",
     hints: [
@@ -4918,7 +4914,7 @@ export const problems: Problem[] = [
     title: "Lipschitz Condition",
     latex: String.raw`|f(x)-f(x')|<K|x-x'|\quad\text{for all }x,x'`,
     difficulty: "medium",
-    points: 1,
+    points: 5,
     topic: "Real Analysis",
     context: "A function is Lipschitz if its output changes no faster than a constant times its input change, bounding steepness and guaranteeing continuity and stable behavior.",
     hints: [
@@ -4930,7 +4926,7 @@ export const problems: Problem[] = [
     title: "Mean Value Theorem Inequality",
     latex: String.raw`\frac{x}{1+x}<\ln(1+x)<x\quad\text{for all }x>0`,
     difficulty: "medium",
-    points: 4,
+    points: 6,
     topic: "Real Analysis",
     context: "These tight bounds on the natural logarithm, derivable from the mean value theorem, are useful for approximations and for proving growth-rate inequalities.",
     hints: [
@@ -4943,7 +4939,7 @@ export const problems: Problem[] = [
     title: "Preimage of a Set",
     latex: String.raw`f^{-1}(A)=\{x:f(x)\in A\}`,
     difficulty: "easy",
-    points: 6,
+    points: 3,
     topic: "Real Analysis",
     context: "The preimage collects all inputs that a function maps into a given target set—a fundamental construction for defining continuity and measurability.",
     hints: [
@@ -4955,7 +4951,7 @@ export const problems: Problem[] = [
     title: "Image of a Set",
     latex: String.raw`Y=f(X)=\{f(x):x\in X\}`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Real Analysis",
     context: "The image is the set of all output values a function produces from a given domain, describing the range reached by the mapping.",
     hints: [
@@ -4967,7 +4963,7 @@ export const problems: Problem[] = [
     title: "Homogeneous Quadratic Form",
     latex: String.raw`F(x,y)=ax^{2n}-2bx^ny^n+cy^{2n}`,
     difficulty: "medium",
-    points: 4,
+    points: 5,
     topic: "Real Analysis",
     context: "A two-variable expression that is homogeneous in x^n and y^n, structured like a quadratic in those powers. Its sign (whether it stays positive) is governed by the discriminant b^2-ac, a standard tool for classifying such forms.",
     hints: [],
@@ -4977,7 +4973,7 @@ export const problems: Problem[] = [
     title: "Recursively Defined Sequence",
     latex: String.raw`x_1=\tfrac{1}{2},\qquad x_{k+1}=x_k^2`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Real Analysis",
     context: "A sequence defined by repeatedly squaring the previous term, starting at 1/2. Since terms stay in (0,1), squaring shrinks them, so the sequence decreases monotonically toward 0 — a classic example for studying convergence.",
     hints: [],
@@ -4987,7 +4983,7 @@ export const problems: Problem[] = [
     title: "Vanishing Second Derivative",
     latex: String.raw`f(-1)=f(0)=f(1)\ \implies\ \exists\,d\in[-1,1]\ \text{s.t.}\ f''(d)=0`,
     difficulty: "hard",
-    points: 5,
+    points: 12,
     topic: "Real Analysis",
     context: "If a smooth function takes equal values at three points, Rolle's theorem applied twice guarantees a point where the second derivative is zero — an inflection-like point. Illustrates how repeated derivatives inherit zeros.",
     hints: [
@@ -5002,7 +4998,7 @@ export const problems: Problem[] = [
     title: "Nested Exponential Objective",
     latex: String.raw`f(x,y)=x+a\left(e^{x}+e^{x+y}\right)`,
     difficulty: "easy",
-    points: 3,
+    points: 1,
     topic: "Optimisation",
     context: "An objective combining a linear term with nested exponentials. Setting the partial derivatives to zero shows df/dy = a e^(x+y) can never vanish, so the function has no stationary points—a useful example of an unconstrained problem with no interior optimum.",
     hints: [],
@@ -5012,7 +5008,7 @@ export const problems: Problem[] = [
     title: "Quadratic Form with Cross Term",
     latex: String.raw`f(x_1,x_2)=x_1+x_2+ax_1x_2-\frac{x_1^2}{2}-\frac{x_2^2}{2}`,
     difficulty: "medium",
-    points: 6,
+    points: 9,
     topic: "Optimisation",
     context: "A concave quadratic in two goods with an interaction term ax_1x_2, representing complementarity or substitution. Maximising it shows how the cross-term parameter shifts the optimal bundle and the second-order conditions.",
     hints: [
@@ -5024,7 +5020,7 @@ export const problems: Problem[] = [
     title: "Iterated Logarithm Power",
     latex: String.raw`f(x)=(\ln x)^{\exp x}`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Optimisation",
     context: "A function raising a logarithm to an exponentially-growing power, used to practice differentiating awkward composite forms via logarithmic differentiation and analysing growth behaviour.",
     hints: [],
@@ -5034,7 +5030,7 @@ export const problems: Problem[] = [
     title: "Sphere on a Quadric Constraint",
     latex: String.raw`\min\ x^2+y^2+z^2 \quad\text{s.t.}\quad xy+yz+zx=3a^2`,
     difficulty: "medium",
-    points: 4,
+    points: 5,
     topic: "Optimisation",
     context: "Minimise distance from the origin subject to a symmetric quadratic constraint. A Lagrange-multiplier problem whose symmetry (x=y=z) reveals the optimum, illustrating constrained optimisation on quadric surfaces.",
     hints: [
@@ -5047,7 +5043,7 @@ export const problems: Problem[] = [
     title: "Reciprocal Sum Constraint",
     latex: String.raw`\min\ (x+y+z)\quad\text{s.t.}\quad \frac{1}{x}+\frac{1}{y}+\frac{1}{z}=1`,
     difficulty: "medium",
-    points: 6,
+    points: 9,
     topic: "Optimisation",
     context: "Minimise the sum x+y+z when the reciprocals sum to one. Lagrange conditions force symmetry, giving the minimum value 9 at x=y=z=3, showing how reciprocal constraints shape optimal allocations.",
     hints: [
@@ -5061,7 +5057,7 @@ export const problems: Problem[] = [
     title: "Log Utility with Inequality Constraint",
     latex: String.raw`\max_{x_1,x_2}\ \ln(x_1)+\ln(5+x_2)\quad\text{s.t.}\quad 4-x_1-x_2\geq0`,
     difficulty: "medium",
-    points: 8,
+    points: 7,
     topic: "Optimisation",
     context: "Maximise log utility over two goods under a budget-style inequality. Demonstrates Kuhn-Tucker reasoning: check whether the constraint binds, since the +5 shifts the optimal split away from equal shares.",
     hints: [
@@ -5075,7 +5071,7 @@ export const problems: Problem[] = [
     title: "KKT Objective on a Disc",
     latex: String.raw`f(x,y)=x^2-\frac{x}{2}+y^2-y \quad\text{on}\quad x^2+y^2\leq b`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Optimisation",
     context: "Minimise a convex quadratic over a closed disc of radius sqrt(b). A textbook KKT problem: the unconstrained minimum may lie inside or outside the disc, determining whether the boundary constraint is active.",
     hints: [
@@ -5089,7 +5085,7 @@ export const problems: Problem[] = [
     title: "Product Constraint Inequality",
     latex: String.raw`\min\ x^2+2y^2 \quad\text{s.t.}\quad x^2y^2\geq b,\ b>0`,
     difficulty: "medium",
-    points: 5,
+    points: 6,
     topic: "Optimisation",
     context: "Minimise a weighted sum of squares subject to a lower bound on the product x^2y^2. The constraint binds at the optimum, and Lagrange/KKT conditions balance the two goods against the required product.",
     hints: [
@@ -5103,7 +5099,7 @@ export const problems: Problem[] = [
     title: "Cubic Inequality Constraint",
     latex: String.raw`g(x,y)=x^3-x-(y^3-y)\geq0`,
     difficulty: "easy",
-    points: 3,
+    points: 1,
     topic: "Optimisation",
     context: "A feasible region defined by a cubic inequality, used to practice describing and optimising over non-convex constraint sets where the boundary is a curved cubic rather than a line.",
     hints: [
@@ -5115,7 +5111,7 @@ export const problems: Problem[] = [
     title: "Temptation and Self-Control Utility",
     latex: String.raw`U(m)=\max_{BS(m)}(u+v)-\max_{BS(m)}v`,
     difficulty: "hard",
-    points: 5,
+    points: 12,
     topic: "Optimisation",
     context: "Gul-Pesendorfer preferences: utility equals the best commitment payoff minus the cost of resisting temptation. Captures that having tempting options in the choice set lowers welfare even if not chosen.",
     hints: [
@@ -5127,7 +5123,7 @@ export const problems: Problem[] = [
     title: "Square-Root Utility",
     latex: String.raw`u(x,y)=\sqrt{x}+2\sqrt{y}`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Optimisation",
     context: "A concave utility over two goods with diminishing marginal utility (square roots). The weight on y makes it twice as valued at the margin; used to derive demand and interior optima.",
     hints: [
@@ -5139,7 +5135,7 @@ export const problems: Problem[] = [
     title: "Principal-Agent Worker Utility",
     latex: String.raw`u=w-\frac{1}{2}\left(\frac{x}{a_i}\right)^{2}`,
     difficulty: "medium",
-    points: 4,
+    points: 8,
     topic: "Optimisation",
     context: "A worker's payoff: wage minus a convex effort cost that eases with ability a_i. Central to principal-agent models where firms design wages to elicit effort from workers of differing types.",
     hints: [
@@ -5151,7 +5147,7 @@ export const problems: Problem[] = [
     title: "Bernoulli Equation",
     latex: String.raw`\dot{y}+ty=3ty^2`,
     difficulty: "medium",
-    points: 3,
+    points: 5,
     topic: "Differential Equations",
     context: "A nonlinear first-order ODE of Bernoulli type. The substitution turning it into a linear equation (via 1/y) is the standard solution trick, common in growth and dynamics models.",
     hints: [
@@ -5163,7 +5159,7 @@ export const problems: Problem[] = [
     title: "Separable First-Order ODE",
     latex: String.raw`\frac{dy}{dt}=\frac{y^3}{t^3}`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Differential Equations",
     context: "A first-order ODE where variables separate, so both sides can be integrated independently. The simplest solvable class of differential equations, foundational for dynamic analysis.",
     hints: [
@@ -5175,7 +5171,7 @@ export const problems: Problem[] = [
     title: "Second-Order ODE with Repeated Root",
     latex: String.raw`\frac{d^2y}{dx^2}-2\frac{dy}{dx}+y=4e^x`,
     difficulty: "medium",
-    points: 5,
+    points: 8,
     topic: "Differential Equations",
     context: "A linear ODE whose characteristic equation has a repeated root, and whose forcing term resonates with the homogeneous solution. Illustrates why the particular solution needs an extra factor of x^2, since both e^x and x e^x already solve the homogeneous equation.",
     hints: [
@@ -5187,7 +5183,7 @@ export const problems: Problem[] = [
     title: "Third-Order Linear ODE",
     latex: String.raw`y'''-3y''+3y'-y=6e^x+x`,
     difficulty: "hard",
-    points: 2,
+    points: 12,
     topic: "Differential Equations",
     context: "A third-order constant-coefficient ODE with a triple characteristic root plus polynomial and exponential forcing. Practices building general solutions from homogeneous plus particular parts under resonance.",
     hints: [],
@@ -5197,7 +5193,7 @@ export const problems: Problem[] = [
     title: "Fourth-Order ODE with Resonance",
     latex: String.raw`y^{(4)}+8y''+16y=8\cos 2x`,
     difficulty: "hard",
-    points: 4,
+    points: 12,
     topic: "Differential Equations",
     context: "A fourth-order ODE where the forcing frequency matches a natural frequency, producing resonance. Demonstrates how resonant forcing with a repeated complex root requires multiplying the trial solution by x^2 to capture growing oscillations.",
     hints: [],
@@ -5207,7 +5203,7 @@ export const problems: Problem[] = [
     title: "Logistic Equation",
     latex: String.raw`\dot{y}=r\left(1-\frac{y}{K}\right)y`,
     difficulty: "medium",
-    points: 4,
+    points: 6,
     topic: "Differential Equations",
     context: "The logistic growth model: growth slows as the population y approaches carrying capacity K. A cornerstone of population and diffusion dynamics with an S-shaped solution path.",
     hints: [
@@ -5220,7 +5216,7 @@ export const problems: Problem[] = [
     title: "Matrix Form of a Linear ODE",
     latex: String.raw`z'=\begin{pmatrix}0&1\\1&0\end{pmatrix}z`,
     difficulty: "medium",
-    points: 6,
+    points: 9,
     topic: "Differential Equations",
     context: "A linear system of ODEs written compactly in matrix form. Eigenvalues of the coefficient matrix (+1 and -1 here) determine the system's stability and trajectory behaviour.",
     hints: [
@@ -5232,7 +5228,7 @@ export const problems: Problem[] = [
     title: "Euler Approximation Step",
     latex: String.raw`z_{n+1}=\left(I+\begin{pmatrix}0&1\\1&0\end{pmatrix}\delta\right)z_n`,
     difficulty: "medium",
-    points: 9,
+    points: 10,
     topic: "Differential Equations",
     context: "One step of the explicit Euler method for numerically solving an ODE system: advance the state by a small time step delta using the current derivative. Basic tool for simulating dynamics without closed forms.",
     hints: [
@@ -5244,7 +5240,7 @@ export const problems: Problem[] = [
     title: "Linear System with an Improper Node",
     latex: String.raw`\begin{aligned}\dot{x}&=x+y\\\dot{y}&=-x+3y\end{aligned}`,
     difficulty: "medium",
-    points: 7,
+    points: 10,
     topic: "Differential Equations",
     context: "A planar linear dynamic system whose coefficient matrix has a repeated real eigenvalue of 2 with only one independent eigenvector, producing an unstable improper (degenerate) node. Used to classify phase-plane behaviour by the nature of the coefficient matrix's eigenvalues.",
     hints: [
@@ -5257,7 +5253,7 @@ export const problems: Problem[] = [
     title: "Three-Variable Linear System",
     latex: String.raw`\begin{aligned}\dot{x}&=2y+2z\\\dot{y}&=2x-y\\\dot{z}&=2x+z\end{aligned}`,
     difficulty: "hard",
-    points: 11,
+    points: 18,
     topic: "Differential Equations",
     context: "A three-dimensional linear dynamical system. Its stability and trajectories are found from the eigenvalues and eigenvectors of the 3x3 coefficient matrix, extending phase analysis to higher dimensions.",
     hints: [
@@ -5270,7 +5266,7 @@ export const problems: Problem[] = [
     title: "Log-Utility Consumption Problem",
     latex: String.raw`\max_{c(t)}\; V=\int_0^{T}\ln\!\big(c(t)\big)\,dt \quad\text{s.t.}\quad \dot{s}=-c`,
     difficulty: "medium",
-    points: 9,
+    points: 8,
     topic: "Dynamic Optimisation",
     context: "An optimal-control problem: maximise undiscounted log utility of consumption while a finite stock depletes. The Euler/Hamiltonian conditions yield a smooth consumption path that runs the stock down over the horizon.",
     hints: [
@@ -5285,7 +5281,7 @@ export const problems: Problem[] = [
     title: "CRRA Objective Functional",
     latex: String.raw`V=\int_0^{T} c(t)^{\alpha}\,dt,\qquad 0<\alpha<1`,
     difficulty: "easy",
-    points: 6,
+    points: 3,
     topic: "Dynamic Optimisation",
     context: "A continuous-time objective integrating CRRA-type consumption utility with curvature alpha. The exponent controls intertemporal substitution, shaping how optimally to spread consumption over time.",
     hints: [
@@ -5311,7 +5307,7 @@ export const problems: Problem[] = [
     title: "Resource Extraction Profit",
     latex: String.raw`\max_{x(t)}\int_0^{T} e^{-rt}\big[px-Ax^2\big]\,dt \quad\text{s.t.}\quad \dot{s}=-x`,
     difficulty: "medium",
-    points: 9,
+    points: 8,
     topic: "Dynamic Optimisation",
     context: "An optimal-control model of extracting a finite resource: maximise discounted profit (revenue px minus cost Ax^2) as the stock depletes. Yields the Hotelling-style optimal extraction path.",
     hints: [
@@ -5326,7 +5322,7 @@ export const problems: Problem[] = [
     title: "Full-Extraction Time Condition",
     latex: String.raw`\frac{p}{2A}\left[T_0-\frac{1}{r}\big(1-e^{-rT_0}\big)\right]=s_0`,
     difficulty: "hard",
-    points: 6,
+    points: 14,
     topic: "Dynamic Optimisation",
     context: "The condition pinning down the time T_0 at which a resource stock is fully exhausted under the optimal extraction plan. Links the initial stock, discount rate, and price-to-cost ratio to the extraction horizon.",
     hints: [
@@ -5338,7 +5334,7 @@ export const problems: Problem[] = [
     title: "John's Control Problem",
     latex: String.raw`V_J=\int_0^{1}\big[x(t)-u^2(t)\big]\,dt \quad\text{s.t.}\quad \dot{x}=u-1`,
     difficulty: "medium",
-    points: 5,
+    points: 7,
     topic: "Dynamic Optimisation",
     context: "An optimal control problem: maximise the running payoff (output minus squared effort cost) over time, where the state x evolves according to control u. Illustrates how to trade instantaneous reward against building up the state.",
     hints: [
@@ -5352,7 +5348,7 @@ export const problems: Problem[] = [
     title: "Ann's Quadratic Objective",
     latex: String.raw`V_A=\int_0^{1}\big[6x(t)-x^2(t)-u^2(t)\big]\,dt`,
     difficulty: "medium",
-    points: 4,
+    points: 7,
     topic: "Dynamic Optimisation",
     context: "A dynamic optimisation objective with a quadratic running payoff that rewards a high state and penalises both large states and costly control effort, capturing diminishing returns and effort costs over a planning horizon.",
     hints: [
@@ -5364,7 +5360,7 @@ export const problems: Problem[] = [
     title: "Discounted Log-Growth Problem",
     latex: String.raw`\max_{x(t)}\int_0^{T} e^{-\delta t}\ln\!\big[x(t)+1\big]\,dt \quad\text{s.t.}\quad \dot{s}=rs-x`,
     difficulty: "medium",
-    points: 11,
+    points: 9,
     topic: "Dynamic Optimisation",
     context: "Choose an extraction path to maximise discounted log utility from a growing stock, where the stock grows at rate r but is depleted by withdrawals x. Models optimal harvesting of a self-renewing asset.",
     hints: [
@@ -5379,7 +5375,7 @@ export const problems: Problem[] = [
     title: "Dynamic Monopolist Profit",
     latex: String.raw`\int_0^{1}\big[q(t)p(t)-q^2(t)-\dot{p}^2(t)\big]\,dt`,
     difficulty: "medium",
-    points: 5,
+    points: 7,
     topic: "Dynamic Optimisation",
     context: "A monopolist maximises profit over time, earning revenue but paying for output and for adjusting price quickly (the squared price-change term), capturing costs of rapid price adjustment.",
     hints: [
@@ -5392,7 +5388,7 @@ export const problems: Problem[] = [
     title: "Discounted Consumption Utility",
     latex: String.raw`\max_{c(t)}\int_0^{T} e^{-rt}\sqrt{c(t)}\,dt \quad\text{s.t.}\quad \dot{s}=x+rs-c`,
     difficulty: "medium",
-    points: 10,
+    points: 8,
     topic: "Dynamic Optimisation",
     context: "Maximise discounted lifetime utility from consumption (with square-root, diminishing marginal utility) subject to savings that earn interest and grow with income minus consumption. A classic consumption-savings problem.",
     hints: [
@@ -5408,7 +5404,7 @@ export const problems: Problem[] = [
     title: "Fish-Stock Optimal Dynamics",
     latex: String.raw`\begin{aligned}\dot{s}&=as-bs^2-x\\\dot{x}&=x\,(a-2bs-r)\end{aligned}`,
     difficulty: "hard",
-    points: 7,
+    points: 17,
     topic: "Dynamic Optimisation",
     context: "The paired equations of motion for optimal harvesting: the fish stock grows logistically while the optimal harvest adjusts according to how the marginal stock return compares to the discount rate. Bioeconomic resource management.",
     hints: [
@@ -5421,7 +5417,7 @@ export const problems: Problem[] = [
     title: "Non-Renewable Resource Co-State",
     latex: String.raw`\pi(t)=\pi_0\,e^{rt}`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Dynamic Optimisation",
     context: "Hotelling's rule: the shadow price (scarcity rent) of an exhaustible resource grows over time at the interest rate, so owners are indifferent between extracting now and leaving it in the ground.",
     hints: [],
@@ -5431,7 +5427,7 @@ export const problems: Problem[] = [
     title: "Chain Rule of Probability",
     latex: String.raw`P\left(\bigcap_{m=1}^{M} A_m\right)=P(A_1)\cdot P(A_2\mid A_1)\cdots P\left(A_M\,\middle|\,\bigcap_{m=1}^{M-1}A_m\right)`,
     difficulty: "medium",
-    points: 13,
+    points: 10,
     topic: "Probability",
     context: "The joint probability of many events equals a product of conditional probabilities, each conditioning on all previous events. A foundational tool for decomposing complex joint distributions step by step.",
     hints: [
@@ -5444,7 +5440,7 @@ export const problems: Problem[] = [
     title: "Quantile Defining Inequalities",
     latex: String.raw`\Pr(X<q)\leq\alpha \quad\text{and}\quad \Pr(X>q)\leq 1-\alpha,\quad 0<\alpha<1`,
     difficulty: "easy",
-    points: 5,
+    points: 3,
     topic: "Probability",
     context: "Defines the alpha-quantile: the value q such that at most fraction alpha of probability lies strictly below and at most 1-alpha strictly above. Generalises the median to arbitrary probability cut-offs.",
     hints: [
@@ -5467,7 +5463,7 @@ export const problems: Problem[] = [
     title: "Benford CDF",
     latex: String.raw`P(D\le d)=\log_{10}(d+1)`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Probability",
     context: "The cumulative form of Benford's Law: the probability that a leading digit is at most d. Gives the running total of leading-digit frequencies used in fraud-detection tests.",
     hints: [
@@ -5479,7 +5475,7 @@ export const problems: Problem[] = [
     title: "Standard Normal Density",
     latex: String.raw`f_X(x)=\frac{1}{\sqrt{2\pi}}e^{-x^2/2}`,
     difficulty: "easy",
-    points: 8,
+    points: 4,
     topic: "Distributions",
     context: "The bell curve with mean 0 and variance 1, the reference distribution to which standardised data and sample means converge. The building block for z-scores and much of statistical inference.",
     hints: [
@@ -5492,7 +5488,7 @@ export const problems: Problem[] = [
     title: "Density of a Squared Variable",
     latex: String.raw`f_Y(y)=\frac{1}{2\sqrt{y}}\left[f_X(\sqrt{y})+f_X(-\sqrt{y})\right]`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Transformations",
     context: "Shows how to find the density of Y = X squared: since both +sqrt(y) and -sqrt(y) map to y, you sum both contributions and adjust by the change-of-variable factor. A change-of-variables example.",
     hints: [
@@ -5505,7 +5501,7 @@ export const problems: Problem[] = [
     title: "Laplace Density",
     latex: String.raw`f_X(x)=\tfrac{1}{2}e^{-|x|},\quad x\in\mathbb{R}`,
     difficulty: "easy",
-    points: 6,
+    points: 3,
     topic: "Distributions",
     context: "The double-exponential distribution: symmetric around zero with heavier tails than the normal, decaying with the absolute value. Models data with occasional large deviations and underpins robust (L1) methods.",
     hints: [
@@ -5518,7 +5514,7 @@ export const problems: Problem[] = [
     title: "Polar Transformation",
     latex: String.raw`X=R\cos\Theta,\qquad Y=R\sin\Theta`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Transformations",
     context: "Converts Cartesian coordinates to polar form using radius R and angle Theta. In probability it underlies the Box-Muller method for generating normal random variables from uniform ones.",
     hints: [
@@ -5530,7 +5526,7 @@ export const problems: Problem[] = [
     title: "Joint Density on the Unit Square",
     latex: String.raw`f_{XY}(x,y)=c+\frac{x+y}{2},\quad 0<x,y<1`,
     difficulty: "medium",
-    points: 4,
+    points: 6,
     topic: "Distributions",
     context: "A two-variable density on the unit square where the constant c is fixed by requiring the total probability to integrate to one. A standard exercise in normalising and working with joint densities.",
     hints: [
@@ -5542,7 +5538,7 @@ export const problems: Problem[] = [
     title: "Covariance Matrix Definition",
     latex: String.raw`\Sigma=E\!\left[(X-\mu)(X-\mu)^\top\right]`,
     difficulty: "medium",
-    points: 5,
+    points: 6,
     topic: "Multivariate Statistics",
     context: "Defines the covariance matrix as the expected outer product of the centred random vector, packaging every variable's variance and each pair's covariance into one matrix. Central to multivariate analysis and portfolio theory.",
     hints: [
@@ -5555,7 +5551,7 @@ export const problems: Problem[] = [
     title: "Quadratic Form is Chi-Squared",
     latex: String.raw`X\sim N(0,\sigma^2 I_n)\implies \frac{X^\top AX}{\sigma^2}\sim\chi^2_p`,
     difficulty: "hard",
-    points: 11,
+    points: 16,
     topic: "Multivariate Statistics",
     context: "For standard normal vectors, a suitably chosen quadratic form follows a chi-squared distribution with degrees of freedom equal to the projection's rank. This underlies many test statistics like sums of squared residuals.",
     hints: [
@@ -5585,7 +5581,7 @@ export const problems: Problem[] = [
     title: "Mean Inequality (HM-GM-AM)",
     latex: String.raw`\bar{x}_H\leq\bar{x}_G\leq\bar{x}_A`,
     difficulty: "medium",
-    points: 5,
+    points: 6,
     topic: "Inequalities",
     context: "The harmonic mean never exceeds the geometric mean, which never exceeds the arithmetic mean. A fundamental inequality showing how different ways of averaging the same positive numbers rank.",
     hints: [
@@ -5598,7 +5594,7 @@ export const problems: Problem[] = [
     title: "Power Mean",
     latex: String.raw`A_r=\left(\frac{1}{n}\sum_{i=1}^{n} x_i^{\,r}\right)^{1/r}`,
     difficulty: "medium",
-    points: 9,
+    points: 10,
     topic: "Inequalities",
     context: "A family of averages indexed by exponent r that unifies harmonic (r=-1), geometric (limit r to 0), arithmetic (r=1), and higher means. Larger r puts more weight on big values.",
     hints: [
@@ -5611,7 +5607,7 @@ export const problems: Problem[] = [
     title: "Bernoulli Mixture Variable",
     latex: String.raw`Y=X_3X_1+(1-X_3)X_2`,
     difficulty: "medium",
-    points: 2,
+    points: 5,
     topic: "Transformations",
     context: "A Bernoulli switch X3 randomly selects between X1 and X2, producing a mixture variable. Models outcomes drawn from one of two regimes depending on a coin flip.",
     hints: [],
@@ -5621,7 +5617,7 @@ export const problems: Problem[] = [
     title: "Weak Law of Large Numbers",
     latex: String.raw`\frac{1}{n}\sum_{i=1}^{n} X_i \xrightarrow{p} \mu`,
     difficulty: "easy",
-    points: 9,
+    points: 4,
     topic: "Asymptotics",
     context: "As the sample grows, the sample average converges in probability to the true mean. Justifies using averages of many observations to estimate an unknown expected value.",
     hints: [
@@ -5634,7 +5630,7 @@ export const problems: Problem[] = [
     title: "Convergence in Probability of a Scaled Sum",
     latex: String.raw`\frac{1}{n^{2}}\sum_{i=1}^{n} X_i \xrightarrow{p} \frac{1}{2}`,
     difficulty: "medium",
-    points: 9,
+    points: 10,
     topic: "Asymptotics",
     context: "An example where dividing a sum by n-squared (rather than n) makes it converge in probability to 1/2, illustrating how the right normalising factor governs a sequence's limiting behaviour.",
     hints: [
@@ -5660,7 +5656,7 @@ export const problems: Problem[] = [
     title: "Central Limit Theorem",
     latex: String.raw`\sqrt{n}\,(\hat{\mu}-\mu) \xrightarrow{d} N(0,\sigma^{2})`,
     difficulty: "medium",
-    points: 9,
+    points: 8,
     topic: "Asymptotics",
     context: "Scaled by root-n, the estimation error of the sample mean converges to a normal distribution regardless of the underlying distribution's shape. The reason normal-based inference works so broadly.",
     hints: [
@@ -5673,7 +5669,7 @@ export const problems: Problem[] = [
     title: "Delta Method Limit of a Squared Mean",
     latex: String.raw`n^{c}\left[\left(\frac{1}{n}\sum_{i=1}^{n} X_i\right)^{2}-a\right] \xrightarrow{d} N(0,\sigma^{2})`,
     difficulty: "hard",
-    points: 10,
+    points: 17,
     topic: "Asymptotics",
     context: "The delta method extends the CLT to smooth functions of an estimator (here the squared mean), giving its asymptotic normal distribution via a first-order Taylor expansion. Lets you find standard errors for transformed estimates.",
     hints: [
@@ -5686,7 +5682,7 @@ export const problems: Problem[] = [
     title: "Consistency of the Sharpe-Ratio Estimator",
     latex: String.raw`\hat{r}=\frac{\bar{X}}{s} \xrightarrow{p} \frac{\mu}{\sigma}`,
     difficulty: "medium",
-    points: 11,
+    points: 10,
     topic: "Asymptotics",
     context: "The sample Sharpe ratio (mean over standard deviation) converges in probability to the true ratio, so with enough data it reliably estimates risk-adjusted return.",
     hints: [
@@ -5700,7 +5696,7 @@ export const problems: Problem[] = [
     title: "MA(2) Process",
     latex: String.raw`X_t = v_t + \theta_1 v_{t-1} + \theta_2 v_{t-2}`,
     difficulty: "easy",
-    points: 6,
+    points: 2,
     topic: "Asymptotics",
     context: "A moving-average process of order 2: today's value is a weighted sum of the current and two previous random shocks. Models short-lived, finite-memory dependence in time series.",
     hints: [],
@@ -5710,7 +5706,7 @@ export const problems: Problem[] = [
     title: "Convergence of the Sample Minimum",
     latex: String.raw`Y_n=\min\{X_1,\ldots,X_n\} \xrightarrow{p} 0`,
     difficulty: "medium",
-    points: 8,
+    points: 9,
     topic: "Asymptotics",
     context: "As sample size grows, the smallest observation from non-negative data converges in probability to zero, since more draws make an extremely small value increasingly likely. An extreme-value result.",
     hints: [
@@ -5736,7 +5732,7 @@ export const problems: Problem[] = [
     title: "Asymptotic Normality of Geometric Mean",
     latex: String.raw`\sqrt{n}\,(Y_n-e)\xrightarrow{d}N(0,e^2)`,
     difficulty: "hard",
-    points: 5,
+    points: 13,
     topic: "Asymptotics",
     context: "Shows that the sample geometric mean, suitably centered and scaled by root-n, is approximately normal around Euler's number e for large samples, letting you build confidence intervals for multiplicative averages.",
     hints: [
@@ -5748,7 +5744,7 @@ export const problems: Problem[] = [
     title: "Bernoulli Likelihood",
     latex: String.raw`f(x;\theta)=\theta^x(1-\theta)^{1-x}`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Maximum Likelihood",
     context: "The probability of a single yes/no outcome given success probability theta; it is the basic building block for estimating a proportion from binary data like coin flips or survey responses.",
     hints: [],
@@ -5770,7 +5766,7 @@ export const problems: Problem[] = [
     title: "Linear Projection Coefficient",
     latex: String.raw`\beta=\frac{\mathrm{Cov}(Y,X)}{\mathrm{Var}(X)}`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Estimation",
     context: "The best linear predictor's slope equals the covariance of Y and X divided by X's variance, the population target that OLS regression estimates and the foundation of least-squares fitting.",
     hints: [
@@ -5783,7 +5779,7 @@ export const problems: Problem[] = [
     title: "Log-Normal Density",
     latex: String.raw`f(x\mid\mu,\sigma)=\frac{1}{x\sigma\sqrt{2\pi}}\exp\left(-\frac{(\log x-\mu)^2}{2\sigma^2}\right)`,
     difficulty: "hard",
-    points: 14,
+    points: 18,
     topic: "Maximum Likelihood",
     context: "Describes a positive variable whose logarithm is normally distributed; widely used for incomes, asset prices, and firm sizes because it is skewed right and never negative.",
     hints: [
@@ -5797,7 +5793,7 @@ export const problems: Problem[] = [
     title: "Pareto Density",
     latex: String.raw`f(y)=\alpha y^{-(\alpha+1)}`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Maximum Likelihood",
     context: "A heavy-tailed distribution where large values are rare but non-negligible, used to model wealth, city sizes, and other quantities following power laws and the '80/20' rule.",
     hints: [],
@@ -5807,7 +5803,7 @@ export const problems: Problem[] = [
     title: "Geometric PMF",
     latex: String.raw`f(X\mid\theta)=\theta(1-\theta)^{X-1}`,
     difficulty: "easy",
-    points: 5,
+    points: 3,
     topic: "Maximum Likelihood",
     context: "Gives the probability that the first success occurs on trial X in repeated independent attempts, modeling waiting times like the number of tries until an event happens.",
     hints: [
@@ -5819,7 +5815,7 @@ export const problems: Problem[] = [
     title: "Exponential Density",
     latex: String.raw`f(x\mid\theta)=\frac{1}{\theta}e^{-x/\theta}`,
     difficulty: "easy",
-    points: 7,
+    points: 4,
     topic: "Maximum Likelihood",
     context: "Models the waiting time until an event in a memoryless process, with mean theta; common for durations like time between arrivals or equipment failures.",
     hints: [
@@ -5832,7 +5828,7 @@ export const problems: Problem[] = [
     title: "Gamma Mean and Variance",
     latex: String.raw`E(Y)=\gamma\theta,\qquad \mathrm{Var}(Y)=\gamma\theta^2`,
     difficulty: "easy",
-    points: 6,
+    points: 2,
     topic: "Estimation",
     context: "For a gamma-distributed variable with shape gamma and scale theta, the mean is their product and variance scales with theta squared, summarizing this flexible distribution for positive, skewed data.",
     hints: [
@@ -5844,7 +5840,7 @@ export const problems: Problem[] = [
     title: "Truncated Poisson PMF",
     latex: String.raw`p(x\mid\theta)=\frac{\theta^x e^{-\theta}}{x!\,(1-e^{-\theta})}`,
     difficulty: "medium",
-    points: 8,
+    points: 10,
     topic: "Maximum Likelihood",
     context: "A Poisson count distribution conditioned on at least one occurrence, rescaling probabilities to exclude zero; used when zero-count observations cannot be seen or recorded.",
     hints: [
@@ -5857,7 +5853,7 @@ export const problems: Problem[] = [
     title: "Uniform MLE",
     latex: String.raw`\hat{\theta}=\max_i X_i`,
     difficulty: "easy",
-    points: 6,
+    points: 2,
     topic: "Maximum Likelihood",
     context: "The maximum likelihood estimate of a uniform distribution's upper endpoint is simply the largest observed value, since the true bound must be at least as big as every data point.",
     hints: [
@@ -5870,7 +5866,7 @@ export const problems: Problem[] = [
     title: "Whale Detection Model",
     latex: String.raw`X=\theta+Y,\quad Y\sim N\!\left(0,\tfrac{1}{4}\right)`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Hypothesis Testing",
     context: "A signal-plus-noise setup where an observation equals an unknown parameter plus normal noise; a stylized detection problem for testing whether a true signal (e.g., a whale) is present.",
     hints: [
@@ -5882,7 +5878,7 @@ export const problems: Problem[] = [
     title: "Threshold Regression Model",
     latex: String.raw`Y_i=\mathbf{1}\{X_i\le\beta\}+\varepsilon_i`,
     difficulty: "medium",
-    points: 10,
+    points: 8,
     topic: "Hypothesis Testing",
     context: "The outcome jumps depending on whether a covariate falls below an unknown threshold beta, modeling regime changes or cutoff effects where a relationship switches at a boundary.",
     hints: [
@@ -5896,7 +5892,7 @@ export const problems: Problem[] = [
     title: "Consistent Estimator via Inverse Normal CDF",
     latex: String.raw`\hat{\beta}=\Phi^{-1}(\bar{Y}_n)`,
     difficulty: "easy",
-    points: 8,
+    points: 3,
     topic: "Estimation",
     context: "Recovers a parameter by applying the inverse normal CDF to the sample mean of a binary outcome, exploiting the probit link so the estimator converges to the true value as samples grow.",
     hints: [
@@ -5910,7 +5906,7 @@ export const problems: Problem[] = [
     title: "Test Rejection Region",
     latex: String.raw`\sum_i Y_i\,\mathbf{1}\{0<X_i\le 1\}>\sqrt{n}`,
     difficulty: "medium",
-    points: 10,
+    points: 9,
     topic: "Hypothesis Testing",
     context: "Defines when to reject the null hypothesis: reject if the count of relevant successes exceeds a root-n threshold, illustrating how a decision rule trades off detection power against false alarms.",
     hints: [
@@ -5925,7 +5921,7 @@ export const problems: Problem[] = [
     title: "Probit Model Probabilities",
     latex: String.raw`P(X=1)=\Phi(\theta),\qquad P(X=0)=1-\Phi(\theta)`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Hypothesis Testing",
     context: "Models a binary outcome's success probability as the normal CDF of an index theta, the core of the probit model linking a latent continuous score to observed yes/no choices.",
     hints: [
@@ -5937,7 +5933,7 @@ export const problems: Problem[] = [
     title: "Simple Linear Model with Normal Errors",
     latex: String.raw`Y_i=\beta x_i+\varepsilon_i,\quad \varepsilon_i\sim\mathrm{i.i.d.}\;N(0,\sigma^2)`,
     difficulty: "easy",
-    points: 9,
+    points: 3,
     topic: "Regression",
     context: "A regression through the origin where Y depends on x plus independent normal noise; this benchmark model underpins OLS estimation, t-tests, and exact inference on the slope.",
     hints: [
@@ -5951,7 +5947,7 @@ export const problems: Problem[] = [
     title: "Average Cost Pricing Rule",
     latex: String.raw`\frac{p_i^a - MC_i}{p_i^a} = \frac{F_i}{p_i^a x_i(p_i^a)}`,
     difficulty: "medium",
-    points: 6,
+    points: 8,
     topic: "Welfare Economics",
     context: "Sets each good's markup over marginal cost just high enough that the revenue collected covers the fixed cost F. The firm breaks even, so this is the smallest distortion consistent with no subsidy.",
     hints: [
@@ -5976,7 +5972,7 @@ export const problems: Problem[] = [
     title: "Primary Marginal Benefit of a Tax Increase",
     latex: String.raw`PMB = -\lambda(F)\frac{\partial F}{\partial R_3}\frac{\partial R_3}{\partial t_3} > 0`,
     difficulty: "medium",
-    points: 8,
+    points: 9,
     topic: "Welfare Economics",
     context: "Measures the direct welfare gain from raising tax t3: the extra revenue relaxes the government's budget, valued at the shadow price lambda of public funds. Its positive sign confirms that more revenue is socially valuable when funds are scarce.",
     hints: [
@@ -5989,7 +5985,7 @@ export const problems: Problem[] = [
     title: "Harberger Marginal Deadweight Loss",
     latex: String.raw`SMC = -t_3\frac{\partial x_3}{\partial t_3} > 0`,
     difficulty: "easy",
-    points: 6,
+    points: 3,
     topic: "Welfare Economics",
     context: "The social marginal cost of raising a tax equals the existing tax rate times the drop in quantity it causes. Since a taxed unit was worth its tax wedge in lost surplus, every unit driven out of the market destroys that much value.",
     hints: [
@@ -6002,7 +5998,7 @@ export const problems: Problem[] = [
     title: "Shadow Price without Tax Exemption",
     latex: String.raw`p_x^{SP} = \frac{p_x^0 + p_x^1}{2} + \tau_x\frac{\Delta x^{+}}{\Delta x^{p}}`,
     difficulty: "medium",
-    points: 9,
+    points: 10,
     topic: "Welfare Economics",
     context: "Values a publicly purchased input as the average of the producer price before and after the purchase, plus a tax correction for the share of the demand met by newly induced supply. It converts a market price into a true social opportunity cost.",
     hints: [
@@ -6015,7 +6011,7 @@ export const problems: Problem[] = [
     title: "Shadow Price with Tax Exemption",
     latex: String.raw`p_x^{SP} = \frac{q_x^0 + q_x^1}{2} - \tau_x\frac{\Delta x^{-}}{\Delta x^{p}}`,
     difficulty: "medium",
-    points: 9,
+    points: 10,
     topic: "Welfare Economics",
     context: "When the public buyer is tax-exempt, the social value of the input is the average consumer price minus a correction for the taxed private demand that the purchase displaces. Displacing taxed consumption loses tax revenue, lowering the shadow price.",
     hints: [
@@ -6028,7 +6024,7 @@ export const problems: Problem[] = [
     title: "Shadow Price with Secondary Benefit",
     latex: String.raw`p_x^{SP\prime} = p_x^{SP} + \tau_y\frac{\Delta y^{+}}{\Delta x^{p}}`,
     difficulty: "easy",
-    points: 11,
+    points: 4,
     topic: "Welfare Economics",
     context: "Adjusts a shadow price upward when the public purchase also stimulates demand in a second taxed market y, since the extra tax revenue there is a social benefit. Cross-market fiscal effects belong in cost-benefit accounting.",
     hints: [
@@ -6055,7 +6051,7 @@ export const problems: Problem[] = [
     title: "Social Discount Rate and the World Interest Rate",
     latex: String.raw`\Delta SWF = (1+r^{*})\frac{\partial u_1}{\partial c_1}\left[\frac{\Delta C^p}{1+r^{*}} - \Delta I^p\right]`,
     difficulty: "hard",
-    points: 8,
+    points: 15,
     topic: "Welfare Economics",
     context: "Shows that a foreign-financed project raises welfare exactly when the present value of its consumption gains, discounted at the world interest rate r*, exceeds the private investment it displaces. The world rate is therefore the right social discount rate for a small open economy.",
     hints: [
@@ -6069,7 +6065,7 @@ export const problems: Problem[] = [
     title: "Tax Incidence and Elasticities",
     latex: String.raw`\frac{\Delta q}{\Delta t} = \frac{\epsilon^s}{\epsilon^s - \epsilon^d}`,
     difficulty: "easy",
-    points: 8,
+    points: 4,
     topic: "Public Economics",
     context: "The share of a tax passed into the consumer price equals supply elasticity over the gap between supply and demand elasticities. The more inelastic side of the market bears more of the burden, regardless of who legally pays.",
     hints: [
@@ -6083,7 +6079,7 @@ export const problems: Problem[] = [
     title: "Firm Revenue with Effort Incentives",
     latex: String.raw`M = 4\log(e) - w_1 - w_2`,
     difficulty: "easy",
-    points: 3,
+    points: 2,
     topic: "Contract Theory",
     context: "The firm's net payoff is a concave (log) revenue from total worker effort minus the two wage bills. Diminishing returns to effort mean the firm will not push incentives without limit.",
     hints: [],
@@ -6093,7 +6089,7 @@ export const problems: Problem[] = [
     title: "Mean-Variance Worker Utility",
     latex: String.raw`U_j = E(w_j) - \mathrm{Var}(w_j) - c_j(e_j),\quad j\in\{1,2\}`,
     difficulty: "medium",
-    points: 7,
+    points: 8,
     topic: "Contract Theory",
     context: "Each worker values the expected wage, dislikes wage variance one-for-one, and pays a personal cost of effort. Risk aversion is what makes exposing workers to noisy pay expensive for the firm.",
     hints: [
@@ -6106,7 +6102,7 @@ export const problems: Problem[] = [
     title: "Quadratic Effort Cost Functions",
     latex: String.raw`c_1(e_1) = 0.5e_1^2,\quad c_2(e_2) = e_2^2`,
     difficulty: "easy",
-    points: 3,
+    points: 2,
     topic: "Contract Theory",
     context: "Specifies convex effort costs for two workers, with worker 2's cost rising twice as fast as worker 1's. The cheaper worker will optimally be asked to supply more effort.",
     hints: [],
@@ -6116,7 +6112,7 @@ export const problems: Problem[] = [
     title: "Linear Wage Contract on a Noisy Signal",
     latex: String.raw`w_j = \alpha_j + \beta_j z,\quad j\in\{1,2\}`,
     difficulty: "easy",
-    points: 8,
+    points: 3,
     topic: "Contract Theory",
     context: "Pays each worker a fixed base alpha plus a bonus rate beta on the observed signal z. The slope beta controls incentives while the intercept adjusts total compensation.",
     hints: [
@@ -6128,7 +6124,7 @@ export const problems: Problem[] = [
     title: "Worker Effort Maximisation Problem",
     latex: String.raw`\max_{e_1}\left[\alpha_1 + \beta_1 e - \beta_1^2\,\mathrm{Var}(z) - 0.5e_1^2\right]`,
     difficulty: "medium",
-    points: 10,
+    points: 7,
     topic: "Contract Theory",
     context: "Worker 1 picks effort to maximise expected pay from the bonus rate beta_1, net of the risk penalty from signal variance and the quadratic cost of effort. Only the incentive slope, not the base pay, drives the effort choice.",
     hints: [
@@ -6155,7 +6151,7 @@ export const problems: Problem[] = [
     title: "Total Effort from Two Workers",
     latex: String.raw`e = e_1 + e_2 = \beta_1 + \frac{\beta_2}{2}`,
     difficulty: "easy",
-    points: 6,
+    points: 3,
     topic: "Contract Theory",
     context: "Total effort equals worker 1's bonus rate plus half of worker 2's, because worker 2's steeper effort cost halves the response to any given incentive. Identical contracts produce unequal effort when costs differ.",
     hints: [
@@ -6167,7 +6163,7 @@ export const problems: Problem[] = [
     title: "Reduced Firm Revenue with Risk Costs",
     latex: String.raw`M = 4\log(e) - 1.5\beta_1^2 - 1.25\beta_2^2`,
     difficulty: "medium",
-    points: 5,
+    points: 6,
     topic: "Contract Theory",
     context: "Firm profit after substituting in the workers' optimal effort: log revenue from induced effort minus quadratic terms capturing effort costs and risk compensation for each bonus rate. Choosing the betas now trades revenue directly against these incentive costs.",
     hints: [],
@@ -6177,7 +6173,7 @@ export const problems: Problem[] = [
     title: "Variance Reduction from Correlated Signals",
     latex: String.raw`\mathrm{Var}(w_j) = 0.75\beta_j^2`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Contract Theory",
     context: "When the two workers' signal noises are correlated, benchmarking each wage against the other's signal filters out common shocks and cuts wage variance to 0.75 beta squared. Relative performance evaluation makes strong incentives cheaper to provide.",
     hints: [
@@ -6189,7 +6185,7 @@ export const problems: Problem[] = [
     title: "Square-Root (CARA-like) Utility of Wealth",
     latex: String.raw`u(W) = \sqrt{W}`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Choice under Uncertainty",
     context: "A concave utility function over wealth: extra pounds are worth less the richer you are. The concavity is what makes the agent risk averse and willing to pay for insurance.",
     hints: [
@@ -6201,7 +6197,7 @@ export const problems: Problem[] = [
     title: "Actuarially Fair Insurance Premium",
     latex: String.raw`\alpha_h^{H} = p_H\cdot D = 0.6\cdot 60 = 36`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Choice under Uncertainty",
     context: "The fair premium for a high-risk type equals their sickness probability times the damage covered, here 0.6 times 60 = 36. At this price the insurer expects exactly zero profit on the contract.",
     hints: [
@@ -6213,7 +6209,7 @@ export const problems: Problem[] = [
     title: "Pooling Break-Even Premium",
     latex: String.raw`\alpha_h = \left[q\,p_L + (1-q)\,p_H\right]\cdot\alpha_s = 60\,(0.6 - 0.4q)`,
     difficulty: "medium",
-    points: 5,
+    points: 6,
     topic: "Choice under Uncertainty",
     context: "A single premium charged to everyone must equal the population-weighted average sickness probability times the payout, where q is the share of low risks. More low-risk customers in the pool drag the break-even premium down.",
     hints: [
@@ -6225,7 +6221,7 @@ export const problems: Problem[] = [
     title: "Expected Utility of a Partial Insurance Contract",
     latex: String.raw`U_L \approx 0.8\sqrt{98.75} + 0.2\sqrt{45}`,
     difficulty: "medium",
-    points: 4,
+    points: 6,
     topic: "Choice under Uncertainty",
     context: "Evaluates a low-risk type's expected utility under partial coverage: with probability 0.8 they stay healthy and keep 98.75, with probability 0.2 they fall sick and are left with 45. Comparing such numbers against full pooling coverage reveals which contract each type prefers.",
     hints: [
@@ -6238,7 +6234,7 @@ export const problems: Problem[] = [
     title: "Monopoly Insurer Pooling Profit",
     latex: String.raw`\Pi_{\text{Pooling}} = \underbrace{\left[\lambda(1-p_L) + (1-\lambda)(1-p_H)\right]\alpha_h}_{\text{Expected Premiums}} - \underbrace{\left[\lambda p_L + (1-\lambda)p_H\right]\alpha_s}_{\text{Expected Payouts}}`,
     difficulty: "hard",
-    points: 8,
+    points: 18,
     topic: "Choice under Uncertainty",
     context: "A monopoly insurer's profit from one pooling contract: premiums collected from the healthy share of both types minus payouts to the sick share. Whether pooling beats serving high risks alone depends on the mix parameter lambda.",
     hints: [
@@ -6252,7 +6248,7 @@ export const problems: Problem[] = [
     title: "High-Risk-Only Insurance Profit",
     latex: String.raw`\Pi_{\text{High-Risk}} = (1-\lambda)\left[(1-p_H)\alpha_h^{H} - p_H\alpha_s^{H}\right]`,
     difficulty: "medium",
-    points: 7,
+    points: 8,
     topic: "Choice under Uncertainty",
     context: "Profit from a contract designed so only the high-risk fraction (1 minus lambda) buys: premiums from those who stay healthy minus payouts to those who fall sick. Serving only high risks avoids cross-subsidy but shrinks the customer base.",
     hints: [
@@ -6265,7 +6261,7 @@ export const problems: Problem[] = [
     title: "Spence Signalling Cost of Education",
     latex: String.raw`c(e,\theta) = \frac{10}{\theta}e`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Game Theory",
     context: "Education costs 10/theta per unit, so more able workers acquire it more cheaply. This single-crossing property is exactly what lets education credibly signal ability.",
     hints: [
@@ -6277,7 +6273,7 @@ export const problems: Problem[] = [
     title: "Signalling Worker Utility",
     latex: String.raw`u(w,e\mid\theta) = w - c(e,\theta)`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Game Theory",
     context: "A worker's payoff is the wage received minus the ability-dependent cost of the education they acquired. Education here yields no productivity, only a costly signal.",
     hints: [
@@ -6289,7 +6285,7 @@ export const problems: Problem[] = [
     title: "Stepwise Wage Schedule",
     latex: String.raw`w(e) = \begin{cases} 10 & e\in[0,8) \\ 15 & e\in[8,16) \\ 20 & e\ge 16 \end{cases}`,
     difficulty: "medium",
-    points: 12,
+    points: 11,
     topic: "Game Theory",
     context: "A wage schedule that jumps from 10 to 15 to 20 at education thresholds of 8 and 16. Workers compare each wage step against the signalling cost of reaching it.",
     hints: [
@@ -6303,7 +6299,7 @@ export const problems: Problem[] = [
     title: "Consistent Belief Function",
     latex: String.raw`\mu(20\mid e) = \begin{cases} 0 & \text{if } e < 8 \\ 0.5 & \text{if } 8\le e < 16 \\ 1 & \text{if } e\ge 16 \end{cases}`,
     difficulty: "medium",
-    points: 15,
+    points: 11,
     topic: "Game Theory",
     context: "The employer's belief that a worker is the high type, as a function of observed education: zero below 8, the prior one-half between 8 and 16, and certainty at 16 or more. Equilibrium wages are pinned down by these beliefs.",
     hints: [
@@ -6319,7 +6315,7 @@ export const problems: Problem[] = [
     title: "Expected Productivity under Pooling",
     latex: String.raw`\mathbb{E}[\theta] = 10\cdot\frac{1}{2} + 20\cdot\frac{1}{2} = 15`,
     difficulty: "easy",
-    points: 8,
+    points: 4,
     topic: "Game Theory",
     context: "With both ability types equally likely, expected productivity is the simple average of 10 and 20, namely 15. In a pooling equilibrium every worker is paid this average regardless of type.",
     hints: [
@@ -6333,7 +6329,7 @@ export const problems: Problem[] = [
     title: "Separating-Equilibrium Wage Schedule",
     latex: String.raw`w(e) = \begin{cases} 10 & \text{if } e < 10 \\ 20 & \text{if } e\ge 10 \end{cases}`,
     difficulty: "medium",
-    points: 7,
+    points: 10,
     topic: "Game Theory",
     context: "A two-step wage schedule paying 20 only above the education threshold of 10, and 10 below it. The threshold is set so that only high-ability workers find the signal worth its cost, separating the types.",
     hints: [
@@ -6347,7 +6343,7 @@ export const problems: Problem[] = [
     title: "Noisy Effort Signal",
     latex: String.raw`z = e + x, \quad E(x) = 0, \quad \mathrm{Var}(x) = 1`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Contract Theory",
     context: "The observable signal equals true effort plus a mean-zero noise term with unit variance. The employer can reward the signal but never observe effort itself, which is the heart of the moral hazard problem.",
     hints: [
@@ -6359,7 +6355,7 @@ export const problems: Problem[] = [
     title: "Linear Wage Contract",
     latex: String.raw`w_j = \alpha_j + \beta_j z_j, \quad j \in \{1, 2\}`,
     difficulty: "easy",
-    points: 8,
+    points: 4,
     topic: "Contract Theory",
     context: "Each worker's pay is a fixed component plus a piece rate beta on their own performance signal. Linear contracts like this trade off incentive strength against the risk imposed on the worker.",
     hints: [
@@ -6371,7 +6367,7 @@ export const problems: Problem[] = [
     title: "Independent Effort Signals",
     latex: String.raw`z_1 = e_1 + x_1, \quad z_2 = e_2 + x_2`,
     difficulty: "easy",
-    points: 3,
+    points: 2,
     topic: "Contract Theory",
     context: "Each worker generates a separate signal equal to their own effort plus their own noise. With independent noise, one worker's signal carries no information useful for evaluating the other.",
     hints: [],
@@ -6381,7 +6377,7 @@ export const problems: Problem[] = [
     title: "Insurance Contract Pair",
     latex: String.raw`\alpha^j = \left(\alpha^j_h, \alpha^j_s\right), \quad j \in \{H, L\}`,
     difficulty: "medium",
-    points: 7,
+    points: 8,
     topic: "Insurance",
     context: "Describes an insurance contract for each risk type as a pair: the premium paid when healthy and the net payout received when sick. Screening models design one such pair per type to separate high and low risks.",
     hints: [
@@ -6393,7 +6389,7 @@ export const problems: Problem[] = [
     title: "Sick Probabilities by Type",
     latex: String.raw`p_H = 0.6, \quad p_L = 0.2`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Insurance",
     context: "High-risk individuals fall sick with probability 0.6 and low-risk individuals with probability 0.2. This gap in risk is what makes pooling contracts unravel and creates the adverse selection problem.",
     hints: [],
@@ -6403,7 +6399,7 @@ export const problems: Problem[] = [
     title: "Education Cost by Type",
     latex: String.raw`c(e, \theta) = \frac{10}{\theta}\, e`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Game Theory",
     context: "The cost of acquiring e units of education is 10e/theta, falling with ability theta. Because able workers signal more cheaply, education levels can credibly reveal type.",
     hints: [
@@ -6439,7 +6435,7 @@ export const problems: Problem[] = [
     title: "Solow Capital Accumulation",
     latex: String.raw`\dot{K} = sY`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Growth Theory",
     context: "Capital grows by a constant fraction s of output, with no depreciation. All saving is mechanically invested, which is the Solow model's key behavioural shortcut.",
     hints: [
@@ -6451,7 +6447,7 @@ export const problems: Problem[] = [
     title: "Exogenous Technical Progress",
     latex: String.raw`\frac{\dot{A}}{A} = g`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Growth Theory",
     context: "Technology improves at a constant exogenous rate g. In the Solow model this is the only source of long-run growth in output per worker.",
     hints: [
@@ -6477,7 +6473,7 @@ export const problems: Problem[] = [
     title: "Speed of Convergence",
     latex: String.raw`\lambda = (1 - \alpha) g`,
     difficulty: "easy",
-    points: 4,
+    points: 1,
     topic: "Growth Theory",
     context: "The convergence rate equals one minus the capital share, times the growth rate g. A larger capital share slows convergence because diminishing returns to capital bite more gradually.",
     hints: [],
@@ -6487,7 +6483,7 @@ export const problems: Problem[] = [
     title: "Convergence Path Solution",
     latex: String.raw`\ln y_t - \ln y^* = e^{-\lambda t} \left( \ln y_0 - \ln y^* \right)`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Growth Theory",
     context: "The solved convergence path: the log gap between actual and steady-state output decays exponentially at rate lambda from its initial value. Half of any initial gap disappears after ln(2)/lambda periods.",
     hints: [],
@@ -6497,7 +6493,7 @@ export const problems: Problem[] = [
     title: "Romer Endogenous Growth Law of Motion",
     latex: String.raw`\dot{A} = \kappa A`,
     difficulty: "easy",
-    points: 4,
+    points: 1,
     topic: "Growth Theory",
     context: "New ideas arrive in proportion to the existing stock of ideas, so knowledge grows at the constant rate kappa forever. Growth here is generated inside the model rather than assumed.",
     hints: [
@@ -6509,7 +6505,7 @@ export const problems: Problem[] = [
     title: "Intertemporal Budget Constraint",
     latex: String.raw`C_1 + \frac{C_2}{1 + r} = Y_1 + \frac{Y_2}{1 + r}`,
     difficulty: "medium",
-    points: 5,
+    points: 8,
     topic: "Consumption",
     context: "The present value of consumption over both periods must equal the present value of income, discounted at the interest rate r. Borrowing and saving let the household reshuffle consumption across time but not increase its total resources.",
     hints: [
@@ -6533,7 +6529,7 @@ export const problems: Problem[] = [
     title: "Two-Period Consumption Euler Equation",
     latex: String.raw`C_2 = \beta (1 + r) C_1`,
     difficulty: "easy",
-    points: 3,
+    points: 2,
     topic: "Consumption",
     context: "The optimality condition for log utility: consumption grows by the factor beta(1+r) between the two periods. Consumption rises over time when the return to saving outweighs impatience.",
     hints: [],
@@ -6543,7 +6539,7 @@ export const problems: Problem[] = [
     title: "Optimal First-Period Consumption",
     latex: String.raw`C_1 = \frac{1}{1 + \beta} \left( Y_1 + \frac{Y_2}{1 + r} \right)`,
     difficulty: "medium",
-    points: 6,
+    points: 9,
     topic: "Consumption",
     context: "With log utility the household consumes the fraction 1/(1+beta) of the present value of its lifetime income in the first period. Notably, the interest rate affects only the split of spending, not the share of wealth consumed today.",
     hints: [
@@ -6555,7 +6551,7 @@ export const problems: Problem[] = [
     title: "Actuarially Fair Asset Prices",
     latex: String.raw`\frac{q(1)}{q(0)} = \frac{\pi(1)}{\pi(0)}`,
     difficulty: "easy",
-    points: 5,
+    points: 3,
     topic: "International Finance",
     context: "State-contingent asset prices are fair when their ratio equals the ratio of the states' probabilities. At such prices, insurance across states carries no loading, so risk-averse agents fully insure.",
     hints: [
@@ -6567,7 +6563,7 @@ export const problems: Problem[] = [
     title: "State-Contingent Bond Budget Constraint",
     latex: String.raw`\frac{q(0)}{1 + r} B_2(0) + \frac{q(1)}{1 + r} B_2(1) = 0`,
     difficulty: "medium",
-    points: 4,
+    points: 8,
     topic: "International Finance",
     context: "Requires the portfolio of state-contingent bonds to have zero net cost: purchases of claims paying in one state are financed by selling claims on the other. The household reallocates consumption across states without spending resources today.",
     hints: [
@@ -6594,7 +6590,7 @@ export const problems: Problem[] = [
     title: "Asset Market Clearing Condition",
     latex: String.raw`X_1 - M_1 - D + Q_1 = 0`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "International Finance",
     context: "The foreign exchange market clears when the trade balance (exports minus imports), net debt flows D, and intermediary demand Q sum to zero. The exchange rate must adjust until someone is willing to absorb the currency flows.",
     hints: [],
@@ -6604,7 +6600,7 @@ export const problems: Problem[] = [
     title: "Expected Exchange Rate",
     latex: String.raw`\mathbb{E}_1 \left[ \mathcal{E}_2 \right] = (1 + \alpha^* \Gamma) \mathcal{E}_1 - \Gamma \beta - \Gamma D`,
     difficulty: "hard",
-    points: 9,
+    points: 13,
     topic: "International Finance",
     context: "Solves for the expected future exchange rate as a function of today's rate, foreign demand, and debt flows D, with the risk parameter Gamma governing how strongly flows move the rate. When intermediaries bear more risk, the same flows require bigger exchange-rate adjustments.",
     hints: [
@@ -6618,7 +6614,7 @@ export const problems: Problem[] = [
     title: "International Demand for Home Good",
     latex: String.raw`Y_{H,1} = \frac{\alpha + \mathcal{E}_1 \alpha^*}{P_{H,1}}`,
     difficulty: "medium",
-    points: 9,
+    points: 8,
     topic: "International Finance",
     context: "Demand for the home good comes from constant home spending alpha plus foreign spending alpha* converted at the exchange rate, all divided by the home price. A depreciation raises the home-currency value of foreign spending and boosts demand.",
     hints: [
@@ -6631,7 +6627,7 @@ export const problems: Problem[] = [
     title: "Law of One Price",
     latex: String.raw`P_{H,t} = \mathcal{E}_t P^*_{H,t}`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "International Finance",
     context: "The home-currency price of a good equals the exchange rate times its foreign-currency price. Arbitrage across borders ties the two prices together once currency conversion is accounted for.",
     hints: [
@@ -6643,7 +6639,7 @@ export const problems: Problem[] = [
     title: "RBC Resource Constraint and Production",
     latex: String.raw`Y_t = C_t + I_t = Z_t K_t^{\alpha} L_t^{1-\alpha}`,
     difficulty: "medium",
-    points: 6,
+    points: 8,
     topic: "Business Cycles",
     context: "Output, produced from capital and labour with a stochastic productivity level Z, is split between consumption and investment each period. This pair of identities is the physical backbone of the real business cycle model.",
     hints: [],
@@ -6653,7 +6649,7 @@ export const problems: Problem[] = [
     title: "Capital Accumulation with Depreciation",
     latex: String.raw`K_{t+1} = (1 - \delta) K_t + I_t`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Business Cycles",
     context: "Next period's capital equals the undepreciated part of today's stock plus new investment. Depreciation at rate delta means some investment merely replaces worn-out capital.",
     hints: [],
@@ -6663,7 +6659,7 @@ export const problems: Problem[] = [
     title: "Stochastic TFP Process",
     latex: String.raw`\mathbb{E}_t \left[ Z_{t+1} \right] = Z_t^{\rho}`,
     difficulty: "easy",
-    points: 7,
+    points: 3,
     topic: "Business Cycles",
     context: "Productivity follows a persistent process: the expectation of next period's TFP is this period's level raised to the power rho. With rho below one, productivity shocks fade gradually rather than lasting forever.",
     hints: [
@@ -6675,7 +6671,7 @@ export const problems: Problem[] = [
     title: "Lifetime Utility with Preference Shocks",
     latex: String.raw`U = \mathbb{E}_0 \left[ \sum_{t=0}^{\infty} \beta^t \mu_t u(c_t) \right]`,
     difficulty: "medium",
-    points: 12,
+    points: 10,
     topic: "Business Cycles",
     context: "Expected lifetime utility discounted at rate beta, where the shock mu shifts how urgently the household values consumption each period. These preference or confidence shocks give the model a demand-side source of fluctuations.",
     hints: [
@@ -6689,7 +6685,7 @@ export const problems: Problem[] = [
     title: "Consumption Euler with Preference Shock",
     latex: String.raw`\mu_t u'(c_t) = \beta \mathbb{E}_t \left[ \mu_{t+1} (1 + r_{t+1} - \delta) u'(c_{t+1}) \right]`,
     difficulty: "hard",
-    points: 11,
+    points: 13,
     topic: "Business Cycles",
     context: "The consumption Euler equation with a preference shifter: today's shock-weighted marginal utility equals the discounted expected value of tomorrow's, adjusted for the net return on capital. A jump in current urgency to consume, mu, tilts the household toward consuming now.",
     hints: [
@@ -6701,7 +6697,7 @@ export const problems: Problem[] = [
     title: "Euler Equation with Marginal Product of Capital",
     latex: String.raw`\mu_t = \beta \mathbb{E}_t \left[ \mu_{t+1} \left( 1 + \alpha Z_{t+1} K_{t+1}^{\alpha - 1} - \delta \right) \right]`,
     difficulty: "hard",
-    points: 13,
+    points: 14,
     topic: "Business Cycles",
     context: "The Euler condition after substituting the marginal product of capital as the return: the preference shock today must equal the discounted expected shock tomorrow times one plus the net return on capital. It pins down how much capital the economy carries into next period.",
     hints: [
@@ -6713,7 +6709,7 @@ export const problems: Problem[] = [
     title: "RBC Capital Decision Rule",
     latex: String.raw`K_{t+1} = \left( \frac{\alpha Z_t^{\rho}}{\dfrac{\mu_t^{1-\theta}}{\beta} - 1 + \delta} \right)^{\frac{1}{1-\alpha}}`,
     difficulty: "hard",
-    points: 18,
+    points: 20,
     topic: "Business Cycles",
     context: "The closed-form policy rule for next period's capital in the RBC model: capital rises with expected productivity and falls with the effective required return implied by discounting, preference shocks, and depreciation. Solving the model means finding rules like this that map today's state into tomorrow's choice.",
     hints: [
@@ -6726,7 +6722,7 @@ export const problems: Problem[] = [
     title: "Price-Setting Firm Profit",
     latex: String.raw`\Pi_t(i) = \left( \frac{p_t(i)}{p_t} - mc_t \right) Y_t(i)`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Monetary Policy",
     context: "Firm i's profit is its relative price minus real marginal cost, multiplied by the quantity it sells. Raising the price widens the margin per unit but shrinks demand, the basic monopolistic trade-off.",
     hints: [
@@ -6739,7 +6735,7 @@ export const problems: Problem[] = [
     title: "Isoelastic Demand Curve",
     latex: String.raw`Y_t(i) = \left( \frac{p_t(i)}{p_t} \right)^{-\eta_t} Y_t`,
     difficulty: "medium",
-    points: 7,
+    points: 8,
     topic: "Monetary Policy",
     context: "Demand for variety i falls with its relative price at the constant elasticity eta. This CES demand structure gives every firm the same market power and makes the optimal markup a constant.",
     hints: [
@@ -6751,7 +6747,7 @@ export const problems: Problem[] = [
     title: "Optimal Price with Markup and Subsidy",
     latex: String.raw`\frac{p^*_t(i)}{p_t} = \frac{\eta_t}{\eta_t - 1} (1 - \tau) \frac{w_t}{p_t}`,
     difficulty: "hard",
-    points: 9,
+    points: 16,
     topic: "Monetary Policy",
     context: "The profit-maximising relative price is the markup eta/(eta minus 1) applied to marginal cost, here the real wage reduced by the subsidy tau. A suitably chosen subsidy can exactly undo the monopoly distortion.",
     hints: [
@@ -6763,7 +6759,7 @@ export const problems: Problem[] = [
     title: "Zero-Inflation Output Level",
     latex: String.raw`Y_t = \left( \frac{\eta_t - 1}{\eta_t} \frac{\bar{\eta}}{\bar{\eta} - 1} \right)^{\frac{1}{\gamma}}`,
     difficulty: "hard",
-    points: 10,
+    points: 18,
     topic: "Monetary Policy",
     context: "The output level that prevails when prices are flexible, determined by the current markup eta relative to its average level. Shocks to firms' desired markups move this natural level of output even without any policy action.",
     hints: [
@@ -6776,7 +6772,7 @@ export const problems: Problem[] = [
     title: "Central Bank Loss Function",
     latex: String.raw`L_t = \frac{1}{2} (\pi_t - \pi^*)^2 + \frac{1}{2} y_t^2`,
     difficulty: "easy",
-    points: 6,
+    points: 4,
     topic: "Monetary Policy",
     context: "The central bank's objective penalises squared deviations of inflation from target and of output from potential, with equal weight. Quadratic losses mean big misses hurt disproportionately, so the bank smooths both gaps.",
     hints: [
@@ -6788,7 +6784,7 @@ export const problems: Problem[] = [
     title: "Expectations-Augmented Phillips Curve",
     latex: String.raw`\pi_t = \mathbb{E}_{t-1} \left[ \pi_t \right] + \theta y_t + \varepsilon_t`,
     difficulty: "medium",
-    points: 9,
+    points: 7,
     topic: "Monetary Policy",
     context: "Inflation equals what was expected last period, plus a term rising in the output gap, plus a cost-push shock. Policy can only push output above potential by delivering inflation surprises.",
     hints: [
@@ -6801,7 +6797,7 @@ export const problems: Problem[] = [
     title: "IS Curve",
     latex: String.raw`y_t = -\frac{1}{2} (r_t - \bar{r}) + \eta_t`,
     difficulty: "easy",
-    points: 7,
+    points: 3,
     topic: "Monetary Policy",
     context: "The output gap falls by half a point for every point the real interest rate is raised above its neutral level, and is buffeted by the demand shock eta. This is the lever through which monetary policy steers demand.",
     hints: [
@@ -6814,7 +6810,7 @@ export const problems: Problem[] = [
     title: "Optimal Monetary Policy Rule",
     latex: String.raw`r_t = \bar{r} + \frac{2\theta}{\theta^2 + 1} \left( \mathbb{E}_{t-1}[\pi_t] - \pi^* + \hat{\varepsilon}_t \right) + 2\hat{\eta}_t`,
     difficulty: "hard",
-    points: 15,
+    points: 16,
     topic: "Monetary Policy",
     context: "The optimal interest rate rule: raise the rate above neutral in response to expected inflation overshooting the target, to the estimated cost-push shock, and one-for-one-times-two to estimated demand shocks. Demand shocks are fully offset while cost-push shocks are only partially leaned against.",
     hints: [
@@ -6830,7 +6826,7 @@ export const problems: Problem[] = [
     title: "Equilibrium Inflation under Optimal Policy",
     latex: String.raw`\pi_t = \pi^* + \theta (\eta_t - \hat{\eta}_t) + (\varepsilon_t - \hat{\varepsilon}_t) + \frac{1}{1 + \theta^2} \hat{\varepsilon}_t`,
     difficulty: "hard",
-    points: 12,
+    points: 15,
     topic: "Monetary Policy",
     context: "Equilibrium inflation under the optimal rule: deviations from target come from shock components the central bank failed to observe, plus a deliberate partial accommodation of the perceived cost-push shock. Fully offsetting a cost-push shock would cost too much output, so some inflation is optimally tolerated.",
     hints: [
@@ -6844,7 +6840,7 @@ export const problems: Problem[] = [
     title: "Capital Accumulation (No Depreciation)",
     latex: String.raw`\dot{K} = I`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Growth Theory",
     context: "The capital stock grows exactly by the flow of investment, with no depreciation. Every unit invested adds permanently to productive capacity.",
     hints: [
@@ -6866,7 +6862,7 @@ export const problems: Problem[] = [
     title: "Tradable Goods Expenditure Conditions",
     latex: String.raw`P_{H,t}C_{H,t} = \alpha, \quad P_{F,t}C_{F,t} = \beta`,
     difficulty: "medium",
-    points: 9,
+    points: 6,
     topic: "International Economics",
     context: "Spending on home tradables is fixed at alpha and on foreign tradables at beta, so expenditure shares are constant. This is the Cobb-Douglas demand structure: price changes move quantities, not budget shares.",
     hints: [],
@@ -6876,7 +6872,7 @@ export const problems: Problem[] = [
     title: "Intermediary Bond Demand",
     latex: String.raw`Q_1 = \frac{1}{\Gamma}\,\mathbb{E}_1\left[E_1 - E_2\right]`,
     difficulty: "medium",
-    points: 7,
+    points: 8,
     topic: "International Economics",
     context: "Intermediaries demand currency positions in proportion to the expected gap between today's and tomorrow's exchange rate, divided by the risk-capacity parameter Gamma. Expected currency profits must compensate them for the risk they warehouse.",
     hints: [
@@ -6890,7 +6886,7 @@ export const problems: Problem[] = [
     title: "Law of One Price",
     latex: String.raw`P_{H,t} = E_t P^{*}_{H,t}`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "International Economics",
     context: "States that the home-currency price of the home good equals the nominal exchange rate times its foreign-currency price. Cross-border arbitrage enforces this link between prices in the two markets.",
     hints: [],
@@ -6900,7 +6896,7 @@ export const problems: Problem[] = [
     title: "Discounted Lifetime Utility with Preference Shocks",
     latex: String.raw`U = \mathbb{E}_0\left[\sum_{t=0}^{\infty} \beta^t \mu_t\, u(c_t)\right]`,
     difficulty: "medium",
-    points: 12,
+    points: 10,
     topic: "Macroeconomics",
     context: "Households maximise the expected discounted sum of period utilities, each scaled by a preference shock mu. Swings in mu act like waves of optimism or pessimism about consuming, generating demand-driven fluctuations.",
     hints: [
@@ -6914,7 +6910,7 @@ export const problems: Problem[] = [
     title: "Independence of TFP and Confidence Shocks",
     latex: String.raw`\mathbb{E}_t\left[Z_{t+1}\mu_{t+1}\right] = \mathbb{E}_t\left[\mu_{t+1}\right]\mathbb{E}_t\left[Z_{t+1}\right]`,
     difficulty: "medium",
-    points: 10,
+    points: 6,
     topic: "Macroeconomics",
     context: "Because productivity and confidence shocks are independent, the expectation of their product factorises into the product of expectations. This assumption keeps the model tractable by letting supply and demand shocks be analysed separately.",
     hints: [
@@ -6926,7 +6922,7 @@ export const problems: Problem[] = [
     title: "Monopolistic Firm Profit Function",
     latex: String.raw`\Pi_t(i) = \left[\frac{p_t(i)}{p_t} - mc_t\right] Y_t(i)`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Macroeconomics",
     context: "Profit for monopolistic firm i equals its price-cost margin, measured in relative-price terms, times the output it sells. The firm's pricing problem is to balance a fatter margin against lower demand.",
     hints: [
@@ -6939,7 +6935,7 @@ export const problems: Problem[] = [
     title: "Output-Real Wage Link",
     latex: String.raw`Y_t^{\gamma} = \frac{w_t}{p_t}`,
     difficulty: "easy",
-    points: 7,
+    points: 4,
     topic: "Macroeconomics",
     context: "The real wage equals output raised to the power gamma, reflecting that producing more requires drawing in labour at increasing cost. Higher gamma means marginal costs rise more steeply with the level of activity.",
     hints: [
@@ -6951,7 +6947,7 @@ export const problems: Problem[] = [
     title: "Central Bank Quadratic Loss Function",
     latex: String.raw`L_t = \frac{1}{2}(\pi_t - \pi^{*})^2 + \frac{1}{2}y_t^2`,
     difficulty: "medium",
-    points: 6,
+    points: 9,
     topic: "Monetary Policy",
     context: "The policymaker's loss is one half the squared inflation gap plus one half the squared output gap. Minimising this quadratic objective is the standard formalisation of a dual-mandate central bank.",
     hints: [
@@ -6963,7 +6959,7 @@ export const problems: Problem[] = [
     title: "Central Bank Quadratic Loss Function",
     latex: String.raw`L_t = \frac{1}{2}\left(\pi_t - \pi^*\right)^2 + \frac{1}{2}\lambda y_t^2`,
     difficulty: "medium",
-    points: 8,
+    points: 9,
     topic: "Monetary Policy",
     context: "A quadratic loss in the inflation gap and the output gap, where lambda sets the relative weight on output stabilisation. A hawkish central bank has a small lambda; a dovish one weights output more heavily.",
     hints: [
@@ -6975,7 +6971,7 @@ export const problems: Problem[] = [
     title: "Expectations-Augmented Phillips Curve",
     latex: String.raw`\pi_t = \pi_t^e + y_t + \varepsilon_t`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Monetary Policy",
     context: "Inflation equals expected inflation plus the output gap plus a cost-push shock, with a unit slope. Only by surprising expectations or accepting shocks can inflation depart from what people already anticipate.",
     hints: [
@@ -6987,7 +6983,7 @@ export const problems: Problem[] = [
     title: "IS Relation with Demand Shock",
     latex: String.raw`y_t = -\frac{1}{3}\left(r_t - \bar{r}\right) + d_t`,
     difficulty: "easy",
-    points: 6,
+    points: 3,
     topic: "Macroeconomics",
     context: "Output falls by one third of a point per point of real interest rate above neutral, and is shifted by the demand shock d. It summarises how policy tightening cools activity.",
     hints: [
@@ -7000,7 +6996,7 @@ export const problems: Problem[] = [
     title: "Optimal Policy Rate Rule",
     latex: String.raw`r_t = \bar{r} + \frac{3}{1+\lambda}\left(\pi_t^e - \pi^* + \varepsilon_t\right) + 3 f_t`,
     difficulty: "hard",
-    points: 10,
+    points: 14,
     topic: "Monetary Policy",
     context: "The optimal rate rule raises the policy rate with expected inflation above target and with cost-push shocks, tempered by the output weight lambda, while fully neutralising forecastable demand shocks f. A more dovish bank (higher lambda) responds less aggressively to inflation pressure.",
     hints: [
@@ -7027,7 +7023,7 @@ export const problems: Problem[] = [
     title: "Equilibrium Inflation",
     latex: String.raw`\pi_t = \pi^* + \frac{\lambda}{1+\lambda}\varepsilon_t + \upsilon_t`,
     difficulty: "medium",
-    points: 10,
+    points: 8,
     topic: "Monetary Policy",
     context: "Equilibrium inflation sits at target plus the fraction lambda/(1+lambda) of the cost-push shock, plus residual noise. The more the bank cares about output, the more of a cost-push shock it lets pass into inflation.",
     hints: [
@@ -7040,7 +7036,7 @@ export const problems: Problem[] = [
     title: "Variance of the Output Gap",
     latex: String.raw`\operatorname{Var}[y_t] = \left(\frac{1}{1+\lambda}\right)^2 \sigma_\varepsilon^2 + \kappa_d \sigma_d^2`,
     difficulty: "medium",
-    points: 12,
+    points: 10,
     topic: "Business Cycles",
     context: "The variance of the output gap combines the damped cost-push shocks with the unavoidable contribution of demand-shock noise. Raising the output weight lambda shrinks the first term, stabilising output at inflation's expense.",
     hints: [
@@ -7054,7 +7050,7 @@ export const problems: Problem[] = [
     title: "Variance of Inflation",
     latex: String.raw`\operatorname{Var}[\pi_t] = \left(\frac{\lambda}{1+\lambda}\right)^2 \sigma_\varepsilon^2 + \kappa_d \sigma_d^2`,
     difficulty: "medium",
-    points: 13,
+    points: 10,
     topic: "Monetary Policy",
     context: "Inflation variance grows with the fraction lambda/(1+lambda) of cost-push volatility passed through, plus irreducible demand noise. Together with the output-gap variance it traces out the policy trade-off frontier.",
     hints: [
@@ -7068,7 +7064,7 @@ export const problems: Problem[] = [
     title: "Efficient Policy Frontier",
     latex: String.raw`\sigma_\pi = \sigma_\varepsilon - \sigma_y`,
     difficulty: "easy",
-    points: 6,
+    points: 2,
     topic: "Monetary Policy",
     context: "Along the efficient policy frontier, the standard deviations of inflation and output sum to the standard deviation of the cost-push shock. A central bank can only buy less inflation volatility by accepting more output volatility, one for one.",
     hints: [
@@ -7080,7 +7076,7 @@ export const problems: Problem[] = [
     title: "Government Debt Dynamics",
     latex: String.raw`\Delta b = d_p + (r - g)\, b`,
     difficulty: "medium",
-    points: 3,
+    points: 5,
     topic: "Fiscal Policy",
     context: "The debt-to-GDP ratio changes by the primary deficit plus the interest-growth differential (r minus g) applied to existing debt. When the interest rate exceeds the growth rate, debt snowballs unless offset by primary surpluses.",
     hints: [
@@ -7092,7 +7088,7 @@ export const problems: Problem[] = [
     title: "Steady-State Debt Ratio",
     latex: String.raw`b^* = -\frac{d_p}{r - g}`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Fiscal Policy",
     context: "The debt ratio settles at minus the primary deficit divided by (r minus g). With growth above the interest rate, a country can run permanent primary deficits and still stabilise its debt ratio.",
     hints: [
@@ -7104,7 +7100,7 @@ export const problems: Problem[] = [
     title: "Hegemon Risk-Neutral Utility",
     latex: String.raw`U(C_0, C_1) = C_0 + \delta\, \mathbb{E}[C_1]`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Macroeconomics",
     context: "The hegemon country values consumption linearly across the two periods, discounting the future by delta. Risk neutrality is what lets it profitably sell insurance, in the form of safe assets, to risk-averse foreigners.",
     hints: [
@@ -7116,7 +7112,7 @@ export const problems: Problem[] = [
     title: "CARA Expected Utility",
     latex: String.raw`\mathbb{E}[U^\star] = \mathbb{E}\!\left[-e^{-2\gamma C_1^\star}\right]`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Macroeconomics",
     context: "Foreign investors have exponential utility with constant absolute risk aversion 2 gamma, so their dislike of consumption risk does not depend on their wealth level. This CARA form delivers clean linear demand for safe assets.",
     hints: [
@@ -7141,7 +7137,7 @@ export const problems: Problem[] = [
     title: "Reserve Asset Interest Rate Schedule",
     latex: String.raw`R^s(b) = \bar{R}^r - 2\gamma\left(w^\star - b\right)\sigma^2`,
     difficulty: "hard",
-    points: 8,
+    points: 13,
     topic: "Macroeconomics",
     context: "The interest rate the hegemon must pay on its safe bonds rises with the quantity b it issues: scarcer safe assets (small b) command a bigger safety discount 2 gamma (w* minus b) sigma squared. This is the downward-sloping world demand curve for the reserve asset.",
     hints: [
@@ -7153,7 +7149,7 @@ export const problems: Problem[] = [
     title: "Hegemon Monopoly Rents",
     latex: String.raw`b^{FC}\left[\bar{R}^r - R^s(b^{FC})\right] = \tfrac{1}{2}\gamma \sigma^2 (w^\star)^2`,
     difficulty: "hard",
-    points: 12,
+    points: 13,
     topic: "Macroeconomics",
     context: "The hegemon's monopoly rents, the quantity of safe debt times the spread between the risky return and its funding rate, equal one half gamma sigma squared times squared world wealth. This is the exorbitant privilege in a formula: profit from being the world's only safe borrower.",
     hints: [
@@ -7165,7 +7161,7 @@ export const problems: Problem[] = [
     title: "Reserve Asset Safety Premium",
     latex: String.raw`R^s(b^{FC}) = \bar{R}^r - \gamma \sigma^2 w^\star`,
     difficulty: "medium",
-    points: 9,
+    points: 7,
     topic: "Macroeconomics",
     context: "At the hegemon's chosen supply, its safe borrowing rate sits below the risky return by the premium gamma sigma squared w*. The gap is what risk-averse world investors willingly forgo for safety, and the hegemon pockets it.",
     hints: [
@@ -7177,7 +7173,7 @@ export const problems: Problem[] = [
     title: "Two-Period Log Lifetime Utility",
     latex: String.raw`U_i = \ln c_{i,0} + \ln c_{i,1}`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Consumption",
     context: "Lifetime welfare is the sum of log consumption in the two periods, with no discounting. Log utility makes marginal utility 1/c, so consumption smoothing across periods and states is strongly desired.",
     hints: [],
@@ -7187,7 +7183,7 @@ export const problems: Problem[] = [
     title: "Borrowing Euler Condition",
     latex: String.raw`\frac{1}{1 + b_0} = \frac{2}{3}\cdot\frac{1}{5 - b_0} + \frac{1}{3}\cdot\frac{1}{3 - b_0}`,
     difficulty: "medium",
-    points: 7,
+    points: 10,
     topic: "Consumption",
     context: "An Euler equation with numbers plugged in: the marginal utility gain of borrowing b0 today must equal the expected marginal cost of repaying it, weighted two-thirds on the high-income state and one-third on the low. Solving it gives the optimal amount of non-contingent borrowing.",
     hints: [
@@ -7200,7 +7196,7 @@ export const problems: Problem[] = [
     title: "Expected Utility under Financial Autarky",
     latex: String.raw`\mathbb{E}\!\left[U_i^{FA}\right] = \frac{2}{3}\ln 5 + \frac{1}{3}\ln 3`,
     difficulty: "easy",
-    points: 8,
+    points: 4,
     topic: "Consumption",
     context: "Expected utility when the country cannot borrow or insure: two-thirds chance of the log of the high endowment plus one-third chance of the log of the low. This autarky value is the benchmark against which financial integration gains are measured.",
     hints: [
@@ -7213,7 +7209,7 @@ export const problems: Problem[] = [
     title: "Contingent Debt Participation Constraint",
     latex: String.raw`\tilde{b}_0 \le \frac{2}{3} x_1^H + \frac{1}{3} x_1^L`,
     difficulty: "medium",
-    points: 8,
+    points: 9,
     topic: "Macroeconomics",
     context: "Lenders will extend contingent debt only up to the expected value of the state-dependent repayments x, weighted by the state probabilities. The constraint says borrowing cannot exceed what lenders expect to recover.",
     hints: [
@@ -7227,7 +7223,7 @@ export const problems: Problem[] = [
     title: "Solow Production Function",
     latex: String.raw`Y = A K^\alpha L^{1-\alpha}`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Growth Theory",
     context: "The Cobb-Douglas production function with capital share alpha and Hicks-neutral technology A. Constant returns to scale in capital and labour make output per worker depend only on capital per worker and technology.",
     hints: [],
@@ -7237,7 +7233,7 @@ export const problems: Problem[] = [
     title: "Capital Growth Rate (Solow)",
     latex: String.raw`g_K = \frac{\dot{K}}{K} = s\frac{Y}{K} = s A K^{\alpha-1} L^{1-\alpha}`,
     difficulty: "medium",
-    points: 9,
+    points: 10,
     topic: "Growth Theory",
     context: "The growth rate of capital equals the saving rate times the output-capital ratio, which falls as capital accumulates. Diminishing returns thus slow capital growth automatically, driving the economy toward its steady state.",
     hints: [
@@ -7250,7 +7246,7 @@ export const problems: Problem[] = [
     title: "BGP Growth of Output per Capita",
     latex: String.raw`g_y = \frac{1}{1-\alpha}\, g`,
     difficulty: "easy",
-    points: 5,
+    points: 3,
     topic: "Growth Theory",
     context: "On the balanced growth path, output per person grows at the technology growth rate g amplified by 1/(1 minus alpha). Capital accumulation magnifies technical progress because better technology induces more capital, which raises output further.",
     hints: [
@@ -7262,7 +7258,7 @@ export const problems: Problem[] = [
     title: "Fundamental Equation of Motion",
     latex: String.raw`\dot{\tilde{k}} = s\tilde{k}^{\alpha} - \left(\frac{1}{1-\alpha} g + n\right)\tilde{k}`,
     difficulty: "hard",
-    points: 8,
+    points: 14,
     topic: "Growth Theory",
     context: "The Solow model's core dynamic: capital per effective worker rises with saving per effective worker and falls with the dilution from technology growth and population growth. Its single stable rest point is the steady state of the model.",
     hints: [
@@ -7276,7 +7272,7 @@ export const problems: Problem[] = [
     title: "Steady-State Effective Capital",
     latex: String.raw`\tilde{k}^* = \left(\frac{s}{\frac{1}{1-\alpha} g + n}\right)^{\frac{1}{1-\alpha}}`,
     difficulty: "hard",
-    points: 7,
+    points: 17,
     topic: "Growth Theory",
     context: "The steady-state level of capital per effective worker: higher with a larger saving rate, lower with faster technology or population growth. Every economy with these parameters converges to this level regardless of where it starts.",
     hints: [
@@ -7289,7 +7285,7 @@ export const problems: Problem[] = [
     title: "Cross-Country GDP per Capita Ratio",
     latex: String.raw`\frac{y^*_{US}}{y^*_{India}} = \left(\frac{A_{US}}{A_{India}}\right)^{\frac{1}{1-\alpha}}\left(\frac{s_{US}}{s_{India}}\right)^{\frac{\alpha}{1-\alpha}}`,
     difficulty: "hard",
-    points: 13,
+    points: 18,
     topic: "Growth Theory",
     context: "Decomposes the steady-state income gap between the US and India into a productivity ratio and a saving-rate ratio, each amplified by exponents involving the capital share alpha. It shows that modest differences in A and s can compound into large income differences.",
     hints: [
@@ -7301,7 +7297,7 @@ export const problems: Problem[] = [
     title: "Speed of Convergence",
     latex: String.raw`\lambda = (1-\alpha)\left(\frac{1}{1-\alpha} g + n\right) = g + (1-\alpha) n`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Growth Theory",
     context: "Gives the rate lambda at which an economy closes the gap to its balanced growth path, combining technology growth g and population growth n scaled by one minus the capital share. A larger capital share alpha slows convergence because capital accumulation runs into diminishing returns more gradually.",
     hints: [
@@ -7313,7 +7309,7 @@ export const problems: Problem[] = [
     title: "Convergence Path of Output per Capita",
     latex: String.raw`\ln \tilde{y}_t - \ln \tilde{y}^* = e^{-\lambda t}\left(\ln \tilde{y}_0 - \ln \tilde{y}^*\right)`,
     difficulty: "hard",
-    points: 7,
+    points: 13,
     topic: "Growth Theory",
     context: "The log distance between output per capita and its steady-state level shrinks exponentially at rate lambda. Whatever gap exists at time zero decays smoothly toward zero, which is the formal statement of conditional convergence.",
     hints: [
@@ -7325,7 +7321,7 @@ export const problems: Problem[] = [
     title: "New Keynesian Phillips Curve",
     latex: String.raw`\pi_t = \beta\, \mathbb{E}_t[\pi_{t+1}] + \lambda y_t`,
     difficulty: "medium",
-    points: 9,
+    points: 7,
     topic: "Monetary Policy",
     context: "Links today's inflation to expected inflation next period, discounted by beta, plus the current output gap scaled by lambda. Inflation is forward-looking: firms set prices based on where they expect costs to go, not just where they are.",
     hints: [
@@ -7349,7 +7345,7 @@ export const problems: Problem[] = [
     title: "AR(1) Output Gap Process",
     latex: String.raw`y_t = \rho y_{t-1} + v_t`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Business Cycles",
     context: "Models the output gap as a first-order autoregressive process: a fraction rho of today's gap carries over to tomorrow, plus a fresh shock. The persistence parameter rho governs how long booms and slumps last.",
     hints: [],
@@ -7359,7 +7355,7 @@ export const problems: Problem[] = [
     title: "Forward-Looking Inflation Solution",
     latex: String.raw`\pi_t = \lambda\, \mathbb{E}_t \sum_{i=0}^{\infty} \beta^i y_{t+i}`,
     difficulty: "hard",
-    points: 14,
+    points: 16,
     topic: "Monetary Policy",
     context: "Solves the New Keynesian Phillips curve forward, so inflation today equals the discounted sum of all expected future output gaps. Inflation behaves like an asset price, jumping immediately when the expected path of demand changes.",
     hints: [
@@ -7373,7 +7369,7 @@ export const problems: Problem[] = [
     title: "Reduced-Form NKPC",
     latex: String.raw`\pi_t = \frac{\lambda}{1 - \beta\rho} y_t = \frac{\delta}{1-\delta}\cdot\frac{\gamma - 1}{1 - \beta\rho}\, y_t`,
     difficulty: "hard",
-    points: 15,
+    points: 18,
     topic: "Monetary Policy",
     context: "When the output gap follows an AR(1) process, the forward-looking Phillips curve collapses to a simple proportional relation between inflation and the current gap. The coefficient is larger when gaps are more persistent, since a boom today signals booms to come.",
     hints: [
@@ -7386,7 +7382,7 @@ export const problems: Problem[] = [
     title: "Reduced-Form Phillips Regression",
     latex: String.raw`\pi_t = a_1 + a_2 y_t + \varepsilon_t`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Macroeconomics",
     context: "A linear regression of inflation on the output gap with an intercept and an error term, the empirical counterpart of the Phillips curve. Its estimated slope mixes the structural slope with the persistence of demand, illustrating why reduced-form coefficients are not policy-invariant.",
     hints: [
@@ -7398,7 +7394,7 @@ export const problems: Problem[] = [
     title: "Nominal Intertemporal Euler Equation",
     latex: String.raw`\frac{1}{C_1} = \beta(1 + i_1)\frac{P_1}{P_2}\cdot\frac{1}{C_2}`,
     difficulty: "medium",
-    points: 8,
+    points: 10,
     topic: "Consumption",
     context: "Equates the marginal utility of consuming today to the discounted marginal utility of saving at the nominal rate and consuming tomorrow, with prices converting nominal returns into real ones. Higher expected inflation erodes the real return and tilts consumption toward the present.",
     hints: [
@@ -7411,7 +7407,7 @@ export const problems: Problem[] = [
     title: "Fisher Parity Condition",
     latex: String.raw`1 + i_1 = (1 + r_1)\frac{P_2}{P_1}`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Monetary Policy",
     context: "States that the gross nominal interest rate equals the gross real rate multiplied by gross inflation between the two periods. Lenders demand compensation both for waiting and for the erosion of money's purchasing power.",
     hints: [
@@ -7423,7 +7419,7 @@ export const problems: Problem[] = [
     title: "Firm Investment First-Order Condition",
     latex: String.raw`A_2 = \frac{P_1}{P_2}(1 + i_1)`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Investment",
     context: "The firm invests until the marginal product of capital in period 2 equals the real cost of funds, the nominal rate deflated by price growth. Investment thus responds to the real, not the nominal, interest rate.",
     hints: [
@@ -7435,7 +7431,7 @@ export const problems: Problem[] = [
     title: "Household Intertemporal Objective",
     latex: String.raw`\max_{C_1, C_2}\ \left\{\ln C_1 + \beta \ln C_2\right\}`,
     difficulty: "easy",
-    points: 10,
+    points: 4,
     topic: "Consumption",
     context: "The household chooses consumption in both periods to maximize log utility today plus discounted log utility tomorrow. Log preferences make the household want smooth consumption, with beta measuring patience.",
     hints: [
@@ -7447,7 +7443,7 @@ export const problems: Problem[] = [
     title: "Household Lifetime Budget Constraint",
     latex: String.raw`P_1\left(\Pi_1 - C_1\right) + \frac{P_2\left(\Pi_2 - C_2\right)}{1 + i_1} = 0`,
     difficulty: "medium",
-    points: 6,
+    points: 8,
     topic: "Consumption",
     context: "Requires the present value of nominal saving across the two periods to be zero: what the household earns beyond consumption in period 1 must exactly finance any shortfall in period 2. It rules out dying in debt or leaving resources unspent.",
     hints: [
@@ -7460,7 +7456,7 @@ export const problems: Problem[] = [
     title: "Equilibrium Investment Condition (Full Depreciation)",
     latex: String.raw`K_2 = \beta\left(A_1 K_1 - K_2\right)`,
     difficulty: "medium",
-    points: 4,
+    points: 5,
     topic: "Investment",
     context: "With full depreciation and log utility, next period's capital stock is a constant multiple beta of what remains of output after investment. Solving it shows the economy saves a fixed fraction beta over one plus beta of output.",
     hints: [],
@@ -7470,7 +7466,7 @@ export const problems: Problem[] = [
     title: "Equilibrium Period-1 Consumption",
     latex: String.raw`C_1 = \frac{1}{1 + \beta} A_1 K_1`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Consumption",
     context: "In equilibrium the household consumes the fraction one over one plus beta of first-period output. More patient households, with higher beta, consume less today and invest more.",
     hints: [
@@ -7482,7 +7478,7 @@ export const problems: Problem[] = [
     title: "Cash-in-Advance Money Market",
     latex: String.raw`M_t = P_t C_t`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Monetary Policy",
     context: "The cash-in-advance constraint binds: money holdings exactly equal nominal spending on consumption. Money is held purely for transactions, giving velocity of one.",
     hints: [],
@@ -7492,7 +7488,7 @@ export const problems: Problem[] = [
     title: "Equilibrium Money Growth",
     latex: String.raw`M_2 = \beta(1 + i_1) M_1`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Monetary Policy",
     context: "Money next period must equal this period's money scaled by beta times the gross nominal rate. It ties the path of the money supply to the nominal interest rate the central bank wants to sustain.",
     hints: [],
@@ -7502,7 +7498,7 @@ export const problems: Problem[] = [
     title: "Equilibrium Nominal Price Level",
     latex: String.raw`P_1 = \frac{1 + \beta}{\beta A_1 K_1}\cdot\frac{M_2}{1 + i_1}`,
     difficulty: "hard",
-    points: 8,
+    points: 15,
     topic: "Monetary Policy",
     context: "Pins down today's price level from next period's money supply discounted by the nominal rate and divided by real output. Prices are forward-looking: anticipated future money is what determines the value of money today.",
     hints: [
@@ -7515,7 +7511,7 @@ export const problems: Problem[] = [
     title: "Flexible-Price Equilibrium Inflation",
     latex: String.raw`\pi = \ln(1 + i_1) - \ln A_2`,
     difficulty: "medium",
-    points: 5,
+    points: 6,
     topic: "Monetary Policy",
     context: "Under flexible prices, inflation equals the log nominal rate minus log productivity growth. With the real rate tied to productivity, whatever nominal rate the central bank sets translates one-for-one into inflation, a Fisherian result.",
     hints: [],
@@ -7525,7 +7521,7 @@ export const problems: Problem[] = [
     title: "R&D Output Technology",
     latex: String.raw`Y(t) = A(t)^{\sigma} L_Y(t)`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Growth Theory",
     context: "Final output is produced by production workers whose effectiveness is boosted by the stock of ideas raised to the power sigma. Ideas are nonrival: the same knowledge raises every worker's productivity at once.",
     hints: [],
@@ -7535,7 +7531,7 @@ export const problems: Problem[] = [
     title: "Ideas Production Function",
     latex: String.raw`\dot{A}(t) = Z(t)\,L_A(t)`,
     difficulty: "easy",
-    points: 3,
+    points: 1,
     topic: "Growth Theory",
     context: "The flow of new ideas equals research productivity Z times the number of researchers. Growth comes from deliberately allocating people to the lab rather than the factory floor.",
     hints: [
@@ -7547,7 +7543,7 @@ export const problems: Problem[] = [
     title: "Balanced Growth Path of Ideas",
     latex: String.raw`\frac{\dot{A}}{A} = \frac{\dot{Z}}{Z} = g`,
     difficulty: "easy",
-    points: 5,
+    points: 3,
     topic: "Growth Theory",
     context: "On the balanced growth path, the stock of ideas and research productivity both grow at the same constant rate g. This keeps the research sector's effectiveness in step with the knowledge it has to build on.",
     hints: [
@@ -7560,7 +7556,7 @@ export const problems: Problem[] = [
     title: "Per-Capita Output Growth Rate",
     latex: String.raw`\frac{\dot{Y}}{Y} = \frac{\dot{y}}{y} = \sigma g`,
     difficulty: "easy",
-    points: 6,
+    points: 4,
     topic: "Growth Theory",
     context: "Total and per-capita output grow at sigma times g, the ideas growth rate scaled by how strongly ideas enter production. Long-run growth is inherited entirely from the expansion of knowledge.",
     hints: [
@@ -7573,7 +7569,7 @@ export const problems: Problem[] = [
     title: "Ideas per Unit of Effective Labour",
     latex: String.raw`a(t) \equiv \frac{A(t)}{Z(t)\,L(t)}`,
     difficulty: "medium",
-    points: 4,
+    points: 6,
     topic: "Growth Theory",
     context: "Defines the state variable a as the ideas stock per unit of effective labor, normalizing by research productivity and population. Working with this ratio turns a growing economy into a stationary system that can settle at a steady state.",
     hints: [
@@ -7586,7 +7582,7 @@ export const problems: Problem[] = [
     title: "Steady-State Per-Capita Output",
     latex: String.raw`y^{*} = (1-s)\left(\frac{ZLs}{g}\right)^{\sigma}`,
     difficulty: "medium",
-    points: 6,
+    points: 8,
     topic: "Growth Theory",
     context: "Steady-state income per person rises with the research share s through the ideas term but falls through the factor one minus s, since researchers do not produce output directly. The tension between these two forces creates an interior optimal allocation of labor to R&D.",
     hints: [
@@ -7598,7 +7594,7 @@ export const problems: Problem[] = [
     title: "Dynamics of Effective Ideas",
     latex: String.raw`\frac{\dot{a}}{a} = \frac{s}{a} - g`,
     difficulty: "medium",
-    points: 5,
+    points: 8,
     topic: "Growth Theory",
     context: "The growth rate of ideas per effective worker equals the inflow s over a minus the dilution rate g. When a is below s over g the ratio rises, and when above it falls, so the system self-corrects toward its steady state.",
     hints: [
@@ -7611,7 +7607,7 @@ export const problems: Problem[] = [
     title: "Time to Quadruple Output",
     latex: String.raw`t^{*} = \frac{\ln 4}{\sigma g}`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Growth Theory",
     context: "Computes how long output per capita takes to quadruple: the log of four divided by the growth rate sigma g. It is the compound-growth doubling rule applied twice over.",
     hints: [
@@ -7623,7 +7619,7 @@ export const problems: Problem[] = [
     title: "Cross-Country Income Regression",
     latex: String.raw`\ln y_i = \ln(1-s_i) + \sigma_i\left(\ln Z_i + \ln L_i + \ln s_i - \ln g_i\right)`,
     difficulty: "hard",
-    points: 5,
+    points: 12,
     topic: "Growth Theory",
     context: "Writes log income per capita as a linear combination of the research share, research productivity, scale, and the growth rate, giving a regression that maps the ideas model to cross-country data. Differences in the fundamentals on the right explain income gaps on the left.",
     hints: [],
@@ -7643,7 +7639,7 @@ export const problems: Problem[] = [
     title: "Central Bank Quadratic Loss Function",
     latex: String.raw`L_t = \tfrac{1}{2}\left(\pi_t - \pi^{*}\right)^{2}`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Monetary Policy",
     context: "The central bank's loss is half the squared deviation of inflation from its target. Squaring means both overshoots and undershoots hurt, and large misses hurt disproportionately more than small ones.",
     hints: [],
@@ -7653,7 +7649,7 @@ export const problems: Problem[] = [
     title: "Expectations-Augmented Phillips Curve",
     latex: String.raw`\pi_t = \pi_t^{e} + \beta y_t + \varepsilon_t`,
     difficulty: "easy",
-    points: 7,
+    points: 3,
     topic: "Monetary Policy",
     context: "Inflation equals what the public expected plus a term in the output gap and a supply shock. Only surprise demand pressure moves inflation relative to expectations, which is why anchoring those expectations matters so much.",
     hints: [
@@ -7665,7 +7661,7 @@ export const problems: Problem[] = [
     title: "IS Equation with Demand Shock",
     latex: String.raw`y_t = -\alpha\left(r_t - \bar{r}\right) + \eta_t`,
     difficulty: "easy",
-    points: 6,
+    points: 2,
     topic: "Monetary Policy",
     context: "Output falls below potential when the real policy rate is pushed above its neutral level r-bar, and is buffeted by a demand shock eta. The slope alpha measures how strongly spending responds to interest rates.",
     hints: [
@@ -7677,7 +7673,7 @@ export const problems: Problem[] = [
     title: "Optimal Policy Rate",
     latex: String.raw`r_t = \bar{r} + \frac{1}{\alpha\beta}\left(\pi_t^{e} - \pi^{*} + \varepsilon_t\right) + \frac{1}{\alpha}\eta_t`,
     difficulty: "medium",
-    points: 13,
+    points: 10,
     topic: "Monetary Policy",
     context: "The certainty-equivalent policy rule: set the rate at neutral plus terms that fully offset expected inflation deviations, cost-push shocks, and demand shocks. With known parameters the central bank neutralizes every disturbance it can observe.",
     hints: [
@@ -7691,7 +7687,7 @@ export const problems: Problem[] = [
     title: "FOC under Multiplicative Uncertainty",
     latex: String.raw`\beta^{2}\,\mathbb{E}[\alpha^{2}](r_t - \bar{r}) - \beta\,\mathbb{E}[\alpha]\left(\pi_t^{e} + \beta\eta_t + \varepsilon_t - \pi^{*}\right) = 0`,
     difficulty: "hard",
-    points: 12,
+    points: 14,
     topic: "Monetary Policy",
     context: "The central bank's first-order condition when the IS slope alpha is itself random, so both its mean and its second moment enter. Uncertainty about how policy transmits changes the optimal setting, not just the confidence around it.",
     hints: [
@@ -7720,7 +7716,7 @@ export const problems: Problem[] = [
     title: "Inflation under Brainard Uncertainty",
     latex: String.raw`\pi_t = \pi^{*} + \frac{\sigma_{\upsilon}^{2}}{\alpha^{2}+\sigma_{\upsilon}^{2}}\,\varepsilon + \beta\,\frac{\sigma_{\upsilon}^{2}}{\alpha^{2}+\sigma_{\upsilon}^{2}}\,\eta`,
     difficulty: "hard",
-    points: 19,
+    points: 18,
     topic: "Monetary Policy",
     context: "Under multiplicative uncertainty the central bank deliberately lets a fraction of each shock pass through into inflation, with the fraction rising in the variance of the policy multiplier. Perfect stabilization is no longer optimal because forceful policy injects its own noise.",
     hints: [
@@ -7733,7 +7729,7 @@ export const problems: Problem[] = [
     title: "Government Debt Law of Motion",
     latex: String.raw`\Delta b = \tilde{d} + (r-g)\,b`,
     difficulty: "medium",
-    points: 4,
+    points: 5,
     topic: "Fiscal Policy",
     context: "The change in the debt-to-GDP ratio equals the primary deficit plus the outstanding ratio scaled by the gap between the interest rate and the growth rate. When r exceeds g, debt snowballs on its own unless primary surpluses lean against it.",
     hints: [
@@ -7746,7 +7742,7 @@ export const problems: Problem[] = [
     title: "Unstable Steady-State Debt Ratio",
     latex: String.raw`b^{*} = -\frac{\tilde{d}}{r-g}`,
     difficulty: "medium",
-    points: 4,
+    points: 7,
     topic: "Fiscal Policy",
     context: "Solves the debt dynamics for the stationary ratio, minus the primary deficit divided by r minus g. With r above g this point is unstable: debt starting above it spirals upward, making it a tipping point rather than a resting place.",
     hints: [
@@ -7759,7 +7755,7 @@ export const problems: Problem[] = [
     title: "Self-Fulfilling Default Bond Price",
     latex: String.raw`Q = \begin{cases} 1 & B_1 < \hat{B} \\ 0.5 & B_1 \ge \hat{B} \end{cases}`,
     difficulty: "medium",
-    points: 9,
+    points: 10,
     topic: "Sovereign Debt",
     context: "Investors price the bond at par when debt is below the threshold B-hat but at half its face value once debt crosses it. The price schedule captures self-fulfilling crises: fear of default raises borrowing costs, which itself can push the government into default.",
     hints: [
@@ -7773,7 +7769,7 @@ export const problems: Problem[] = [
     title: "Intertemporal Production Possibility Frontier",
     latex: String.raw`c_2 = A(\theta)\left(\frac{y_1 - c_1}{p}\right)^{\alpha}`,
     difficulty: "medium",
-    points: 8,
+    points: 9,
     topic: "Open Economy",
     context: "Traces the trade-off between consuming today and tomorrow: whatever period-1 output is not consumed is invested at relative price p and transformed into period-2 goods through a concave technology with productivity A(theta). Its curvature reflects diminishing returns to investment.",
     hints: [
@@ -7785,7 +7781,7 @@ export const problems: Problem[] = [
     title: "Financial Autarky Interest Rate",
     latex: String.raw`R^{FA} = \frac{\alpha A\, i_1^{\alpha-1}}{p(1-\tau)}`,
     difficulty: "medium",
-    points: 8,
+    points: 9,
     topic: "Open Economy",
     context: "In a financially closed economy the interest rate is pinned down domestically by the marginal product of investment, adjusted for the price of investment goods and the tax wedge tau. Distortions that depress investment show up directly as a higher autarky rate.",
     hints: [
@@ -7797,7 +7793,7 @@ export const problems: Problem[] = [
     title: "Financial Autarky Investment",
     latex: String.raw`i_1^{FA} = \frac{\alpha\beta}{1+\alpha\beta}\,\frac{y_1}{p(1-\tau)}`,
     difficulty: "hard",
-    points: 10,
+    points: 15,
     topic: "Open Economy",
     context: "Investment under financial autarky is a fixed share of first-period income, determined by the discount factor and the output elasticity alpha, deflated by the effective price of investment goods. Without access to world capital markets, domestic saving alone must finance it.",
     hints: [
@@ -7809,7 +7805,7 @@ export const problems: Problem[] = [
     title: "Euler Equation: Autarky vs World Rate",
     latex: String.raw`c_2 = \beta c_1 R^{FA} > \beta c_1 R`,
     difficulty: "medium",
-    points: 5,
+    points: 6,
     topic: "Open Economy",
     context: "Because the autarky interest rate exceeds the world rate, consumption growth in the closed economy is steeper than it would be with open capital markets. The inequality signals gains from opening up: the country would borrow abroad, invest more, and smooth consumption.",
     hints: [],
@@ -7819,7 +7815,7 @@ export const problems: Problem[] = [
     title: "Optimal Investment with Traded Bond",
     latex: String.raw`i_1 = \left(\frac{Rp}{A\alpha}\right)^{\frac{1}{\alpha-1}}`,
     difficulty: "medium",
-    points: 6,
+    points: 9,
     topic: "Open Economy",
     context: "Once a bond traded at world rate R is available, investment is set where the marginal product equals R, independent of domestic saving. Access to world capital markets separates the investment decision from the consumption decision.",
     hints: [
@@ -7831,7 +7827,7 @@ export const problems: Problem[] = [
     title: "Small Open Economy Lifetime Utility",
     latex: String.raw`U = \sum_{t=0}^{\infty}\left(\frac{1}{1+\rho}\right)^{t}\ln(C_t)`,
     difficulty: "medium",
-    points: 12,
+    points: 10,
     topic: "Dynamic Programming",
     context: "Lifetime welfare is the infinite discounted sum of log consumption, with the discount factor built from the rate of time preference rho. Log utility gives a strong smoothing motive that shapes the whole borrowing and investment plan.",
     hints: [
@@ -7845,7 +7841,7 @@ export const problems: Problem[] = [
     title: "Land-Economy Budget Constraint",
     latex: String.raw`C_t + K_{t+1} + Q_t L_{t+1} + B_t(1+r^{W}) \le F(K_t,L_t) + B_{t+1} + Q_t L_t`,
     difficulty: "hard",
-    points: 8,
+    points: 12,
     topic: "Dynamic Programming",
     context: "Each period, spending on consumption, new capital, land purchases, and repayment of foreign debt with interest cannot exceed production, new borrowing, and the value of land carried in. It is the flow budget of a small open economy where land is a traded asset.",
     hints: [
@@ -7857,7 +7853,7 @@ export const problems: Problem[] = [
     title: "Steady-State Marginal Product of Capital",
     latex: String.raw`F_K(K_{ss},1) = 1 + r^{W}`,
     difficulty: "medium",
-    points: 3,
+    points: 5,
     topic: "Dynamic Programming",
     context: "In steady state the marginal product of capital equals one plus the world interest rate. The world rate, not domestic preferences, pins down the long-run capital stock of a small open economy.",
     hints: [],
@@ -7867,7 +7863,7 @@ export const problems: Problem[] = [
     title: "Steady-State Price of Land",
     latex: String.raw`Q_{ss} = \frac{1}{r^{W}}\,F_L(K_{ss},1)`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Dynamic Programming",
     context: "Land's steady-state price is its marginal product capitalized at the world interest rate, the present value of the constant rent stream it yields forever. A lower world rate raises land values by discounting those rents less heavily.",
     hints: [
@@ -7879,7 +7875,7 @@ export const problems: Problem[] = [
     title: "Steady-State Consumption with Foreign Debt",
     latex: String.raw`C_{ss} = F(K_{ss},1) - K_{ss} - r^{W} B_{ss}`,
     difficulty: "medium",
-    points: 6,
+    points: 5,
     topic: "Dynamic Programming",
     context: "Long-run consumption equals output net of the investment needed to maintain the capital stock, minus interest payments on accumulated foreign debt. A country that borrowed on the way to steady state permanently consumes less than it produces.",
     hints: [],
@@ -7902,7 +7898,7 @@ export const problems: Problem[] = [
     title: "Differentiated-Good Demand Curve",
     latex: String.raw`Q_i = Y\left(\frac{P_i}{P}\right)^{-\eta}`,
     difficulty: "medium",
-    points: 6,
+    points: 8,
     topic: "New Keynesian",
     context: "Demand for variety i scales with aggregate output and falls with its relative price at constant elasticity eta. This CES demand curve is what gives each monopolistic firm downward-sloping demand and pricing power.",
     hints: [
@@ -7914,7 +7910,7 @@ export const problems: Problem[] = [
     title: "Optimal Labour Supply",
     latex: String.raw`L_i = \left(\frac{W}{P}\right)^{\frac{1}{\gamma-1}}`,
     difficulty: "medium",
-    points: 6,
+    points: 9,
     topic: "New Keynesian",
     context: "Workers supply labor as an increasing function of the real wage, with elasticity governed by the curvature gamma of the disutility of work. A higher real wage draws forth more hours because the marginal pain of work rises with effort.",
     hints: [
@@ -7926,7 +7922,7 @@ export const problems: Problem[] = [
     title: "Constant Markup Pricing Rule",
     latex: String.raw`\frac{P_i}{P} = \left(\frac{\eta}{\eta-1}\right)\frac{W}{P}`,
     difficulty: "medium",
-    points: 6,
+    points: 10,
     topic: "New Keynesian",
     context: "Each firm sets its relative price as a constant markup eta over eta minus one on its real marginal cost, the real wage. Less substitutable goods mean a lower eta and a fatter markup.",
     hints: [
@@ -7938,7 +7934,7 @@ export const problems: Problem[] = [
     title: "Equilibrium Output under Monopolistic Competition",
     latex: String.raw`Y = \left(\frac{\eta-1}{\eta}\right)^{\frac{1}{\gamma-1}}`,
     difficulty: "medium",
-    points: 6,
+    points: 9,
     topic: "New Keynesian",
     context: "Equilibrium output depends only on the demand elasticity and labor-supply curvature, and the markup factor pushes it below the efficient level. Monopoly power acts like a tax on production, leaving output inefficiently low.",
     hints: [
@@ -7950,7 +7946,7 @@ export const problems: Problem[] = [
     title: "Fixed-Price Firm Profit",
     latex: String.raw`\Pi_{FIX} = \frac{M'}{P} - \left(\frac{M'}{P}\right)^{\gamma}`,
     difficulty: "hard",
-    points: 9,
+    points: 16,
     topic: "New Keynesian",
     context: "Gives the profit of a firm that keeps its price fixed after the money supply changes to M-prime: real sales revenue minus the convex labor cost of meeting demand. Comparing this with the profit from adjusting reveals whether small menu costs can sustain price rigidity.",
     hints: [
@@ -7963,7 +7959,7 @@ export const problems: Problem[] = [
     title: "CRRA Utility with Elasticity of Substitution",
     latex: String.raw`u(C_t) = \frac{C_t^{\,1-\frac{1}{\sigma}} - 1}{1 - \frac{1}{\sigma}}`,
     difficulty: "medium",
-    points: 6,
+    points: 10,
     topic: "Business Cycles",
     context: "The constant-relative-risk-aversion utility function written so that sigma is the intertemporal elasticity of substitution. Higher sigma makes households more willing to shift consumption across time in response to interest rates, and the log case emerges as sigma approaches one.",
     hints: [
@@ -7975,7 +7971,7 @@ export const problems: Problem[] = [
     title: "Two-Period Nominal Budget Constraint",
     latex: String.raw`P_1(\Pi_1 - C_1) + \frac{P_2(\Pi_2 - C_2)}{1 + i_1} = 0`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Business Cycles",
     context: "Nominal saving in period 1 plus the discounted value of nominal saving in period 2 must sum to zero, with profit income Pi funding consumption in each period. Resources unspent today become purchasing power tomorrow via the nominal interest rate.",
     hints: [
@@ -7988,7 +7984,7 @@ export const problems: Problem[] = [
     title: "Monetary Condition for Full Employment",
     latex: String.raw`\frac{M_2}{(1+i_1)P_1} = \frac{1}{1 + \left(\frac{1}{\beta A_2}\right)^{\sigma} A_2}\,A_1 K_1`,
     difficulty: "hard",
-    points: 10,
+    points: 17,
     topic: "Business Cycles",
     context: "States exactly how much real money balances, future money discounted by the nominal rate relative to today's prices, must be supplied for demand to absorb full-employment output. If the central bank provides less, sticky prices turn the shortfall into a recession.",
     hints: [
@@ -8000,7 +7996,7 @@ export const problems: Problem[] = [
     title: "Cheap Talk Sender's Payoff",
     latex: String.raw`u_1(a_2,\theta) = -\left(\theta + b - a_2\right)^2`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Game Theory",
     context: "The sender suffers a quadratic loss when the receiver's action deviates from the state theta plus a bias b. The bias is the whole story: the sender always wants the action pushed b above what the receiver would choose with full information.",
     hints: [],
@@ -8010,7 +8006,7 @@ export const problems: Problem[] = [
     title: "Cheap Talk Receiver's Payoff",
     latex: String.raw`u_2(a_2,\theta) = -\left(\theta - a_2\right)^2`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Game Theory",
     context: "The receiver's quadratic loss is minimized by matching the action exactly to the true state. The gap between this ideal and the sender's biased one is what limits how much information cheap talk can convey.",
     hints: [],
@@ -8020,7 +8016,7 @@ export const problems: Problem[] = [
     title: "Cheap Talk Threshold Indifference",
     latex: String.raw`-\left(\theta^{*} + b - a_2(a_1')\right)^2 = -\left(\theta^{*} + b - a_2(a_1'')\right)^2`,
     difficulty: "medium",
-    points: 4,
+    points: 6,
     topic: "Game Theory",
     context: "The boundary type theta-star must be exactly indifferent between sending the two adjacent messages and inducing their respective actions. These indifference conditions are what pin down the cutoffs of the partition equilibrium.",
     hints: [],
@@ -8030,7 +8026,7 @@ export const problems: Problem[] = [
     title: "Receiver's Best-Response Actions",
     latex: String.raw`a_2(a_1) = \begin{cases} \dfrac{\theta^{*}}{2} & \text{after } a_1' \\[4pt] \dfrac{\theta^{*} + \theta^{**}}{2} & \text{after } a_1'' \\[4pt] \dfrac{1 + \theta^{**}}{2} & \text{after } a_1''' \end{cases}`,
     difficulty: "hard",
-    points: 17,
+    points: 20,
     topic: "Game Theory",
     context: "After each message the receiver best-responds by choosing the midpoint of the interval of states that message reveals. With quadratic loss and a uniform prior, the conditional mean is the optimal action.",
     hints: [
@@ -8044,7 +8040,7 @@ export const problems: Problem[] = [
     title: "Equilibrium Partition Thresholds",
     latex: String.raw`\theta^{*} = \tfrac{1}{3} - 4b, \qquad \theta^{**} = \tfrac{2}{3} - 4b`,
     difficulty: "medium",
-    points: 5,
+    points: 6,
     topic: "Game Theory",
     context: "The two cutoffs of the three-message equilibrium sit at one third and two thirds, each shifted down by four times the bias b. As the bias grows the intervals become more unequal, and beyond a critical bias the three-message equilibrium collapses.",
     hints: [],
@@ -8054,7 +8050,7 @@ export const problems: Problem[] = [
     title: "Juror's Conviction Condition",
     latex: String.raw`-(1 - P_G)\,v \;\ge\; -P_G\,(1 - v)`,
     difficulty: "easy",
-    points: 3,
+    points: 2,
     topic: "Information Economics",
     context: "The juror convicts when the expected cost of acquitting a guilty defendant outweighs the expected cost of convicting an innocent one, which reduces to the posterior guilt probability exceeding the threshold v. The parameter v encodes how bad a wrongful conviction is relative to a wrongful acquittal.",
     hints: [
@@ -8066,7 +8062,7 @@ export const problems: Problem[] = [
     title: "Posterior After an Innocent Signal",
     latex: String.raw`\Pr(G \mid \theta_I) = \frac{(1 - p)\,q}{(1 - p)\,q + r\,(1 - q)}`,
     difficulty: "medium",
-    points: 8,
+    points: 10,
     topic: "Information Economics",
     context: "Bayes' rule for guilt after observing an innocent-looking signal: the prior q is weighted by the chance a guilty defendant produces that signal, against the chance an innocent one does. The signal drags the posterior below the prior but does not drive it to zero.",
     hints: [
@@ -8079,7 +8075,7 @@ export const problems: Problem[] = [
     title: "Posterior After a Guilty Signal",
     latex: String.raw`\Pr(G \mid \theta_G) = \frac{p\,q}{p\,q + (1 - r)\,(1 - q)}`,
     difficulty: "medium",
-    points: 8,
+    points: 10,
     topic: "Information Economics",
     context: "Updates the prior probability of guilt upward after a guilty-looking signal, weighing the signal's accuracy for guilty defendants against its false-positive rate for innocent ones. Better signal precision pushes this posterior closer to certainty.",
     hints: [
@@ -8092,7 +8088,7 @@ export const problems: Problem[] = [
     title: "Single-Juror Follow-Signal Condition",
     latex: String.raw`\frac{(1 - p)\,q}{(1 - p)\,q + r\,(1 - q)} \;\le\; v \;\le\; \frac{p\,q}{p\,q + (1 - r)\,(1 - q)}`,
     difficulty: "hard",
-    points: 5,
+    points: 14,
     topic: "Information Economics",
     context: "A lone juror votes according to her signal only when the conviction threshold v lies between the posterior after an innocent signal and the posterior after a guilty one. Outside that band the signal is not decisive and she ignores it.",
     hints: [
@@ -8105,7 +8101,7 @@ export const problems: Problem[] = [
     title: "Two-Juror Posterior, Both Guilty",
     latex: String.raw`\Pr(G \mid \theta_G, \theta_G) = \frac{p^{2} q}{p^{2} q + (1 - r)^{2}(1 - q)}`,
     difficulty: "hard",
-    points: 9,
+    points: 16,
     topic: "Information Economics",
     context: "When two conditionally independent signals both point to guilt, the accuracies compound: p squared against one minus r squared in Bayes' rule. Agreement between independent sources produces much stronger evidence than either signal alone.",
     hints: [
@@ -8118,7 +8114,7 @@ export const problems: Problem[] = [
     title: "Two-Juror Posterior, Mixed Signals",
     latex: String.raw`\Pr(G \mid \theta_I, \theta_G) = \frac{p(1 - p)\,q}{p(1 - p)\,q + r(1 - r)\,(1 - q)}`,
     difficulty: "hard",
-    points: 8,
+    points: 16,
     topic: "Information Economics",
     context: "With one guilty and one innocent signal, the likelihoods partially offset, leaving a posterior built from the products p times one minus p and r times one minus r. Conflicting evidence pulls beliefs back toward an intermediate position.",
     hints: [
@@ -8131,7 +8127,7 @@ export const problems: Problem[] = [
     title: "Information-Sharing Payoff",
     latex: String.raw`\Pi_i(s) = f\!\left(x_i + \sum_{j \in N_i(g)} x_j\right) - c\,x_i - d_i(g_i)\,k`,
     difficulty: "hard",
-    points: 8,
+    points: 14,
     topic: "Network Economics",
     context: "A player's payoff is the benefit f of the information she gathers plus what her network neighbors gather, minus her own acquisition cost c per unit and a cost k for each link she sponsors. Information is a local public good that flows freely across links.",
     hints: [
@@ -8145,7 +8141,7 @@ export const problems: Problem[] = [
     title: "Marginal Information Condition",
     latex: String.raw`f(0) = 0, \qquad f'(\hat{y}) = c`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Network Economics",
     context: "Defines the threshold y-hat as the information level where the marginal benefit f-prime just equals the marginal acquisition cost c. No player wants access to more than y-hat, since beyond it information is no longer worth its price.",
     hints: [
@@ -8157,7 +8153,7 @@ export const problems: Problem[] = [
     title: "Nash Equilibrium Definition",
     latex: String.raw`\Pi_i\!\left(s_i^{*}, s_{-i}^{*}\right) \;\ge\; \Pi_i\!\left(s_i, s_{-i}^{*}\right)`,
     difficulty: "medium",
-    points: 7,
+    points: 6,
     topic: "Game Theory",
     context: "In a Nash equilibrium, each player's strategy earns at least as much as any alternative, holding the other players' strategies fixed. No one can profit from a unilateral deviation, which makes the profile self-enforcing.",
     hints: [
@@ -8185,7 +8181,7 @@ export const problems: Problem[] = [
     title: "Aggregate Information in Equilibrium",
     latex: String.raw`\sum_{i} x_i^{*} = \hat{y}`,
     difficulty: "easy",
-    points: 5,
+    points: 3,
     topic: "Network Economics",
     context: "Total information acquired across all players in equilibrium is exactly y-hat, no more and no less. Society purchases in aggregate precisely what a single isolated individual would, regardless of population size.",
     hints: [
@@ -8198,7 +8194,7 @@ export const problems: Problem[] = [
     title: "Law of the Few",
     latex: String.raw`\frac{\left| I(s^{*}) \right|}{n} \longrightarrow 0 \quad \text{as } n \to \infty`,
     difficulty: "medium",
-    points: 7,
+    points: 9,
     topic: "Network Economics",
     context: "As the population grows, the fraction of players who personally acquire information shrinks to zero. Almost everyone free-rides by linking to a vanishingly small core of information hubs, the game-theoretic law of the few.",
     hints: [
@@ -8213,7 +8209,7 @@ export const problems: Problem[] = [
     title: "Bound on Information Acquirers",
     latex: String.raw`\frac{\left| I(s^{*}) \right|}{n} \;<\; \frac{c\hat{y}/k + 1}{n}`,
     difficulty: "medium",
-    points: 5,
+    points: 9,
     topic: "Network Economics",
     context: "Caps the share of information acquirers by a term built from the cost ratio c times y-hat over k, all divided by n. Since the numerator is fixed while n grows, the share of acquirers must vanish in large societies.",
     hints: [
@@ -8226,7 +8222,7 @@ export const problems: Problem[] = [
     title: "Undirected Neighbourhood Set",
     latex: String.raw`N_i(g) = \left\{\, j : g_{ij} = 1 \ \text{or} \ g_{ji} = 1 \,\right\}`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Network Economics",
     context: "Defines player i's neighborhood as everyone connected by a link in either direction. Because access is undirected, it does not matter who paid for the link, information flows both ways.",
     hints: [
@@ -8250,7 +8246,7 @@ export const problems: Problem[] = [
     title: "Cheap Talk Sender Payoff",
     latex: String.raw`u_1(a_2,\theta) = -(\theta + b - a_2)^2`,
     difficulty: "medium",
-    points: 4,
+    points: 6,
     topic: "Game Theory",
     context: "Quadratic loss for the sender centered at the state plus a bias b, so her ideal action always exceeds the truth-matching one. The size of b measures the conflict of interest that degrades communication.",
     hints: [],
@@ -8260,7 +8256,7 @@ export const problems: Problem[] = [
     title: "Cheap Talk Receiver Payoff",
     latex: String.raw`u_2(a_2,\theta) = -(\theta - a_2)^2`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Game Theory",
     context: "The receiver loses the squared distance between his action and the true state, so he would match theta exactly if he knew it. His problem is that the only source of information is a sender who wants something different.",
     hints: [],
@@ -8270,7 +8266,7 @@ export const problems: Problem[] = [
     title: "Three-Message Equilibrium Ordering",
     latex: String.raw`a_2(a_1') < a_2(a_1'') < a_2(a_1''')`,
     difficulty: "medium",
-    points: 3,
+    points: 5,
     topic: "Game Theory",
     context: "In a three-message equilibrium the induced actions must be strictly increasing across messages. If two messages triggered the same action they would effectively be one message, so the ordering is what makes the communication genuinely informative.",
     hints: [],
@@ -8280,7 +8276,7 @@ export const problems: Problem[] = [
     title: "Nash Equilibrium Condition",
     latex: String.raw`\Pi_i(s_i^*, s_{-i}^*) \geq \Pi_i(s_i, s_{-i}^*)`,
     difficulty: "medium",
-    points: 7,
+    points: 6,
     topic: "Game Theory",
     context: "The defining inequality of Nash equilibrium: player i's equilibrium strategy weakly beats every deviation given that opponents stick to theirs. Stability comes from the absence of profitable unilateral moves, not from cooperation.",
     hints: [
@@ -8307,7 +8303,7 @@ export const problems: Problem[] = [
     title: "Undirected Neighbourhood Set",
     latex: String.raw`N_i(g) = \{\, j : g_{ij} = 1 \text{ or } g_{ji} = 1 \,\}`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Network Theory",
     context: "The set of player i's neighbors collects every j linked to i in at least one direction. A link created by either side grants both players access to each other's information.",
     hints: [
@@ -8319,7 +8315,7 @@ export const problems: Problem[] = [
     title: "Player Link Strategy Vector",
     latex: String.raw`g_i = (g_{i1}, \dots, g_{i,i-1}, g_{i,i+1}, \dots, g_{in})`,
     difficulty: "medium",
-    points: 8,
+    points: 6,
     topic: "Network Theory",
     context: "Player i's linking strategy is the vector of zero-one decisions about forming a link with every other player, with no entry for herself. The collection of all such vectors is what generates the network.",
     hints: [],
@@ -8341,7 +8337,7 @@ export const problems: Problem[] = [
     title: "Vanishing Fraction of Informed Players",
     latex: String.raw`\frac{|I(s^*)|}{n} \to 0 \quad \text{as } n \to \infty`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Game Theory",
     context: "States that the proportion of players who acquire information themselves tends to zero as the network grows large. Information provision concentrates on a few central players while the rest connect and free-ride.",
     hints: [
@@ -8356,7 +8352,7 @@ export const problems: Problem[] = [
     title: "Uniform State of the World",
     latex: String.raw`\theta \sim U[0,1], \qquad a_1 \in A_1 = [0,1]`,
     difficulty: "easy",
-    points: 6,
+    points: 2,
     topic: "Game Theory",
     context: "Sets up the cheap-talk environment: the state is drawn uniformly from the unit interval and the sender's message space is that same interval. A rich message space is available, yet in equilibrium only coarse partitions of it get used.",
     hints: [
@@ -8379,7 +8375,7 @@ export const problems: Problem[] = [
     title: "All-Pay Auction Payoff",
     latex: String.raw`u_i(b_i,b_j)=\begin{cases} v_i-b_i & \text{if } b_i>b_j,\\[2pt] \tfrac{1}{2}v_i-b_i & \text{if } b_i=b_j,\\[2pt] -b_i & \text{if } b_i<b_j.\end{cases}`,
     difficulty: "hard",
-    points: 13,
+    points: 19,
     topic: "Game Theory",
     context: "In an all-pay auction every bidder forfeits her bid regardless of the outcome: the high bidder nets value minus bid, ties split the value, and losers simply pay. Sunk bids make the game a model of lobbying, contests, and R&D races.",
     hints: [
@@ -8392,7 +8388,7 @@ export const problems: Problem[] = [
     title: "All-Pay Auction Value Distribution",
     latex: String.raw`F(v_i)=v_i^{2},\qquad v_i\in[0,1]`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Game Theory",
     context: "Bidders' private values are drawn from the distribution F of v equals v squared on the unit interval. Its density rises linearly, so high valuations are more likely than low ones, which shapes the equilibrium bidding function.",
     hints: [
@@ -8404,7 +8400,7 @@ export const problems: Problem[] = [
     title: "Equilibrium Payoff via Winning Probability",
     latex: String.raw`U'(v_i)=\Pr\!\left(\text{bidder } i \text{ wins} \mid v_i\right)`,
     difficulty: "medium",
-    points: 5,
+    points: 8,
     topic: "Game Theory",
     context: "An envelope-theorem result: the slope of a bidder's equilibrium payoff in her own value equals her probability of winning at that value. Integrating this derivative is the standard route to solving for equilibrium bids and expected revenue.",
     hints: [
@@ -8417,7 +8413,7 @@ export const problems: Problem[] = [
     title: "Bilateral Trade Payoffs",
     latex: String.raw`u_B=v-p,\qquad u_S=p-c`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Microeconomics",
     context: "If trade happens at price p, the buyer earns her value minus the price and the seller earns the price minus his cost. Trade creates surplus exactly when the value v exceeds the cost c, and the price only divides that surplus.",
     hints: [],
@@ -8427,7 +8423,7 @@ export const problems: Problem[] = [
     title: "Myerson-Satterthwaite Buyer Distribution",
     latex: String.raw`F_B(v)=\begin{cases} 0 & \text{for } v\in[0,\tfrac{1}{2}),\\[2pt] \tfrac{1}{2} & \text{for } v\in[\tfrac{1}{2},1),\\[2pt] 1 & \text{for } v=1.\end{cases}`,
     difficulty: "medium",
-    points: 12,
+    points: 11,
     topic: "Mechanism Design",
     context: "A discrete buyer-value distribution putting equal weight on one half and one, written as a step-function CDF. It is the buyer's side of a worked Myerson-Satterthwaite example showing that private information can make fully efficient trade impossible.",
     hints: [
@@ -8441,7 +8437,7 @@ export const problems: Problem[] = [
     title: "Myerson-Satterthwaite Seller Cost Distribution",
     latex: String.raw`F_C(c)=\begin{cases} 0 & \text{for } c\in[0,\tfrac{1}{3}),\\[2pt] \tfrac{1}{2} & \text{for } c\in[\tfrac{1}{3},\tfrac{2}{3}),\\[2pt] 1 & \text{for } c\in[\tfrac{2}{3},1].\end{cases}`,
     difficulty: "medium",
-    points: 12,
+    points: 11,
     topic: "Mechanism Design",
     context: "The seller's cost takes the value one third or two thirds with equal probability, expressed as a cumulative distribution. Paired with the buyer's two-point value distribution, it delivers a clean illustration of the impossibility of ex-post efficient bilateral trade.",
     hints: [
@@ -8455,7 +8451,7 @@ export const problems: Problem[] = [
     title: "Two-Period Discounted Trade Payoffs",
     latex: String.raw`\left(\delta(1-p_2),\; \delta(p_2-c)\right)`,
     difficulty: "easy",
-    points: 3,
+    points: 2,
     topic: "Game Theory",
     context: "If the parties only reach agreement at price p2 in the second period, the buyer gets one minus the price and the seller gets price minus cost, both scaled down by delta. Discounting makes delayed agreement strictly worse than the same deal struck immediately.",
     hints: [],
@@ -8465,7 +8461,7 @@ export const problems: Problem[] = [
     title: "Signalling Seller's Cost Prior",
     latex: String.raw`c=\begin{cases} 0.5 & \text{with probability } \lambda,\\ 0 & \text{with probability } 1-\lambda,\end{cases}\qquad \lambda\in[0,1]`,
     difficulty: "medium",
-    points: 8,
+    points: 10,
     topic: "Game Theory",
     context: "The seller's cost is high at 0.5 with probability lambda and zero otherwise, and this cost is his private information. The prior lambda is what the buyer must update using the seller's observed behavior, such as delay or pricing.",
     hints: [
@@ -8479,7 +8475,7 @@ export const problems: Problem[] = [
     title: "Pareto Improvement Cycle Edge",
     latex: String.raw`i \twoheadrightarrow j \iff \mu(j)\succsim_i \mu(i),\; i\succsim_{\mu(j)} j`,
     difficulty: "hard",
-    points: 8,
+    points: 16,
     topic: "Matching Theory",
     context: "Draws a directed edge from i to j whenever i weakly prefers j's current partner and that partner weakly prefers i. Cycles built from such edges identify chains of swaps that make some agents better off and none worse, evidence against Pareto efficiency.",
     hints: [
@@ -8506,7 +8502,7 @@ export const problems: Problem[] = [
     title: "Blocking Edge to a Single Woman",
     latex: String.raw`j \twoheadrightarrow \varnothing_w \iff w\succsim_j \mu(j),\; \mu(w)=w,\; j\succ_w w`,
     difficulty: "hard",
-    points: 10,
+    points: 17,
     topic: "Matching Theory",
     context: "An edge points from man j to an unmatched woman when he weakly prefers her to his current partner and she strictly prefers him to remaining single. Such an edge flags a blocking pair involving a single agent, which destroys stability of the matching.",
     hints: [
@@ -8519,7 +8515,7 @@ export const problems: Problem[] = [
     title: "Mechanism Manipulability Condition",
     latex: String.raw`f_i(\succ'_i,\succ_{-i}) \;\succ_i\; f_i(\succ_N)`,
     difficulty: "medium",
-    points: 5,
+    points: 7,
     topic: "Mechanism Design",
     context: "A mechanism is manipulable if some agent can misreport her preferences and obtain an outcome she strictly prefers to what truthful reporting gives her. Ruling this out for every agent and every situation is exactly the definition of strategy-proofness.",
     hints: [
@@ -8545,7 +8541,7 @@ export const problems: Problem[] = [
     title: "Voter Logarithmic Policy Preference",
     latex: String.raw`v_i(s_i) = \alpha_i \ln(s_i)`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Political Economics",
     context: "Each voter's utility is logarithmic in the budget share she receives, weighted by her own intensity parameter alpha. The log form builds in diminishing returns, so spreading spending across voters is cheaper than concentrating it.",
     hints: [],
@@ -8555,7 +8551,7 @@ export const problems: Problem[] = [
     title: "Budget Share Feasibility Constraint",
     latex: String.raw`\sum_{i=1}^{N} s_i \le B`,
     difficulty: "easy",
-    points: 6,
+    points: 3,
     topic: "Political Economics",
     context: "The allocations promised to all N voters cannot sum to more than the total budget B. Every distributive bargain in the model must respect this simple adding-up condition.",
     hints: [
@@ -8568,7 +8564,7 @@ export const problems: Problem[] = [
     title: "Agenda Setter's Constrained Maximisation",
     latex: String.raw`\max_{\{s_i\}_{i=1}^{N}} \alpha_1 \ln(s_1) \quad \text{s.t.} \quad \sum_{i=1}^{N} s_i \le B, \; s_i \ge \bar{v} \; \forall i \in M`,
     difficulty: "hard",
-    points: 20,
+    points: 19,
     topic: "Political Economics",
     context: "The agenda setter maximizes her own log payoff subject to the overall budget and to giving each coalition member at least the reservation utility v-bar needed to secure their vote. She buys a majority as cheaply as possible and pockets the residual.",
     hints: [
@@ -8587,7 +8583,7 @@ export const problems: Problem[] = [
     title: "Minimum Winning Coalition Allocation",
     latex: String.raw`s_1 = B - \frac{N-1}{2}\bar{v} > \bar{v}`,
     difficulty: "medium",
-    points: 5,
+    points: 7,
     topic: "Public Choice",
     context: "The setter's equilibrium share is the whole budget minus reservation payments to a bare majority of the other legislators, and it strictly exceeds what any coalition member gets. Buying only the minimum winning coalition, and paying each member only their reservation value, maximizes what the proposer keeps.",
     hints: [
@@ -8600,7 +8596,7 @@ export const problems: Problem[] = [
     title: "Probabilistic Voting Preference with Ideological Bias",
     latex: String.raw`\alpha_i \ln(s_i) + \eta_i`,
     difficulty: "easy",
-    points: 6,
+    points: 2,
     topic: "Voting Theory",
     context: "A voter evaluates a candidate by policy utility, log of the promised share, plus an idiosyncratic ideological shock eta. The random component smooths each candidate's vote share in policy, which is what makes equilibrium in probabilistic voting models well-behaved.",
     hints: [],
@@ -8610,7 +8606,7 @@ export const problems: Problem[] = [
     title: "Pseudo-Social Welfare Objective",
     latex: String.raw`\max_{\{s_i\}_{i=1}^{N}} \sum_{i=1}^{N} w_i \ln(s_i) \quad \text{s.t.} \quad \sum_{i=1}^{N} s_i \le B`,
     difficulty: "medium",
-    points: 14,
+    points: 11,
     topic: "Voting Theory",
     context: "A politician spreads a fixed budget B across N groups to maximize a weighted sum of log transfers, where each weight reflects the group's political clout. Under probabilistic voting, vote maximization ends up looking like maximizing this pseudo social welfare function.",
     hints: [
@@ -8625,7 +8621,7 @@ export const problems: Problem[] = [
     title: "Probabilistic Voting Voter Weight",
     latex: String.raw`w_i = \frac{\alpha_i}{b_i - a_i}`,
     difficulty: "easy",
-    points: 6,
+    points: 3,
     topic: "Voting Theory",
     context: "Defines a group's political weight as its size alpha divided by the spread of its ideological bias distribution. Groups packed with swing voters (a narrow bias range) carry more weight and attract more favors.",
     hints: [
@@ -8637,7 +8633,7 @@ export const problems: Problem[] = [
     title: "Vote-Maximising First-Order Condition",
     latex: String.raw`\frac{w_i}{s_i} = \lambda \quad \text{for all } i`,
     difficulty: "easy",
-    points: 5,
+    points: 3,
     topic: "Voting Theory",
     context: "At the optimum, the marginal vote gain per dollar of transfer is equalized across all groups at the common shadow value lambda. Money flows to a group until its weighted marginal benefit falls in line with everyone else's.",
     hints: [
@@ -8650,7 +8646,7 @@ export const problems: Problem[] = [
     title: "Budget Lagrange Multiplier",
     latex: String.raw`\lambda = \frac{\sum_{i=1}^{N} w_i}{B}`,
     difficulty: "medium",
-    points: 8,
+    points: 9,
     topic: "Voting Theory",
     context: "The shadow price of the budget constraint equals the sum of all political weights divided by the budget size B. A bigger budget lowers lambda, making each marginal dollar of transfers less politically precious.",
     hints: [
@@ -8663,7 +8659,7 @@ export const problems: Problem[] = [
     title: "Equilibrium Probabilistic Voting Allocation",
     latex: String.raw`s_i^{*} = \frac{B \, w_i}{\sum_{i=1}^{N} w_i}`,
     difficulty: "medium",
-    points: 7,
+    points: 8,
     topic: "Voting Theory",
     context: "Each group's equilibrium transfer is a share of the budget proportional to its political weight. Swing-voter-heavy groups capture disproportionately large slices of public spending.",
     hints: [
@@ -8676,7 +8672,7 @@ export const problems: Problem[] = [
     title: "Interior Participation Condition",
     latex: String.raw`\frac{B \, \min(w_i)}{\sum_{i=1}^{N} w_i} \ge \bar{v}`,
     difficulty: "medium",
-    points: 11,
+    points: 9,
     topic: "Voting Theory",
     context: "Requires that even the group with the smallest political weight receives a transfer of at least the reservation level v-bar. This guarantees the equilibrium allocation is interior, with no group pushed out entirely.",
     hints: [
@@ -8692,7 +8688,7 @@ export const problems: Problem[] = [
     title: "Acceptance-Threshold Payoff (n = 1)",
     latex: String.raw`\frac{1}{2}\left(1 - \left(1 - (1-p)^2\right)\right) = \frac{(1-p)^2}{2}`,
     difficulty: "medium",
-    points: 4,
+    points: 8,
     topic: "Voting Theory",
     context: "Computes a voter's expected payoff when the acceptance rule needs only one vote, and the algebra collapses to one half of (1-p) squared. Comparing this with the payoffs under stricter thresholds pins down the optimal voting rule.",
     hints: [
@@ -8704,7 +8700,7 @@ export const problems: Problem[] = [
     title: "Acceptance-Threshold Payoff (n = 2)",
     latex: String.raw`\frac{1}{2}\left(p^2 + 2p(1-p) - p^2\right) = p - p^2`,
     difficulty: "medium",
-    points: 4,
+    points: 7,
     topic: "Voting Theory",
     context: "Works out the expected payoff under an acceptance threshold of two votes, which simplifies to p minus p squared. Its hump shape in p is what makes the intermediate threshold attractive for moderate acceptance probabilities.",
     hints: [
@@ -8716,7 +8712,7 @@ export const problems: Problem[] = [
     title: "Acceptance-Threshold Payoff (n = 3)",
     latex: String.raw`\frac{1}{2}\left(p^2 - 0\right) = \frac{p^2}{2}`,
     difficulty: "medium",
-    points: 4,
+    points: 8,
     topic: "Voting Theory",
     context: "Under a unanimity-style threshold of three votes, the expected payoff reduces to p squared over two. Requiring more votes only pays off when the individual acceptance probability p is high.",
     hints: [
@@ -8728,7 +8724,7 @@ export const problems: Problem[] = [
     title: "Diamond-Dybvig Type-Dependent Utility",
     latex: String.raw`u(c_1, c_2) = \begin{cases} -\dfrac{1}{c_1^A}, & \text{impatient consumers} \\ -\dfrac{1}{c_2^B}, & \text{patient consumers} \end{cases}`,
     difficulty: "medium",
-    points: 10,
+    points: 11,
     topic: "Banking",
     context: "Depositors learn their type after investing: impatient consumers value only early consumption and patient ones only late consumption. This preference uncertainty is what creates the demand for bank-provided liquidity insurance.",
     hints: [
@@ -8742,7 +8738,7 @@ export const problems: Problem[] = [
     title: "Bank Planner Feasibility Constraint",
     latex: String.raw`\frac{1}{2}c_1^A + \frac{1}{2}\,\frac{c_2^B}{4} \le 1`,
     difficulty: "easy",
-    points: 7,
+    points: 4,
     topic: "Banking",
     context: "Resources paid to early withdrawers plus the investment needed to fund late withdrawers cannot exceed the one unit deposited per person. The division by four reflects that the long asset returns four units per unit left to mature.",
     hints: [
@@ -8755,7 +8751,7 @@ export const problems: Problem[] = [
     title: "Social Planner's Risk-Sharing Problem",
     latex: String.raw`\max_{c_1^A,\, c_2^B} \left(-\frac{1}{2}\frac{1}{c_1^A} - \frac{1}{2}\frac{1}{c_2^B}\right) \quad \text{s.t.} \quad \frac{1}{2}c_1^A + \frac{1}{2}\frac{c_2^B}{4} = 1`,
     difficulty: "hard",
-    points: 9,
+    points: 17,
     topic: "Banking",
     context: "The planner maximizes the equally weighted expected utility of impatient and patient consumers subject to the economy's resource constraint. Its solution defines the optimal liquidity-insurance contract a bank should replicate.",
     hints: [
@@ -8769,7 +8765,7 @@ export const problems: Problem[] = [
     title: "Optimal Deposit Allocation",
     latex: String.raw`\left(c_1^A\right)^{*} = \frac{4}{3}, \qquad \left(c_2^B\right)^{*} = \frac{8}{3}`,
     difficulty: "easy",
-    points: 5,
+    points: 4,
     topic: "Banking",
     context: "The optimal contract pays early withdrawers 4/3 and late withdrawers 8/3 per unit deposited. Early consumers get more than the single unit autarky would give, showing the bank insures against liquidity shocks.",
     hints: [
@@ -8781,7 +8777,7 @@ export const problems: Problem[] = [
     title: "Bank Run Ex-Ante Expected Utility",
     latex: String.raw`0.9\left(0.5\cdot\left(-\tfrac{3}{4}\right) + 0.5\cdot\left(-\tfrac{3}{8}\right)\right) + 0.1\cdot\left(-\tfrac{10}{7}\right) = -\frac{727}{1120}`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Banking",
     context: "Averages utility over the no-run outcome (probability 0.9) and the bank-run outcome (probability 0.1) to obtain ex-ante welfare of -727/1120. Comparing this number with autarky reveals whether deposit contracts remain worthwhile once runs are possible.",
     hints: [
@@ -8794,7 +8790,7 @@ export const problems: Problem[] = [
     title: "Value of an All-Equity Firm in Perpetuity",
     latex: String.raw`V = \frac{X\,(1-\tau_c)}{r_A}`,
     difficulty: "easy",
-    points: 5,
+    points: 3,
     topic: "Corporate Finance",
     context: "Values an unlevered firm as its perpetual after-tax cash flow discounted at the cost of unlevered assets. It is the Modigliani-Miller baseline before any benefit from debt is added.",
     hints: [
@@ -8806,7 +8802,7 @@ export const problems: Problem[] = [
     title: "Present Value of the Debt Tax Shield",
     latex: String.raw`\mathrm{PV}_{DTS} = \tau_c \times D`,
     difficulty: "easy",
-    points: 7,
+    points: 2,
     topic: "Corporate Finance",
     context: "With permanent debt, the present value of the interest tax savings equals the corporate tax rate times the amount of debt outstanding. This is exactly how much leverage raises firm value in the Modigliani-Miller world with taxes.",
     hints: [
@@ -8819,7 +8815,7 @@ export const problems: Problem[] = [
     title: "Value of a Levered Firm",
     latex: String.raw`V_L = E_L + D_L`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Corporate Finance",
     context: "A levered firm's total value is the market value of its equity plus the market value of its debt. This identity is the starting point for every capital structure comparison.",
     hints: [],
@@ -8829,7 +8825,7 @@ export const problems: Problem[] = [
     title: "Modigliani-Miller Value Equivalence",
     latex: String.raw`E_U = E_L + D_L \implies V_U = V_L`,
     difficulty: "medium",
-    points: 4,
+    points: 5,
     topic: "Corporate Finance",
     context: "If unlevered equity is worth the same as levered equity plus debt, the two firms' total values must coincide. This is Modigliani-Miller Proposition I: absent frictions, how a firm is financed does not affect what it is worth.",
     hints: [
@@ -8841,7 +8837,7 @@ export const problems: Problem[] = [
     title: "Two-Fund Portfolio Return",
     latex: String.raw`R_p = \omega_f R_f + \omega_m R_m = (1-\omega_m)R_f + \omega_m R_m`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Portfolio Theory",
     context: "A portfolio's return is the weighted average of the risk-free rate and the market return, with the weights summing to one. Choosing the market weight moves the investor along the line connecting the two funds.",
     hints: [],
@@ -8851,7 +8847,7 @@ export const problems: Problem[] = [
     title: "Two-Fund Portfolio Variance",
     latex: String.raw`\sigma_p^2 = \operatorname{Var}\!\left(\omega_f R_f + \omega_m R_m\right) = \omega_m^2 \sigma_m^2`,
     difficulty: "medium",
-    points: 7,
+    points: 8,
     topic: "Portfolio Theory",
     context: "Because the risk-free asset has zero variance, all portfolio risk comes from the market position. Portfolio volatility is therefore just the market weight times market volatility.",
     hints: [
@@ -8863,7 +8859,7 @@ export const problems: Problem[] = [
     title: "Capital Market Line",
     latex: String.raw`\bar{R}_p = R_f + \frac{\bar{R}_m - R_f}{\sigma_m}\,\sigma_p`,
     difficulty: "medium",
-    points: 7,
+    points: 8,
     topic: "Portfolio Theory",
     context: "The expected return on an efficient portfolio rises linearly with its volatility, with slope equal to the market's Sharpe ratio. It traces the best available risk-return trade-off from mixing the risk-free asset with the market portfolio.",
     hints: [
@@ -8876,7 +8872,7 @@ export const problems: Problem[] = [
     title: "Portfolio Beta on the Efficient Frontier",
     latex: String.raw`\beta_p = \frac{\sigma_p}{\sigma_m}`,
     difficulty: "easy",
-    points: 7,
+    points: 3,
     topic: "Portfolio Theory",
     context: "For portfolios on the capital market line, beta collapses to the ratio of portfolio volatility to market volatility. Total and systematic risk coincide because such portfolios are perfectly correlated with the market.",
     hints: [
@@ -8888,7 +8884,7 @@ export const problems: Problem[] = [
     title: "Lucas Tree Asset Pricing Equation",
     latex: String.raw`p_t = \mathbb{E}_t\!\left[m_{t,t+1}\left(p_{t+1} + d_{t+1}\right)\right]`,
     difficulty: "medium",
-    points: 7,
+    points: 6,
     topic: "Asset Pricing",
     context: "Today's price equals the expected discounted value of next period's price plus dividend, weighted by the stochastic discount factor. This Euler equation is the core recursion of consumption-based asset pricing.",
     hints: [
@@ -8912,7 +8908,7 @@ export const problems: Problem[] = [
     title: "Present Value of Discounted Dividends",
     latex: String.raw`p_t = \mathbb{E}_t \sum_{j=1}^{\infty} m_{t,t+j}\, d_{t+j}`,
     difficulty: "medium",
-    points: 11,
+    points: 9,
     topic: "Asset Pricing",
     context: "Iterating the pricing equation forward expresses today's price as the expected sum of all future dividends, each discounted by the appropriate multi-period discount factor. Prices then reflect fundamentals rather than speculative terms.",
     hints: [
@@ -8926,7 +8922,7 @@ export const problems: Problem[] = [
     title: "Transversality Condition",
     latex: String.raw`\lim_{j\to\infty}\mathbb{E}_t\!\left[m_{t,t+j}\,p_{t+j}\right] = 0`,
     difficulty: "medium",
-    points: 11,
+    points: 8,
     topic: "Asset Pricing",
     context: "Requires the expected discounted price to vanish as the horizon grows, ruling out explosive bubble components. It ensures the asset's value is pinned down by discounted dividends alone.",
     hints: [
@@ -8941,7 +8937,7 @@ export const problems: Problem[] = [
     title: "Multiplicative Stochastic Discount Factor",
     latex: String.raw`m_{t,t+j} = m_{t,t+1}\times m_{t+1,t+2}\times\cdots\times m_{t+j-1,t+j}`,
     difficulty: "medium",
-    points: 9,
+    points: 6,
     topic: "Asset Pricing",
     context: "The discount factor over a long horizon is the product of the successive one-period discount factors. Chaining them this way lets multi-period payoffs be valued through repeated one-period valuations.",
     hints: [
@@ -8953,7 +8949,7 @@ export const problems: Problem[] = [
     title: "Law of Iterated Expectations",
     latex: String.raw`\mathbb{E}_t\!\left[\mathbb{E}_{t+j}\!\left[x_{t+j+k}\right]\right] = \mathbb{E}_t\!\left[x_{t+j+k}\right]`,
     difficulty: "medium",
-    points: 7,
+    points: 6,
     topic: "Asset Pricing",
     context: "Today's expectation of a future forecast is just today's forecast of the underlying variable. You cannot predict your own forecast revisions, a property used to iterate asset pricing equations forward in time.",
     hints: [
@@ -8965,7 +8961,7 @@ export const problems: Problem[] = [
     title: "Galor-Zeira Expected Utility",
     latex: String.raw`U = \mathbb{E}\!\left[(1-\delta)^{-(1-\delta)}\,\delta^{-\delta}\,c_j(t)^{1-\delta}\,b_j(t)^{\delta}\right]`,
     difficulty: "hard",
-    points: 9,
+    points: 17,
     topic: "Finance",
     context: "Households in the Galor-Zeira model value their own consumption and the bequest they leave, with Cobb-Douglas weights 1-delta and delta. The constant out front normalizes utility so that indirect utility is linear in lifetime income.",
     hints: [
@@ -8977,7 +8973,7 @@ export const problems: Problem[] = [
     title: "Intergenerational Budget Constraint",
     latex: String.raw`c_j(t) + b_j(t) \le y_j(t)`,
     difficulty: "easy",
-    points: 4,
+    points: 1,
     topic: "Finance",
     context: "A member of generation t splits lifetime income between own consumption and the bequest left to the next generation. Bequests are the only channel transmitting wealth across generations in the model.",
     hints: [
@@ -8989,7 +8985,7 @@ export const problems: Problem[] = [
     title: "Value of Acquiring Education",
     latex: String.raw`V(x_j \mid x > h;\, E=1) = w_S + (1+r)(x-h)`,
     difficulty: "medium",
-    points: 3,
+    points: 6,
     topic: "Finance",
     context: "Lifetime resources for someone whose inheritance x exceeds tuition h: the skilled wage plus the leftover wealth saved at the lending rate r. No borrowing is needed, so the favorable interest rate applies.",
     hints: [
@@ -9001,7 +8997,7 @@ export const problems: Problem[] = [
     title: "Bequest Left to Offspring",
     latex: String.raw`b(x_j \mid x < h;\, E=1) = \delta\left(w_S + (1+i)(x-h)\right)`,
     difficulty: "medium",
-    points: 5,
+    points: 7,
     topic: "Finance",
     context: "A household that must borrow at the high rate i to pay tuition bequeaths the fraction delta of its skilled wage net of the loan repayment. The wedge between borrowing and lending rates is why initial wealth shapes descendants' fortunes.",
     hints: [
@@ -9013,7 +9009,7 @@ export const problems: Problem[] = [
     title: "Education Investment Cutoff",
     latex: String.raw`x \ge f = \frac{(2+r)\,w_U + (1+i)\,h - w_S}{i - r}`,
     difficulty: "hard",
-    points: 5,
+    points: 13,
     topic: "Finance",
     context: "Defines the inheritance threshold f above which borrowing at rate i to acquire education still beats staying unskilled. Families below the cutoff rationally skip schooling, seeding a poverty trap.",
     hints: [
@@ -9026,7 +9022,7 @@ export const problems: Problem[] = [
     title: "Galor-Zeira Steady States",
     latex: String.raw`\bar{x}_u = \frac{w_u(2+r)}{1/\delta - 1 - r}, \quad x^{\star} = \frac{w_s - h(1+i)}{1/\delta - 1 - i}, \quad \bar{x}_s = \frac{w_s - h(1+r)}{1/\delta - 1 - r}`,
     difficulty: "hard",
-    points: 11,
+    points: 18,
     topic: "Finance",
     context: "The three long-run wealth levels of the Galor-Zeira model: the unskilled poverty trap, the unstable interior threshold, and the skilled steady state. Which one a dynasty converges to depends entirely on its initial bequest.",
     hints: [
@@ -9039,7 +9035,7 @@ export const problems: Problem[] = [
     title: "Education Preference Condition",
     latex: String.raw`w_S - (1+r)h > w_U(2+r)`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Finance",
     context: "States that the skilled wage net of tuition financed at the lending rate exceeds two periods of unskilled earnings with interest. It guarantees that families rich enough to self-finance always choose education.",
     hints: [],
@@ -9049,7 +9045,7 @@ export const problems: Problem[] = [
     title: "First-Order Condition for Bequests",
     latex: String.raw`b = \delta\left[(1+r)x + (w_U+\epsilon)(2+r)\right]`,
     difficulty: "medium",
-    points: 4,
+    points: 6,
     topic: "Finance",
     context: "An unskilled household bequeaths the fraction delta of its total lifetime resources: inherited wealth with interest plus two periods of unskilled wages. The epsilon term adds a small wage perturbation used for comparative statics.",
     hints: [
@@ -9061,7 +9057,7 @@ export const problems: Problem[] = [
     title: "Equilibrium Evolution of Bequests",
     latex: String.raw`x(t+1) = \begin{cases} \delta\left(w_S + (1+r)(x-h)\right), & x(t) \ge h \\ \delta\left(w_S + (1+i)(x-h)\right), & h > x(t) \ge f \\ \delta\left(w_U(2+r) + (1+r)x\right) + \delta(2+r)\epsilon, & x(t) < f \end{cases}`,
     difficulty: "hard",
-    points: 14,
+    points: 19,
     topic: "Finance",
     context: "Maps this generation's inheritance into the next generation's, with separate branches for self-financed graduates, borrowers who educate, and the unskilled. The kinked dynamics are what generate multiple steady states and a poverty trap.",
     hints: [
@@ -9075,7 +9071,7 @@ export const problems: Problem[] = [
     title: "Diamond-Dybvig Agent Utility",
     latex: String.raw`u(c_1, c_2) = \begin{cases} -\dfrac{1}{c_1^{A}}, & \text{for impatient consumers} \\[4pt] -\dfrac{1}{c_2^{B}}, & \text{for patient consumers} \end{cases}`,
     difficulty: "medium",
-    points: 10,
+    points: 11,
     topic: "Banking",
     context: "Preferences are type-dependent: impatient depositors care only about date-1 consumption and patient depositors only about date-2 consumption. Because types are private information, the deposit contract must be incentive compatible.",
     hints: [
@@ -9089,7 +9085,7 @@ export const problems: Problem[] = [
     title: "Lucas Tree Asset Pricing Equation",
     latex: String.raw`p_t = \mathbb{E}_t\left[ m_{t,t+1}\left( p_{t+1} + d_{t+1} \right) \right]`,
     difficulty: "medium",
-    points: 7,
+    points: 6,
     topic: "Asset Pricing",
     context: "The fundamental Euler equation for a claim on a dividend stream: today's price is the expected product of the stochastic discount factor and next period's payoff. Every consumption-based pricing result builds on this recursion.",
     hints: [
@@ -9101,7 +9097,7 @@ export const problems: Problem[] = [
     title: "Galor-Zeira Expected Utility",
     latex: String.raw`U = \mathbb{E}\left[ (1-\delta)^{-(1-\delta)}\, \delta^{-\delta}\, c_j(t)^{(1-\delta)}\, b_j(t)^{\delta} \right]`,
     difficulty: "hard",
-    points: 9,
+    points: 17,
     topic: "Finance",
     context: "Expected utility is Cobb-Douglas in own consumption and the bequest, with delta the weight on bequests. The normalizing constant makes indirect utility linear in wealth, which keeps the intergenerational dynamics tractable.",
     hints: [
@@ -9113,7 +9109,7 @@ export const problems: Problem[] = [
     title: "Net Present Value of a Project",
     latex: String.raw`\text{NPV} = \frac{CF}{1 + r_f} - F`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Corporate Finance",
     context: "A project's value is next period's cash flow discounted at the risk-free rate, minus the upfront outlay F. A positive NPV means undertaking the project creates value.",
     hints: [
@@ -9126,7 +9122,7 @@ export const problems: Problem[] = [
     title: "Entrepreneur's Effort Incentive Constraint",
     latex: String.raw`p_G\,(V - D) - B \;\geq\; p_B\,(V - D)`,
     difficulty: "medium",
-    points: 3,
+    points: 5,
     topic: "Banking",
     context: "Effort raises the success probability from p_B to p_G but means forgoing the private benefit B; the entrepreneur works only if the extra expected equity payoff V minus D covers that sacrifice. Too much debt shrinks the stake and destroys effort incentives.",
     hints: [
@@ -9138,7 +9134,7 @@ export const problems: Problem[] = [
     title: "Investor Break-Even (Debt Financing)",
     latex: String.raw`p_G\,D + (1 - p_G)\,R_L \;\geq\; F`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Banking",
     context: "Lenders fund the project only if expected repayment, the face value D on success plus the liquidation value on failure, covers the funds F they advance. This participation constraint puts a floor on the promised debt payment.",
     hints: [
@@ -9150,7 +9146,7 @@ export const problems: Problem[] = [
     title: "Equity Share that Preserves Effort",
     latex: String.raw`(1 - a)\big[p_G V_H + (1 - p_G) V_L\big] - B \;\geq\; (1 - a)\big[p_B V_H + (1 - p_B) V_L\big]`,
     difficulty: "hard",
-    points: 4,
+    points: 12,
     topic: "Banking",
     context: "With outside equity, the entrepreneur retains the share 1-a of firm value; effort is worthwhile only if that retained share of the expected value gain from working exceeds the private benefit B. Selling too large a stake kills the incentive to work.",
     hints: [
@@ -9174,7 +9170,7 @@ export const problems: Problem[] = [
     title: "Impatient Consumer's Consumption Profile",
     latex: String.raw`c_1^{1} = 1 - I + \ell I = 1 - \tfrac{1}{2} I, \qquad c_2^{1} = 0`,
     difficulty: "medium",
-    points: 5,
+    points: 7,
     topic: "Banking",
     context: "In autarky an impatient agent consumes the liquid endowment plus only half the value of any long-term investment I, since early liquidation is costly. Investment therefore hurts agents who turn out to need cash early.",
     hints: [
@@ -9186,7 +9182,7 @@ export const problems: Problem[] = [
     title: "Patient Consumer's Consumption Profile",
     latex: String.raw`c_1^{2} = 0, \qquad c_2^{2} = 1 - I + R I = 1 + I`,
     difficulty: "medium",
-    points: 2,
+    points: 5,
     topic: "Banking",
     context: "A patient agent in autarky stores the liquid portion and lets the long investment mature at gross return 2, consuming 1 plus I in the late period. Patient types gain from investment exactly where impatient types lose.",
     hints: [],
@@ -9196,7 +9192,7 @@ export const problems: Problem[] = [
     title: "Autarky Investment Problem",
     latex: String.raw`\max_{I}\;\left\{ \pi \ln\!\left(1 - \tfrac{1}{2} I\right) + \beta(1 - \pi)\ln\left(1 + I\right) \right\}`,
     difficulty: "hard",
-    points: 10,
+    points: 15,
     topic: "Banking",
     context: "Before knowing their type, the agent picks long-term investment I to balance the impatient state's liquidation loss against the patient state's higher return. Its solution is the autarky benchmark that banks and markets are judged against.",
     hints: [
@@ -9208,7 +9204,7 @@ export const problems: Problem[] = [
     title: "Optimal Bank Investment Level",
     latex: String.raw`I^{\star} = \frac{2\beta - 1}{1 + \beta}`,
     difficulty: "easy",
-    points: 7,
+    points: 4,
     topic: "Banking",
     context: "Solving the investment problem's first-order condition gives an interior level of long-term investment that rises with the discount factor beta. For beta below one half the agent would rather not invest at all.",
     hints: [
@@ -9220,7 +9216,7 @@ export const problems: Problem[] = [
     title: "Comparative Static of Optimal Investment",
     latex: String.raw`\frac{\partial I^{\star}}{\partial \beta} = \frac{3}{(1 + \beta)^2} > 0`,
     difficulty: "medium",
-    points: 9,
+    points: 10,
     topic: "Banking",
     context: "The derivative of optimal investment with respect to beta is strictly positive. More patient agents commit more of their endowment to the illiquid, high-return technology.",
     hints: [
@@ -9233,7 +9229,7 @@ export const problems: Problem[] = [
     title: "Diamond-Dybvig Ex-Ante Expected Utility",
     latex: String.raw`U = \tfrac{1}{2}\ln\!\left(1 - \tfrac{1}{2}\cdot\frac{2\beta - 1}{1 + \beta}\right) + \beta\,\tfrac{1}{2}\ln\!\left(1 + \frac{2\beta - 1}{1 + \beta}\right)`,
     difficulty: "hard",
-    points: 9,
+    points: 15,
     topic: "Banking",
     context: "Evaluates ex-ante expected utility at the optimal investment level, with equal odds of turning out impatient or patient. This autarky welfare number is the yardstick for judging what banks or bond markets add.",
     hints: [
@@ -9246,7 +9242,7 @@ export const problems: Problem[] = [
     title: "Aggregate Bond Demand",
     latex: String.raw`\text{Demand} = \begin{cases} (1 - \pi)\,\dfrac{1 - I}{p} & \text{if } p < 1 \\[4pt] \big[0,\, (1 - \pi)(1 - I)\big] & \text{if } p = 1 \\[4pt] 0 & \text{if } p > 1 \end{cases}`,
     difficulty: "hard",
-    points: 13,
+    points: 19,
     topic: "Banking",
     context: "Patient agents spend their liquid wealth on bonds when the price is below one, are indifferent over any quantity at a price of exactly one, and buy nothing above it. Paying more than one is dominated by simply storing the good.",
     hints: [
@@ -9260,7 +9256,7 @@ export const problems: Problem[] = [
     title: "Aggregate Bond Supply",
     latex: String.raw`\text{Supply} = \begin{cases} 0 & \text{if } p < \ell \\[4pt] \big[0,\, \pi R I\big] & \text{if } p = \ell \\[4pt] \pi R I & \text{if } p > \ell \end{cases}`,
     difficulty: "hard",
-    points: 12,
+    points: 19,
     topic: "Banking",
     context: "Impatient agents sell claims on their maturing investment: supply is zero below the liquidation value, the full amount above it, and anything in between at exactly that price. Selling a bond beats liquidating whenever the price exceeds the salvage value.",
     hints: [
@@ -9274,7 +9270,7 @@ export const problems: Problem[] = [
     title: "Patient Consumption with a Bond Market",
     latex: String.raw`c_2^{2} = \frac{1 - I}{p} + R I = R`,
     difficulty: "medium",
-    points: 4,
+    points: 7,
     topic: "Banking",
     context: "At the equilibrium bond price, a patient agent's liquid funds buy claims that, combined with the maturing investment, deliver the full long-run return R on the entire endowment. The bond market undoes the cost of holding liquidity.",
     hints: [
@@ -9286,7 +9282,7 @@ export const problems: Problem[] = [
     title: "Cobb-Douglas Bequest Utility",
     latex: String.raw`U = c_j(t)^{\,1 - \delta}\, b_j(t)^{\,\delta}, \quad \delta \in (0, 1)`,
     difficulty: "medium",
-    points: 6,
+    points: 8,
     topic: "Finance",
     context: "Parents value their own consumption and the bequest with Cobb-Douglas weights, delta measuring the taste for leaving wealth behind. This warm-glow form produces constant saving rules out of income.",
     hints: [
@@ -9298,7 +9294,7 @@ export const problems: Problem[] = [
     title: "Optimal Consumption and Bequest Shares",
     latex: String.raw`c_j(t) = (1 - \delta)\, y_j(t), \qquad b_j(t) = \delta\, y_j(t)`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Finance",
     context: "With Cobb-Douglas preferences, households consume the fixed fraction 1-delta of lifetime income and bequeath the remaining fraction delta. Linear bequest rules are what make the wealth dynamics easy to trace across generations.",
     hints: [],
@@ -9308,7 +9304,7 @@ export const problems: Problem[] = [
     title: "Skilled Household's Bequest Function",
     latex: String.raw`\tilde{b}_S(x) = \delta\big(w_S + (1 + i)(x - h)\big)`,
     difficulty: "medium",
-    points: 5,
+    points: 6,
     topic: "Finance",
     context: "A skilled household that borrowed at rate i to cover tuition h bequeaths the fraction delta of its wage net of loan repayment. Higher borrowing costs directly shrink the inheritance passed to the next generation.",
     hints: [
@@ -9320,7 +9316,7 @@ export const problems: Problem[] = [
     title: "Human-Capital Indifference Wealth Threshold",
     latex: String.raw`x \geq f = \frac{(2 + r)\,w_U + (1 + i)\,h - w_S}{i - r}`,
     difficulty: "hard",
-    points: 5,
+    points: 13,
     topic: "Finance",
     context: "The wealth level f at which a family is exactly indifferent between borrowing for education and remaining unskilled. It splits dynasties into those that invest in schooling and those stuck below the cutoff.",
     hints: [
@@ -9333,7 +9329,7 @@ export const problems: Problem[] = [
     title: "Bequest Wealth Dynamics",
     latex: String.raw`x_{t+1} = \begin{cases} \delta\big(w_U + (1 + r)(w_U + x_t)\big) & \text{if } 0 < x_t < f \\[4pt] \delta\big(w_S + (1 + i)(x_t - h)\big) & \text{if } f \leq x_t < h \\[4pt] \delta\big(w_S + (1 + r)(x_t - h)\big) & \text{if } x_t \geq h \end{cases}`,
     difficulty: "hard",
-    points: 17,
+    points: 19,
     topic: "Finance",
     context: "A piecewise law of motion for dynasty wealth: unskilled work below the threshold f, borrower-financed education in the middle range, and self-financed education above tuition h. The three regimes create history dependence in long-run outcomes.",
     hints: [
@@ -9348,7 +9344,7 @@ export const problems: Problem[] = [
     title: "Poverty-Trap Threshold Comparative Static",
     latex: String.raw`\frac{\partial f}{\partial i} = \frac{\big[w_S - (1 + r)h\big] - (2 + r)\,w_U}{(i - r)^2} > 0`,
     difficulty: "hard",
-    points: 6,
+    points: 15,
     topic: "Finance",
     context: "Raising the borrowing rate i pushes up the education threshold f, because loans become more expensive to repay. Worse credit market frictions therefore widen the set of families caught in the poverty trap.",
     hints: [
@@ -9361,7 +9357,7 @@ export const problems: Problem[] = [
     title: "CARA Utility Function",
     latex: String.raw`u(c) = -\exp(-\gamma c), \quad \gamma > 0`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Asset Pricing",
     context: "Constant absolute risk aversion: the parameter gamma measures the dislike of risk independently of wealth. Combined with normally distributed returns, it delivers clean mean-variance portfolio solutions.",
     hints: [],
@@ -9371,7 +9367,7 @@ export const problems: Problem[] = [
     title: "Investor's Budget Constraint",
     latex: String.raw`c = (W - \omega) R^{f} + \omega R`,
     difficulty: "easy",
-    points: 3,
+    points: 2,
     topic: "Asset Pricing",
     context: "Final consumption comes from splitting wealth W between the risk-free asset earning R^f and an amount omega placed in the risky asset earning R. The only choice variable is the dollar exposure omega.",
     hints: [],
@@ -9381,7 +9377,7 @@ export const problems: Problem[] = [
     title: "MGF of a Normally Distributed Return",
     latex: String.raw`\mathbb{E}\big(\exp[-\gamma \omega R]\big) = \exp\!\left(-\gamma \omega\, \mathbb{E}(R) + \frac{\gamma^2 \omega^2 \sigma^2}{2}\right)`,
     difficulty: "hard",
-    points: 11,
+    points: 15,
     topic: "Asset Pricing",
     context: "Applies the moment-generating function of a normal variable to expected exponential utility: the mean enters linearly while the variance adds a quadratic penalty. This trick converts the CARA problem into a mean-variance one.",
     hints: [
@@ -9394,7 +9390,7 @@ export const problems: Problem[] = [
     title: "CARA-Normal Objective Function",
     latex: String.raw`-\exp\!\left(-\gamma\big[(W - \omega) R^{f} + \omega\, \mathbb{E}(R)\big] + \frac{\gamma^2 \omega^2 \sigma^2}{2}\right)`,
     difficulty: "hard",
-    points: 11,
+    points: 15,
     topic: "Asset Pricing",
     context: "After using the normal MGF, the investor's objective depends only on the portfolio's mean and variance. Maximizing it is equivalent to maximizing expected return minus a variance penalty scaled by risk aversion gamma.",
     hints: [
@@ -9420,7 +9416,7 @@ export const problems: Problem[] = [
     title: "Return-Market Covariance",
     latex: String.raw`\operatorname{Cov}(R, R^{m}) = \omega \sigma^2`,
     difficulty: "easy",
-    points: 6,
+    points: 3,
     topic: "Asset Pricing",
     context: "In the aggregation step, an asset's covariance with the market return equals its portfolio weight omega times its variance. This covariance is the bridge from individual portfolio choice to a market-wide pricing relation.",
     hints: [
@@ -9432,7 +9428,7 @@ export const problems: Problem[] = [
     title: "Market Price of Risk",
     latex: String.raw`\gamma = \frac{\mathbb{E}(R^{m}) - R^{f}}{\operatorname{Var}(R^{m})}`,
     difficulty: "medium",
-    points: 8,
+    points: 9,
     topic: "Asset Pricing",
     context: "In equilibrium the representative investor's risk aversion equals the market's expected excess return per unit of return variance. This ratio, the market price of risk, scales the premium on every asset.",
     hints: [
@@ -9446,7 +9442,7 @@ export const problems: Problem[] = [
     title: "Covariance-Form CAPM",
     latex: String.raw`\mathbb{E}(R) = R^{f} + \frac{\operatorname{Cov}(R, R^{m})}{\operatorname{Var}(R^{m})}\big[\mathbb{E}(R^{m}) - R^{f}\big]`,
     difficulty: "hard",
-    points: 7,
+    points: 15,
     topic: "Asset Pricing",
     context: "An asset's expected return is the risk-free rate plus its beta, the covariance with the market over market variance, times the market risk premium. Only systematic covariance risk earns compensation; idiosyncratic risk does not.",
     hints: [
@@ -9460,7 +9456,7 @@ export const problems: Problem[] = [
     title: "Mirrlees Incentive-Compatibility Constraint",
     latex: String.raw`v^*(y^d_i, y_i/a_i) \ge v^*(y^d_j, y_j/a_i) \quad \text{for all } i,j`,
     difficulty: "medium",
-    points: 4,
+    points: 6,
     topic: "Optimal Taxation",
     context: "Each ability type must prefer its own bundle of net income and effort (income divided by ability) to mimicking any other type's bundle. These constraints stop high-ability workers from posing as low-ability ones under the optimal tax schedule.",
     hints: [
@@ -9473,7 +9469,7 @@ export const problems: Problem[] = [
     title: "Saez Optimal Income Tax Formula",
     latex: String.raw`\frac{T(z)}{z - T(z)} = \frac{1}{\eta_e}\left(1 - g(z)\right)`,
     difficulty: "medium",
-    points: 6,
+    points: 9,
     topic: "Optimal Taxation",
     context: "Sets the optimal tax wedge at income z inversely proportional to the earnings elasticity and decreasing in the social welfare weight g(z) placed on those earners. Groups whose marginal consumption society values less face higher tax rates.",
     hints: [
@@ -9497,7 +9493,7 @@ export const problems: Problem[] = [
     title: "Behavioral Effect of a Tax Reform",
     latex: String.raw`-\,\frac{T(z)\, P(c \mid z)\, \eta_e}{z - T(z)}\, dT`,
     difficulty: "medium",
-    points: 6,
+    points: 8,
     topic: "Optimal Taxation",
     context: "The revenue lost because taxpayers cut their earnings in response to the reform, proportional to the elasticity of earnings and the existing tax wedge. At the optimum this behavioral leakage exactly offsets the net mechanical gain.",
     hints: [
@@ -9510,7 +9506,7 @@ export const problems: Problem[] = [
     title: "Cournot Firm Objective with Subsidy",
     latex: String.raw`\pi_i = (a - bq_i - bQ_{-i} - c + s)q_i - T`,
     difficulty: "medium",
-    points: 5,
+    points: 6,
     topic: "Oligopoly",
     context: "A Cournot firm's profit: the price implied by linear demand, minus marginal cost, plus a per-unit subsidy s, all multiplied by own output, less a lump-sum tax T. The subsidy lowers perceived marginal cost while the lump-sum tax leaves choices undistorted.",
     hints: [],
@@ -9520,7 +9516,7 @@ export const problems: Problem[] = [
     title: "Cournot Best Response with Subsidy",
     latex: String.raw`q_i = \frac{a - c + s - bQ_{-i}}{2b}`,
     difficulty: "medium",
-    points: 4,
+    points: 7,
     topic: "Oligopoly",
     context: "Each firm's optimal quantity rises with the subsidy and falls by half a unit for every unit of rivals' combined output. It comes from maximizing profit against the residual demand curve.",
     hints: [
@@ -9532,7 +9528,7 @@ export const problems: Problem[] = [
     title: "Cournot Equilibrium Output with Subsidy",
     latex: String.raw`q_i^*(s) = \frac{a - c + s}{b(N+1)}`,
     difficulty: "medium",
-    points: 4,
+    points: 6,
     topic: "Oligopoly",
     context: "Imposing symmetry across the N firms gives each firm's equilibrium output, which grows with the subsidy and shrinks as more competitors enter. Setting s to zero recovers the standard Cournot quantity.",
     hints: [
@@ -9544,7 +9540,7 @@ export const problems: Problem[] = [
     title: "Cournot Aggregate Output",
     latex: String.raw`Q(s) = \frac{N(a - c + s)}{b(N+1)}`,
     difficulty: "medium",
-    points: 3,
+    points: 6,
     topic: "Oligopoly",
     context: "Industry output is N times the symmetric individual quantity and approaches the competitive level as the number of firms grows. The subsidy scales total production up toward the efficient quantity.",
     hints: [
@@ -9556,7 +9552,7 @@ export const problems: Problem[] = [
     title: "Cournot Equilibrium Price with Subsidy",
     latex: String.raw`p(s) = \frac{a + N(c - s)}{N + 1}`,
     difficulty: "medium",
-    points: 3,
+    points: 6,
     topic: "Oligopoly",
     context: "The market-clearing price under the subsidy: it falls as the subsidy rises or as more firms compete. With enough firms or a large enough subsidy it converges toward marginal cost.",
     hints: [
@@ -9568,7 +9564,7 @@ export const problems: Problem[] = [
     title: "Cournot Equilibrium Profit with Subsidy",
     latex: String.raw`\pi_i^*(s) = \frac{(a - c + s)^2}{b(N+1)^2}`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Oligopoly",
     context: "Each firm's equilibrium profit is the squared effective markup term divided by b times (N+1) squared. The subsidy raises profits, but entry dilutes them quadratically.",
     hints: [
@@ -9580,7 +9576,7 @@ export const problems: Problem[] = [
     title: "Optimal Production Subsidy",
     latex: String.raw`s = \frac{a - c}{N}`,
     difficulty: "easy",
-    points: 3,
+    points: 2,
     topic: "Oligopoly",
     context: "The per-unit subsidy that pushes Cournot firms to produce the socially efficient output, exactly offsetting the oligopoly markup. The correction needed shrinks as the industry becomes more competitive.",
     hints: [
@@ -9592,7 +9588,7 @@ export const problems: Problem[] = [
     title: "Mixed Oligopoly Private Firm Best Response",
     latex: String.raw`q_i = \frac{a - c - bq_j}{2(b + d)}`,
     difficulty: "medium",
-    points: 4,
+    points: 7,
     topic: "Oligopoly",
     context: "The private firm's profit-maximizing output given the public rival's quantity, where d captures a quadratic cost term that makes marginal cost increasing. Convex costs flatten the reaction curve relative to constant-cost Cournot.",
     hints: [
@@ -9604,7 +9600,7 @@ export const problems: Problem[] = [
     title: "Public Firm Welfare Objective",
     latex: String.raw`W = \int_0^{q_i + q_j}(a - bx)\,dx - c(q_i + q_j) - d(q_i^2 + q_j^2)`,
     difficulty: "hard",
-    points: 6,
+    points: 13,
     topic: "Industrial Organization",
     context: "The public firm maximizes total surplus: the area under the demand curve up to combined output, minus linear production costs and both firms' quadratic cost terms. Unlike a private rival, it internalizes consumer surplus.",
     hints: [
@@ -9616,7 +9612,7 @@ export const problems: Problem[] = [
     title: "Public Firm Best Response",
     latex: String.raw`q_j = \frac{a - c - bq_i}{2d + b}`,
     difficulty: "medium",
-    points: 4,
+    points: 7,
     topic: "Oligopoly",
     context: "Maximizing welfare rather than profit, the public firm expands output until price equals its marginal cost, yielding a more aggressive reaction than its private counterpart. The smaller denominator reflects the missing markup incentive.",
     hints: [
@@ -9628,7 +9624,7 @@ export const problems: Problem[] = [
     title: "Mixed Oligopoly Equilibrium Output",
     latex: String.raw`q_j^* = \frac{(a - c)(2d + b)}{b^2 + 4d^2 + 6bd}`,
     difficulty: "hard",
-    points: 4,
+    points: 13,
     topic: "Oligopoly",
     context: "Solving the private and public best responses simultaneously gives the public firm's equilibrium quantity in the mixed duopoly. Its welfare motive leads it to produce more than a profit-maximizer would in the same position.",
     hints: [
@@ -9640,7 +9636,7 @@ export const problems: Problem[] = [
     title: "Asymmetric Cournot Best Response",
     latex: String.raw`q_i = \frac{a - c_i - bq_j}{2b}`,
     difficulty: "medium",
-    points: 4,
+    points: 7,
     topic: "Oligopoly",
     context: "A duopolist's best reply when firms differ in marginal cost: produce less the higher your own cost c_i and the larger your rival's output. It is the building block of the asymmetric Cournot equilibrium.",
     hints: [
@@ -9652,7 +9648,7 @@ export const problems: Problem[] = [
     title: "Asymmetric Cournot Equilibrium Output",
     latex: String.raw`q_i^C = \frac{a + c_j - 2c_i}{3b}`,
     difficulty: "medium",
-    points: 4,
+    points: 7,
     topic: "Oligopoly",
     context: "Equilibrium output rewards efficiency: a firm produces more the lower its own marginal cost and the higher its rival's. Cost advantages translate directly into market share.",
     hints: [
@@ -9664,7 +9660,7 @@ export const problems: Problem[] = [
     title: "Cournot Duopoly Equilibrium Price",
     latex: String.raw`p^C = \frac{a + c_i + c_j}{3}`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Oligopoly",
     context: "The Cournot duopoly price is a simple average of the demand intercept and the two firms' marginal costs. Only the sum of costs matters for price, not how they are split between firms.",
     hints: [
@@ -9676,7 +9672,7 @@ export const problems: Problem[] = [
     title: "Cournot Duopoly Equilibrium Profit",
     latex: String.raw`\pi_i^C = \frac{1}{b}\left(\frac{a + c_j - 2c_i}{3}\right)^2`,
     difficulty: "hard",
-    points: 6,
+    points: 15,
     topic: "Oligopoly",
     context: "Each duopolist's profit is the square of its equilibrium markup, scaled by one over the demand slope b. Because quantity and margin move together, profit is quadratic in a firm's cost advantage.",
     hints: [
@@ -9688,7 +9684,7 @@ export const problems: Problem[] = [
     title: "Cournot Consumer Surplus",
     latex: String.raw`CS(p^C) = \frac{(2a - c_i - c_j)^2}{18b}`,
     difficulty: "medium",
-    points: 4,
+    points: 7,
     topic: "Industrial Organization",
     context: "Consumer surplus in the Cournot duopoly, computed as the triangle under linear demand at the equilibrium price. It grows with the demand intercept and shrinks with either firm's marginal cost.",
     hints: [
@@ -9700,7 +9696,7 @@ export const problems: Problem[] = [
     title: "Effect of Cost on Consumer Surplus",
     latex: String.raw`\frac{\partial CS(p^C)}{\partial c_i} = -\frac{2a - c_i - c_j}{9b}`,
     difficulty: "hard",
-    points: 6,
+    points: 15,
     topic: "Industrial Organization",
     context: "Differentiating consumer surplus shows that a rise in either firm's marginal cost harms consumers by pushing up the equilibrium price. The negative derivative quantifies how cost shocks pass through to buyers.",
     hints: [
@@ -9713,7 +9709,7 @@ export const problems: Problem[] = [
     title: "Cobb-Douglas Production Function",
     latex: String.raw`Y_{it} = A_{it} L_{it}^{\alpha_L} K_{it}^{\alpha_K}`,
     difficulty: "medium",
-    points: 10,
+    points: 8,
     topic: "Industrial Organization",
     context: "Output comes from labor and capital with constant elasticities alpha_L and alpha_K, scaled by firm- and time-specific productivity A. It is the workhorse specification for production function estimation.",
     hints: [],
@@ -9723,7 +9719,7 @@ export const problems: Problem[] = [
     title: "Log-Linear Production Function",
     latex: String.raw`\ln(Y_{it}) = \ln(A_{it}) + \alpha_L \ln(L_{it}) + \alpha_K \ln(K_{it})`,
     difficulty: "medium",
-    points: 10,
+    points: 6,
     topic: "Industrial Organization",
     context: "Taking logs turns Cobb-Douglas into a linear regression of log output on log inputs, with log productivity absorbed in the error term. Because firms choose inputs knowing their productivity, that error is correlated with the regressors, the classic endogeneity problem.",
     hints: [],
@@ -9733,7 +9729,7 @@ export const problems: Problem[] = [
     title: "Marginal Product of Labour",
     latex: String.raw`MPL = \frac{\partial Y_{it}}{\partial L_{it}} = \alpha_L A_{it} L_{it}^{\alpha_L - 1} K_{it}^{\alpha_K} = \alpha_L \frac{Y_{it}}{L_{it}}`,
     difficulty: "hard",
-    points: 15,
+    points: 17,
     topic: "Industrial Organization",
     context: "Differentiating the Cobb-Douglas function shows the marginal product of labor equals alpha_L times the average product Y/L. Under competitive input markets this pins labor's revenue share down to alpha_L.",
     hints: [
@@ -9746,7 +9742,7 @@ export const problems: Problem[] = [
     title: "AR(1) Productivity Process",
     latex: String.raw`\omega_{it} = \rho\,\omega_{it-1} + \eta_{it}`,
     difficulty: "easy",
-    points: 9,
+    points: 3,
     topic: "Industrial Organization",
     context: "Firm productivity follows a first-order autoregression: today's level is a persistent fraction rho of yesterday's plus a fresh innovation. This Markov structure underpins proxy-variable estimators of production functions.",
     hints: [],
@@ -9756,7 +9752,7 @@ export const problems: Problem[] = [
     title: "Discrete-Choice Demand Utility",
     latex: String.raw`U_{hij} = -\alpha p_j + X_j \beta + \xi_j + \varepsilon_{hij}`,
     difficulty: "medium",
-    points: 10,
+    points: 7,
     topic: "Industrial Organization",
     context: "A household's utility from product j falls with price, rises with observed characteristics X, and includes an unobserved quality term xi plus an idiosyncratic taste shock. The xi term is why price is endogenous in demand estimation.",
     hints: [
@@ -9769,7 +9765,7 @@ export const problems: Problem[] = [
     title: "Cross-Price Elasticity of Demand",
     latex: String.raw`\frac{\partial s_j}{\partial p_k}\frac{p_k}{s_j} = \alpha s_k p_k`,
     difficulty: "hard",
-    points: 8,
+    points: 15,
     topic: "Industrial Organization",
     context: "In the logit demand model, the elasticity of product j's market share with respect to product k's price is alpha times k's share times its price. It depends only on the rival product, the restrictive substitution pattern logit is famous for.",
     hints: [
@@ -9782,7 +9778,7 @@ export const problems: Problem[] = [
     title: "ARMA(1,1) Process",
     latex: String.raw`y_t = \phi y_{t-1} + \varepsilon_t + \theta \varepsilon_{t-1}`,
     difficulty: "easy",
-    points: 9,
+    points: 3,
     topic: "Time Series",
     context: "The series combines an autoregressive pull from its own lag, governed by phi, with a moving-average carryover of last period's shock through theta. ARMA(1,1) captures both persistence and short-run shock dynamics with just two parameters.",
     hints: [
@@ -9794,7 +9790,7 @@ export const problems: Problem[] = [
     title: "ARMA(1,1) Assumptions (White Noise and Stationarity)",
     latex: String.raw`\mathbb{E}(\varepsilon_t) = 0, \quad \mathbb{E}(\varepsilon_t^2) = \sigma^2, \quad |\phi|, |\theta| < 1`,
     difficulty: "easy",
-    points: 9,
+    points: 3,
     topic: "Time Series",
     context: "Shocks are white noise with zero mean and constant variance, and both phi and theta lie strictly inside the unit interval. These conditions make the ARMA(1,1) process stationary and invertible.",
     hints: [
@@ -9807,7 +9803,7 @@ export const problems: Problem[] = [
     title: "ARMA(1,1) Autocovariance at Lag 0",
     latex: String.raw`\gamma_0 = \phi\gamma_1 + \sigma^2 + \theta\left(\phi\sigma^2 + \theta\sigma^2\right)`,
     difficulty: "medium",
-    points: 8,
+    points: 7,
     topic: "Time Series",
     context: "Expresses the variance of an ARMA(1,1) process in terms of the lag-1 autocovariance, the shock variance, and an extra moving-average contribution. It is the first equation of the Yule-Walker system.",
     hints: [],
@@ -9817,7 +9813,7 @@ export const problems: Problem[] = [
     title: "ARMA(1,1) Autocovariance Recursions",
     latex: String.raw`\gamma_1 = \phi\gamma_0 + \theta\sigma^2, \qquad \gamma_k = \phi\gamma_{k-1} \;\text{ for } k \geq 2`,
     difficulty: "medium",
-    points: 11,
+    points: 8,
     topic: "Time Series",
     context: "The lag-1 autocovariance picks up an extra theta sigma-squared term from the MA component, but from lag 2 onward autocovariances decay geometrically at rate phi. The moving-average part only leaves a footprint at the first lag.",
     hints: [
@@ -9867,7 +9863,7 @@ export const problems: Problem[] = [
     title: "No-Change Forecast",
     latex: String.raw`\widehat{CNT}_{T+1|T} = CNT_T`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Time Series",
     context: "The forecast for next period is simply today's observed value. This naive rule is optimal when the series is a random walk and serves as the benchmark any fancier model must beat.",
     hints: [
@@ -9879,7 +9875,7 @@ export const problems: Problem[] = [
     title: "Random Walk Model",
     latex: String.raw`CNT_{t+1} = CNT_t + \varepsilon_{t+1}, \qquad \mathbb{E}_t(\varepsilon_{t+1}) = 0`,
     difficulty: "easy",
-    points: 8,
+    points: 2,
     topic: "Time Series",
     context: "Next period's value equals today's plus a shock that is unpredictable given current information. Under a random walk, changes cannot be forecast and the best prediction is no change at all.",
     hints: [
@@ -9892,7 +9888,7 @@ export const problems: Problem[] = [
     title: "VAR(3) Predator-Prey System",
     latex: String.raw`\mathrm{pred}_t = \alpha_0 + \sum_{i=1}^{3} \phi_i \, \mathrm{pred}_{t-i} + \sum_{i=1}^{3} \gamma_i \, \mathrm{prey}_{t-i} + \varepsilon_t`,
     difficulty: "medium",
-    points: 16,
+    points: 10,
     topic: "Time Series",
     context: "Regresses the predator series on three of its own lags and three lags of the prey series. Testing whether the prey coefficients are jointly zero amounts to a Granger causality test.",
     hints: [
@@ -9906,7 +9902,7 @@ export const problems: Problem[] = [
     title: "Granger Causality Wald Test",
     latex: String.raw`\chi^2_3 = 23.9 \quad \text{for } \gamma_{1,2,3} = 0`,
     difficulty: "easy",
-    points: 6,
+    points: 2,
     topic: "Hypothesis Testing",
     context: "A Wald statistic of 23.9 compared against a chi-squared distribution with three degrees of freedom tests whether all three prey lags can be excluded. The statistic far exceeds any conventional critical value, so prey movements Granger-cause the predator series.",
     hints: [
@@ -9919,7 +9915,7 @@ export const problems: Problem[] = [
     title: "First-Order VAR in Companion Form",
     latex: String.raw`Y_t = A Y_{t-1} + \epsilon_t, \qquad Y_t = (y_{1t}, y_{2t}, y_{3t})^{\prime}`,
     difficulty: "easy",
-    points: 11,
+    points: 4,
     topic: "Time Series",
     context: "Stacks three series into a vector that follows a first-order autoregression with coefficient matrix A. Writing a system this way lets its stability be read off the eigenvalues of A.",
     hints: [
@@ -9931,7 +9927,7 @@ export const problems: Problem[] = [
     title: "Reduced-Rank Decomposition",
     latex: String.raw`A - I_3 = \alpha\beta^{\prime}`,
     difficulty: "medium",
-    points: 6,
+    points: 8,
     topic: "Time Series",
     context: "When the VAR's long-run impact matrix A minus the identity has reduced rank, it factors into adjustment coefficients alpha and cointegrating vectors beta. This structure underlies the vector error-correction model and the Johansen test.",
     hints: [],
@@ -9941,7 +9937,7 @@ export const problems: Problem[] = [
     title: "Cointegration Loading and Vectors",
     latex: String.raw`\alpha = \begin{pmatrix} -0.4 & 0.1 \\ 0.2 & -0.3 \\ 0.2 & 0.2 \end{pmatrix}, \qquad \beta = \begin{pmatrix} 1 & 0 \\ -1 & 1 \\ 0 & -1 \end{pmatrix}`,
     difficulty: "hard",
-    points: 19,
+    points: 20,
     topic: "Time Series",
     context: "Displays a specific pair of matrices from a cointegrated system: alpha holds the adjustment speeds with which each of three variables responds to disequilibrium, while beta's columns define the two stationary linear combinations. Together they decompose the system's long-run dynamics.",
     hints: [
@@ -9966,7 +9962,7 @@ export const problems: Problem[] = [
     title: "Characteristic Equation of a VAR",
     latex: String.raw`\det(I_2 - \Phi z) = (1 - 0.4z)(1 - 0.5z) = 0`,
     difficulty: "medium",
-    points: 4,
+    points: 6,
     topic: "Time Series",
     context: "Sets the determinant of the VAR's characteristic polynomial to zero, factoring it into roots at z = 2.5 and z = 2. Both roots lie outside the unit circle, confirming the system of cointegrating combinations is stationary.",
     hints: [
@@ -9978,7 +9974,7 @@ export const problems: Problem[] = [
     title: "Common Stochastic Trend",
     latex: String.raw`\tau_t = \alpha_{\perp}^{\prime} Y_t = \frac{y_{1t} + y_{2t} + y_{3t}}{3}`,
     difficulty: "medium",
-    points: 15,
+    points: 11,
     topic: "Time Series",
     context: "Defines the common stochastic trend as the simple average of the three variables, obtained by weighting with the vector orthogonal to the adjustment matrix. All three series share this single random-walk component, which is why they move together in the long run.",
     hints: [
@@ -9990,7 +9986,7 @@ export const problems: Problem[] = [
     title: "Unit Root Common Trend Increment",
     latex: String.raw`\Delta\tau_t = \tfrac{1}{3}\left(\varepsilon_{1t} + \varepsilon_{2t} + \varepsilon_{3t}\right)`,
     difficulty: "medium",
-    points: 11,
+    points: 7,
     topic: "Time Series",
     context: "States that the common trend changes each period by the average of the three shocks, so the trend itself is a random walk. This is the single unit root that all the cointegrated series inherit.",
     hints: [
@@ -10003,7 +9999,7 @@ export const problems: Problem[] = [
     title: "Vector Error Correction Form",
     latex: String.raw`\Delta Y_t = (A - I) Y_{t-1} + \epsilon_t = \alpha\beta^{\prime} Y_{t-1} + \epsilon_t`,
     difficulty: "hard",
-    points: 13,
+    points: 15,
     topic: "Time Series",
     context: "Rewrites a VAR in levels as an equation for the change in Y, where the impact matrix A minus the identity factors into adjustment loadings alpha times cointegrating vectors beta. Growth in each variable responds to last period's disequilibrium, pulling the system back toward its long-run relations.",
     hints: [
@@ -10016,7 +10012,7 @@ export const problems: Problem[] = [
     title: "Orthogonality of Trend Loading",
     latex: String.raw`\alpha_{\perp}^{\prime}\alpha = 0, \qquad \alpha_{\perp} = \left(\tfrac{1}{3}, \tfrac{1}{3}, \tfrac{1}{3}\right)^{\prime}`,
     difficulty: "medium",
-    points: 11,
+    points: 10,
     topic: "Time Series",
     context: "Requires the trend-loading vector to be orthogonal to the adjustment matrix alpha, and here that vector puts equal weight of one third on each variable. Weighting by alpha-perp kills the error-correction terms, isolating the pure random-walk trend.",
     hints: [],
@@ -10026,12 +10022,11 @@ export const problems: Problem[] = [
     title: "Sharp RDD Treatment Assignment",
     latex: String.raw`D = \mathbf{1}(X \geq 0)`,
     difficulty: "easy",
-    points: 4,
+    points: 1,
     topic: "Econometrics",
     context: "In a sharp regression discontinuity design, treatment switches on deterministically the moment the running variable X crosses the zero cutoff. This clean jump in treatment probability is what lets the discontinuity in outcomes identify a causal effect.",
     hints: [
       { command: String.raw`\geq`, name: "greater-or-equal", example: String.raw`\geq` },
-      { command: String.raw`\mathbf{ }`, name: "bold", example: String.raw`\mathbf{x}` },
     ],
   },
   {
@@ -10063,7 +10058,7 @@ export const problems: Problem[] = [
     title: "Difference-in-Differences Linear Probability Model",
     latex: String.raw`\mathrm{arrest} = \beta_0 + \delta_0 y_{90} + \beta_1 FL + \delta_1 \, y_{90} \cdot FL + u`,
     difficulty: "medium",
-    points: 10,
+    points: 7,
     topic: "Econometrics",
     context: "A linear probability model for arrest where the coefficient on the interaction of the 1990 dummy with the Florida dummy is the difference-in-differences effect. It compares how arrest rates changed over time in Florida relative to the change in the comparison state.",
     hints: [
@@ -10076,7 +10071,7 @@ export const problems: Problem[] = [
     title: "Difference-in-Differences Estimator",
     latex: String.raw`\delta_1 = \big[\mathbb{E}(\mathrm{arrest} \mid FL, y_{90}) - \mathbb{E}(\mathrm{arrest} \mid FL, y_{85})\big] - \big[\mathbb{E}(\mathrm{arrest} \mid GE, y_{90}) - \mathbb{E}(\mathrm{arrest} \mid GE, y_{85})\big]`,
     difficulty: "hard",
-    points: 12,
+    points: 14,
     topic: "Econometrics",
     context: "Writes the DiD parameter as a double difference: Florida's change in expected arrests between 1985 and 1990, minus the corresponding change in Georgia. Subtracting the control group's trend strips out common time shocks, isolating the policy's effect.",
     hints: [
@@ -10090,7 +10085,7 @@ export const problems: Problem[] = [
     title: "Dynamic Panel Data Model",
     latex: String.raw`\log(\mathrm{emp})_{it} = \alpha + \delta_1 \log(\mathrm{emp})_{i,t-1} + \delta_2 \log(\mathrm{emp})_{i,t-2} + \beta_1 \log(\mathrm{wage})_{i,t-1} + \beta_2 \log(\mathrm{wage})_{i,t-2} + \mu_i + \lambda_t + v_{it}`,
     difficulty: "hard",
-    points: 20,
+    points: 15,
     topic: "Panel Data",
     context: "A dynamic panel regression where log employment depends on its own two lags, two lags of the log wage, a firm fixed effect, and a year effect. Because the lagged dependent variable is correlated with the fixed effect, this model calls for instrumental-variable methods like Arellano-Bond.",
     hints: [
@@ -10102,7 +10097,7 @@ export const problems: Problem[] = [
     title: "Conditional Independence Assumption",
     latex: String.raw`(Y_{0i}, Y_{1i}) \perp D \mid X`,
     difficulty: "easy",
-    points: 6,
+    points: 3,
     topic: "Econometrics",
     context: "Asserts that once you condition on covariates X, potential outcomes are independent of treatment status — treatment is as good as randomly assigned within X-cells. This selection-on-observables assumption is what justifies matching and regression adjustment.",
     hints: [
@@ -10114,7 +10109,7 @@ export const problems: Problem[] = [
     title: "Average Treatment Effect on the Treated",
     latex: String.raw`\mathrm{ATET} = \mathbb{E}[Y_1 - Y_0 \mid D = 1]`,
     difficulty: "easy",
-    points: 6,
+    points: 3,
     topic: "Econometrics",
     context: "Defines the ATET as the expected gap between treated and untreated potential outcomes, averaged only over those who actually received treatment. It answers what the programme did for its actual participants, not for the whole population.",
     hints: [
@@ -10128,7 +10123,7 @@ export const problems: Problem[] = [
     title: "ATET under CIA and Iterated Expectations",
     latex: String.raw`\mathrm{ATET} = \mathbb{E}\big[\, \mathbb{E}[Y_1 \mid X, D=1] - \mathbb{E}[Y_0 \mid X, D=0] \mid D = 1 \,\big]`,
     difficulty: "hard",
-    points: 6,
+    points: 13,
     topic: "Econometrics",
     context: "Recovers the treatment effect on the treated by comparing outcome means of treated and untreated units with the same covariates, then averaging those gaps over the treated group's covariate distribution. Conditional independence makes the untreated group a valid counterfactual within each X-cell.",
     hints: [
@@ -10154,7 +10149,7 @@ export const problems: Problem[] = [
     title: "Cross-Country Growth Regression",
     latex: String.raw`\mathrm{GrowthRate}_i = \beta_0 + \alpha \log(\mathrm{GDP})_i + \sum_{j=1}^{p} \beta_j x_{ij} + \varepsilon_i`,
     difficulty: "medium",
-    points: 14,
+    points: 9,
     topic: "Econometrics",
     context: "Models a country's growth rate as a function of initial log GDP plus a potentially long list of p control variables. A negative alpha would indicate conditional convergence: poorer countries grow faster once other characteristics are held fixed.",
     hints: [
@@ -10194,7 +10189,7 @@ export const problems: Problem[] = [
     title: "Reduced-Form VAR Cointegration Projection",
     latex: String.raw`\beta^{\prime} Y_t = (I + \beta^{\prime}\alpha)\,\beta^{\prime} Y_{t-1} + \beta^{\prime}\epsilon_t`,
     difficulty: "hard",
-    points: 13,
+    points: 15,
     topic: "Time Series",
     context: "Premultiplying the VAR by the cointegrating vectors beta shows the cointegrating combinations follow their own autonomous VAR with coefficient matrix I plus beta-prime-alpha. Stationarity of the whole system reduces to checking this small matrix has stable eigenvalues.",
     hints: [
@@ -10233,7 +10228,7 @@ export const problems: Problem[] = [
     title: "ARMA(1,1) Autocovariance at Lag 1",
     latex: String.raw`\gamma_1 = \phi \gamma_0 + \theta \sigma^2`,
     difficulty: "easy",
-    points: 8,
+    points: 3,
     topic: "Time Series",
     context: "Gives the lag-one autocovariance of an ARMA(1,1): the AR coefficient times the variance plus the MA coefficient times the shock variance. The extra theta term is what distinguishes it from a pure AR(1) at the first lag.",
     hints: [],
@@ -10243,7 +10238,7 @@ export const problems: Problem[] = [
     title: "ARMA(1,1) Autocovariance Recursion",
     latex: String.raw`\gamma_k = \phi \gamma_{k-1} \quad \text{for } k \geq 2`,
     difficulty: "easy",
-    points: 7,
+    points: 3,
     topic: "Time Series",
     context: "From lag two onward, each autocovariance of an ARMA(1,1) is just phi times the previous one, because the MA shock no longer overlaps. Beyond the first lag the autocorrelations decay geometrically exactly like an AR(1).",
     hints: [
@@ -10256,7 +10251,7 @@ export const problems: Problem[] = [
     title: "No-Change Forecast",
     latex: String.raw`\widehat{CNT}_{T+1 \mid T} = CNT_T`,
     difficulty: "easy",
-    points: 6,
+    points: 4,
     topic: "Forecasting",
     context: "The naive forecast: next period's predicted value of the series is simply today's value. For a random walk this is actually the optimal forecast, which makes it a tough benchmark to beat.",
     hints: [
@@ -10269,7 +10264,7 @@ export const problems: Problem[] = [
     title: "VAR(3) Predator Equation",
     latex: String.raw`predg_t = \alpha_0 + \sum_{i=1}^{3} \phi_i \, predg_{t-i} + \sum_{i=1}^{3} \gamma_i \, preyg_{t-i} + \varepsilon_t`,
     difficulty: "medium",
-    points: 15,
+    points: 9,
     topic: "Time Series",
     context: "The predator-growth equation of a VAR(3): predator growth depends on three of its own lags and three lags of prey growth plus a shock. Testing whether the gamma coefficients are jointly zero asks whether prey growth Granger-causes predator growth.",
     hints: [
@@ -10282,7 +10277,7 @@ export const problems: Problem[] = [
     title: "VAR(3) Prey Equation",
     latex: String.raw`preyg_t = \alpha_1 + \sum_{i=1}^{3} \beta_i \, predg_{t-i} + \sum_{i=1}^{3} \lambda_i \, preyg_{t-i} + \eta_t`,
     difficulty: "medium",
-    points: 15,
+    points: 9,
     topic: "Time Series",
     context: "The companion prey equation of the VAR(3), regressing prey growth on three lags of both predator and prey growth. If the beta coefficients on lagged predator growth are jointly significant, predator dynamics help forecast the prey population.",
     hints: [
@@ -10294,7 +10289,7 @@ export const problems: Problem[] = [
     title: "Trivariate VAR(1) System",
     latex: String.raw`\begin{aligned} y_{1t} &= 0.6 y_{1t-1} + 0.5 y_{2t-1} - 0.1 y_{3t-1} + \varepsilon_{1t} \\ y_{2t} &= 0.2 y_{1t-1} + 0.5 y_{2t-1} + 0.3 y_{3t-1} + \varepsilon_{2t} \\ y_{3t} &= 0.2 y_{1t-1} + 0.8 y_{3t-1} + \varepsilon_{3t} \end{aligned}`,
     difficulty: "hard",
-    points: 18,
+    points: 19,
     topic: "Time Series",
     context: "A three-equation VAR(1) with specific numeric coefficients, where each variable today is a linear combination of all three variables yesterday plus its own shock. Systems like this are the starting point for checking stationarity, cointegration, and dynamic spillovers.",
     hints: [
@@ -10307,7 +10302,7 @@ export const problems: Problem[] = [
     title: "VAR(1) Matrix Form",
     latex: String.raw`Y_t = A Y_{t-1} + \epsilon_t, \quad Y_t = (y_{1t}, y_{2t}, y_{3t})^{\prime}, \quad \epsilon_t = (\varepsilon_{1t}, \varepsilon_{2t}, \varepsilon_{3t})^{\prime}`,
     difficulty: "medium",
-    points: 13,
+    points: 9,
     topic: "Time Series",
     context: "Stacks the three series into a vector and writes the system compactly as Y today equals a coefficient matrix A times Y yesterday plus a shock vector. Matrix form makes eigenvalue and cointegration analysis of the whole system tractable.",
     hints: [
@@ -10332,7 +10327,7 @@ export const problems: Problem[] = [
     title: "Characteristic Equation of VAR",
     latex: String.raw`\det(I_2 - \Phi z) = 0`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Time Series",
     context: "The stability condition for a VAR: set the determinant of the identity minus the coefficient matrix times z equal to zero and solve for the roots. The process is stationary only if every root lies outside the unit circle.",
     hints: [
@@ -10344,7 +10339,7 @@ export const problems: Problem[] = [
     title: "First Difference of the Common Trend",
     latex: String.raw`\Delta \tau_t = \frac{1}{3}\left( \varepsilon_{1t} + \varepsilon_{2t} + \varepsilon_{3t} \right)`,
     difficulty: "easy",
-    points: 11,
+    points: 4,
     topic: "Time Series",
     context: "Shows the common trend's increment is the equally weighted average of the period's three shocks. Since these increments are unforecastable, the trend is a pure random walk shared by all the cointegrated series.",
     hints: [
@@ -10371,7 +10366,7 @@ export const problems: Problem[] = [
     title: "Arellano-Bond Dynamic Panel Model",
     latex: String.raw`\log(emp)_{it} = \alpha + \delta_1 \log(emp)_{i,t-1} + \delta_2 \log(emp)_{i,t-2} + \beta_1 \log(wage)_{i,t-1} + \beta_2 \log(wage)_{i,t-2} + \mu_i + \lambda_t + v_{it}`,
     difficulty: "hard",
-    points: 18,
+    points: 15,
     topic: "Panel Data",
     context: "The classic Arellano-Bond employment equation: firm-level log employment depends on two of its own lags, two lags of wages, and firm and time effects. Estimating it consistently requires first-differencing and instrumenting the lagged dependent variable with deeper lags.",
     hints: [],
@@ -10381,7 +10376,7 @@ export const problems: Problem[] = [
     title: "Cross-Country Growth Regression",
     latex: String.raw`GrowthRate_i = \beta_0 + \alpha \log(GDP)_i + \sum_{j=1}^{p} \beta_j x_{ij} + \varepsilon_i`,
     difficulty: "medium",
-    points: 12,
+    points: 9,
     topic: "High-Dimensional Econometrics",
     context: "Regresses each country's growth rate on its initial log GDP and a high-dimensional set of p candidate controls. When p is large relative to the number of countries, OLS overfits, motivating penalised methods like the lasso.",
     hints: [
@@ -10394,7 +10389,7 @@ export const problems: Problem[] = [
     title: "Conditional Mean Exogeneity",
     latex: String.raw`\mathbb{E}\left( \varepsilon_i \mid \log(GDP)_i, x_{i1}, \dots, x_{ip} \right) = 0`,
     difficulty: "medium",
-    points: 11,
+    points: 9,
     topic: "High-Dimensional Econometrics",
     context: "Requires the regression error to have mean zero given initial log GDP and every one of the p controls. Under this exogeneity condition, the regression coefficients have a causal or structural interpretation rather than being mere correlations.",
     hints: [
@@ -10422,7 +10417,7 @@ export const problems: Problem[] = [
     title: "Structural Error Covariance Matrix",
     latex: String.raw`\Sigma = \begin{pmatrix} \sigma_1^2 & 0 \\ 0 & \sigma_2^2 \end{pmatrix}`,
     difficulty: "easy",
-    points: 10,
+    points: 4,
     topic: "Time Series",
     context: "Specifies that the structural shocks are mutually uncorrelated, so their covariance matrix is diagonal with variances sigma-one squared and sigma-two squared. Orthogonality of the structural shocks is the key assumption that makes impulse responses interpretable.",
     hints: [
@@ -10435,7 +10430,7 @@ export const problems: Problem[] = [
     title: "Reduced Form of a Structural VAR",
     latex: String.raw`X_t = A_0^{-1} A_1 X_{t-1} + A_0^{-1} \varepsilon_t = C X_{t-1} + A_0^{-1} \varepsilon_t`,
     difficulty: "medium",
-    points: 10,
+    points: 6,
     topic: "Time Series",
     context: "Premultiplies the structural VAR by the inverse of the impact matrix to obtain the estimable reduced form, whose errors are mixtures of the underlying structural shocks. You can estimate C by OLS, but recovering the structural shocks requires extra identification assumptions.",
     hints: [
@@ -10447,7 +10442,7 @@ export const problems: Problem[] = [
     title: "VAR Forecast Recursion",
     latex: String.raw`\hat{X}_{T+k} = \hat{C}^{\,k} X_T`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Time Series",
     context: "The k-step-ahead forecast from a VAR is just the estimated coefficient matrix raised to the power k applied to the last observed vector. Iterating the one-step rule forward, forecasts decay toward the mean at a rate set by the matrix's eigenvalues.",
     hints: [
@@ -10459,7 +10454,7 @@ export const problems: Problem[] = [
     title: "Level Forecast via Cumulated Differences",
     latex: String.raw`\hat{x}_{T+h} = x_T + \begin{pmatrix} 1 & 0 \end{pmatrix} \sum_{k=1}^{h} \hat{C}^{\,k} X_T`,
     difficulty: "hard",
-    points: 9,
+    points: 16,
     topic: "Time Series",
     context: "Forecasts the level of a variable modelled in differences by adding today's level to the cumulated sum of forecast future changes, with the selection vector picking off the first element. Differenced VARs forecast changes, so levels are rebuilt by summation.",
     hints: [
@@ -10473,7 +10468,7 @@ export const problems: Problem[] = [
     title: "Component Forecast from a VAR",
     latex: String.raw`\hat{y}_{T+h} = \begin{pmatrix} 0 & 1 \end{pmatrix} \hat{C}^{\,h} X_T`,
     difficulty: "easy",
-    points: 6,
+    points: 4,
     topic: "Time Series",
     context: "Selects the second element of the VAR's h-step-ahead forecast by premultiplying the powered coefficient matrix with the row vector (0, 1). It shows how a forecast for one variable of interest is extracted from the whole-system recursion.",
     hints: [
@@ -10500,7 +10495,7 @@ export const problems: Problem[] = [
     title: "Telescoping Level Identity",
     latex: String.raw`x_{T+h} = x_T + (x_{T+1} - x_T) + (x_{T+2} - x_{T+1}) + \dots + (x_{T+h} - x_{T+h-1})`,
     difficulty: "medium",
-    points: 11,
+    points: 6,
     topic: "Time Series",
     context: "Expresses a future level as today's level plus the sum of all intervening one-period changes, with the intermediate terms cancelling in pairs. This telescoping identity is why forecasting a level is equivalent to cumulating forecast differences.",
     hints: [],
@@ -10510,7 +10505,7 @@ export const problems: Problem[] = [
     title: "Three-Variable VAR in Levels",
     latex: String.raw`X_t = A X_{t-1} + \varepsilon_t, \qquad X_t = (T_{1t}, T_{2t}, T_{3t})^{\prime}`,
     difficulty: "easy",
-    points: 11,
+    points: 4,
     topic: "Time Series",
     context: "A VAR(1) in levels for three tea-price series stacked into the vector X. Modelling the levels jointly is the natural setting for asking whether the prices are tied together by cointegration.",
     hints: [
@@ -10522,7 +10517,7 @@ export const problems: Problem[] = [
     title: "Vector Error Correction Form",
     latex: String.raw`\Delta X_t = \Pi X_{t-1} + \varepsilon_t`,
     difficulty: "easy",
-    points: 7,
+    points: 3,
     topic: "Time Series",
     context: "The vector error-correction model: the change in X responds to last period's level through the matrix Pi plus a shock. The rank of Pi reveals how many stationary long-run relations bind the variables together.",
     hints: [
@@ -10536,7 +10531,7 @@ export const problems: Problem[] = [
     title: "Cointegration Rank Decomposition",
     latex: String.raw`\Pi = \alpha \beta^{\prime}`,
     difficulty: "easy",
-    points: 8,
+    points: 3,
     topic: "Time Series",
     context: "Factors the error-correction matrix Pi into adjustment loadings alpha times cointegrating vectors beta transposed. The number of columns in beta equals the cointegration rank — the count of stationary combinations of the levels.",
     hints: [
@@ -10548,7 +10543,7 @@ export const problems: Problem[] = [
     title: "Cointegrating Relations for Tea Prices",
     latex: String.raw`T_{1t} - T_{2t} \sim I(0), \qquad T_{1t} - T_{3t} \sim I(0)`,
     difficulty: "easy",
-    points: 7,
+    points: 2,
     topic: "Time Series",
     context: "Asserts that the gap between tea price one and tea price two, and between price one and price three, are each stationary. The three prices share a common trend, so arbitrage keeps any pair from drifting apart permanently.",
     hints: [
@@ -10560,7 +10555,7 @@ export const problems: Problem[] = [
     title: "Cointegrating Vector Matrix",
     latex: String.raw`\beta = \begin{pmatrix} 1 & 1 \\ -1 & 0 \\ 0 & -1 \end{pmatrix}`,
     difficulty: "easy",
-    points: 11,
+    points: 4,
     topic: "Time Series",
     context: "A candidate cointegrating matrix whose two columns encode the price gaps: the first minus the second series, and the first minus the third. Applying beta transposed to the levels produces the two stationary spreads.",
     hints: [
@@ -10572,7 +10567,7 @@ export const problems: Problem[] = [
     title: "Rotational Non-Uniqueness of Cointegration",
     latex: String.raw`\alpha \beta^{\prime} = \alpha R R^{\prime} \beta^{\prime} = \tilde{\alpha} \tilde{\beta}^{\prime}, \qquad R R^{\prime} = I`,
     difficulty: "medium",
-    points: 13,
+    points: 9,
     topic: "Time Series",
     context: "Demonstrates that the loadings and cointegrating vectors are only identified up to a rotation: inserting any orthonormal matrix R between alpha and beta leaves their product unchanged. Only the spaces spanned by alpha and beta are identified, so normalisations are needed to interpret individual vectors.",
     hints: [
@@ -10584,7 +10579,7 @@ export const problems: Problem[] = [
     title: "Adjustment Coefficients with Standard Errors",
     latex: String.raw`\hat{\alpha} = \begin{pmatrix} \underset{(0.025)}{-0.0353} & \underset{(0.018)}{-0.0375} \\ \underset{(0.031)}{0.1880} & \underset{(0.025)}{-0.0783} \\ \underset{(0.023)}{-0.0316} & \underset{(0.018)}{0.0318} \end{pmatrix}`,
     difficulty: "hard",
-    points: 13,
+    points: 19,
     topic: "Time Series",
     context: "An estimated 3-by-2 matrix of adjustment coefficients with standard errors beneath each entry. The significant loadings show which prices actually respond to disequilibrium in each cointegrating relation, and how quickly.",
     hints: [
@@ -10598,7 +10593,7 @@ export const problems: Problem[] = [
     title: "Cointegrating Vector Specification",
     latex: String.raw`\beta = \begin{pmatrix} 1 & \beta_{12} \\ \beta_{21} & 0 \\ 0 & -1 \end{pmatrix}`,
     difficulty: "easy",
-    points: 13,
+    points: 4,
     topic: "Time Series",
     context: "A restricted cointegrating matrix in which some entries are normalised to one, zero, or minus one and only two free parameters remain. Imposing such restrictions resolves the rotational indeterminacy so the estimated relations can be interpreted.",
     hints: [
@@ -10610,7 +10605,7 @@ export const problems: Problem[] = [
     title: "Two-Way Difference-in-Differences Model",
     latex: String.raw`Y_i = \alpha_1 + D_2 \alpha_2 + D_{itr} \alpha_3 + (D_{itr} \times D_2) \alpha_4 + \varepsilon_i`,
     difficulty: "medium",
-    points: 9,
+    points: 7,
     topic: "Econometrics",
     context: "A difference-in-differences regression with a period dummy, a treated-group dummy, and their interaction; alpha-four on the interaction is the treatment effect. The two main effects absorb the group gap and the common time trend, leaving the differential change as the causal estimate.",
     hints: [
@@ -10623,7 +10618,7 @@ export const problems: Problem[] = [
     title: "DiD Parameter Contrasts",
     latex: String.raw`\alpha_{21} = \alpha_2 - \alpha_1, \qquad \beta_{21} = \beta_2 - \beta_1`,
     difficulty: "easy",
-    points: 8,
+    points: 3,
     topic: "Econometrics",
     context: "Defines the parameters of interest as differences: the change across periods within each group. Framing the model in contrasts makes clear that DiD identifies the treated group's extra change relative to the control group's.",
     hints: [],
@@ -10633,7 +10628,7 @@ export const problems: Problem[] = [
     title: "Teen Birth Rate Fixed-Effects Regression",
     latex: String.raw`\ln(B_{jt}) = \beta_0 + \beta_1\, \mathrm{rate16P}_j \times \mathrm{post}_t + \beta_2 U_{jy} + X_{jy}\lambda + \theta_t + \delta_{js} + \varepsilon_{jt}`,
     difficulty: "hard",
-    points: 20,
+    points: 16,
     topic: "Panel Data",
     context: "A fixed-effects regression of log teen birth rates on the interaction of a state's exposure measure with a post-policy dummy, plus unemployment, controls, and both time and state-cohort fixed effects. Beta-one captures how births changed after the policy in more-exposed states relative to less-exposed ones.",
     hints: [
@@ -10647,7 +10642,7 @@ export const problems: Problem[] = [
     title: "Unobserved Effects Panel Model",
     latex: String.raw`y_{it} = \beta_0 + \beta_1 x_{it} + \beta_2 c_i + \mu_i + \varepsilon_{it}`,
     difficulty: "medium",
-    points: 10,
+    points: 7,
     topic: "Panel Data",
     context: "A panel regression in which the outcome depends on a time-varying regressor, a time-invariant characteristic c, and an unobserved individual effect mu. Whether mu correlates with x determines the choice between fixed-effects and random-effects estimation.",
     hints: [
@@ -10659,7 +10654,7 @@ export const problems: Problem[] = [
     title: "Panel Error Component Assumptions",
     latex: String.raw`\mu_i \sim \mathrm{i.i.d}(0, \sigma_\mu^2), \qquad \varepsilon_{it} \sim \mathrm{i.i.d}(0, \sigma_\varepsilon^2)`,
     difficulty: "easy",
-    points: 10,
+    points: 3,
     topic: "Panel Data",
     context: "The random-effects error assumptions: the individual effect and the idiosyncratic error are each i.i.d. with mean zero and their own variances. Under these, GLS on the composite error is efficient — provided the individual effect is uncorrelated with the regressors.",
     hints: [
@@ -10686,7 +10681,7 @@ export const problems: Problem[] = [
     title: "Hausman Coefficient Contrast",
     latex: String.raw`\kappa = \hat{\beta}_{re,s} - \hat{\beta}_{fe}`,
     difficulty: "easy",
-    points: 8,
+    points: 3,
     topic: "Hypothesis Testing",
     context: "The contrast at the heart of the Hausman test: the random-effects estimate minus the fixed-effects estimate of the same coefficients. Under exogeneity both are consistent so the gap should be near zero; a large gap signals random effects is inconsistent.",
     hints: [
@@ -10698,7 +10693,7 @@ export const problems: Problem[] = [
     title: "Hausman Null: FE vs Between",
     latex: String.raw`H_0 : \beta_1^{fe} = \beta_1^{be}`,
     difficulty: "easy",
-    points: 6,
+    points: 2,
     topic: "Hypothesis Testing",
     context: "States the Hausman-style null that the fixed-effects (within) and between estimators target the same coefficient. Agreement between them supports the random-effects assumption, since RE is a weighted average of the two.",
     hints: [],
@@ -10708,7 +10703,7 @@ export const problems: Problem[] = [
     title: "Correlated Random Effects Model",
     latex: String.raw`y_{it} = \beta_0 + \beta_1 x_{it} + \beta_2 c_i + \pi \bar{x}_i + \nu_i + \varepsilon_{it}`,
     difficulty: "medium",
-    points: 13,
+    points: 8,
     topic: "Panel Data",
     context: "Augments the panel regression with the individual's time average of x, following Mundlak, so the remaining effect nu can be treated as uncorrelated with the regressors. It lets a random-effects estimator deliver fixed-effects-style coefficients while still allowing time-invariant variables.",
     hints: [
@@ -10721,7 +10716,7 @@ export const problems: Problem[] = [
     title: "Mundlak Decomposition of the Effect",
     latex: String.raw`\mu_i = \pi \bar{x}_i + \nu_i, \qquad \nu_i \sim \mathrm{i.i.d}(0, \sigma_\nu^2)`,
     difficulty: "easy",
-    points: 12,
+    points: 4,
     topic: "Panel Data",
     context: "Mundlak's device: the unobserved individual effect is modelled as a linear function of the individual's average x plus a residual effect that is genuinely random. Any correlation between the effect and the regressor is channelled through pi.",
     hints: [
@@ -10735,7 +10730,7 @@ export const problems: Problem[] = [
     title: "CRE and Fixed-Effects Equivalence",
     latex: String.raw`\hat{\beta}_{cre} = \hat{\beta}_{fe}`,
     difficulty: "easy",
-    points: 6,
+    points: 2,
     topic: "Panel Data",
     context: "A neat equivalence result: the correlated random effects estimator of the time-varying coefficient is numerically identical to the fixed-effects estimator. CRE therefore gives FE-robust slopes while retaining the RE framework's extra flexibility.",
     hints: [
@@ -10747,7 +10742,7 @@ export const problems: Problem[] = [
     title: "RE Specification Test Null",
     latex: String.raw`H_0 : \beta_1^{re} = \beta_1^{fe}`,
     difficulty: "easy",
-    points: 6,
+    points: 2,
     topic: "Hypothesis Testing",
     context: "The null hypothesis for testing the random-effects specification: the RE and FE estimates of the slope coincide. In the CRE framework this reduces to testing whether the coefficient on the time-averaged regressor is zero.",
     hints: [],
@@ -10757,7 +10752,7 @@ export const problems: Problem[] = [
     title: "Conditional Mean Function",
     latex: String.raw`\mathbb{E}[y \mid x] = g(x)`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Estimation Theory",
     context: "Defines the object of nonparametric regression: the expected value of y given x is some unknown function g. Rather than assuming linearity, the analyst lets the data determine the shape of the relationship.",
     hints: [
@@ -10783,7 +10778,7 @@ export const problems: Problem[] = [
     title: "Gravity Equation (Level Form)",
     latex: String.raw`X_{ij} = \frac{A \, Y_i^{a} \, Y_j^{b}}{d_{ij}^{c}}`,
     difficulty: "medium",
-    points: 7,
+    points: 8,
     topic: "International Trade",
     context: "The gravity equation of trade: bilateral exports rise with the economic sizes of both countries and fall with the distance between them, in multiplicative form. It is one of the most empirically successful relationships in economics, echoing Newton's law of gravitation.",
     hints: [
@@ -10805,7 +10800,7 @@ export const problems: Problem[] = [
     title: "Gravity Regression Specification",
     latex: String.raw`\log X_{ij} = \log A + a \log Y_i + b \log Y_j - c \log d_{ij} + \varepsilon_{ij}`,
     difficulty: "medium",
-    points: 8,
+    points: 6,
     topic: "International Trade",
     context: "The estimable version of the gravity model: log bilateral trade regressed on the log incomes of both partners and log distance, plus an error term. The fitted coefficients are elasticities, and the distance elasticity is reliably negative in the data.",
     hints: [
@@ -10817,7 +10812,7 @@ export const problems: Problem[] = [
     title: "Import Content of Exports",
     latex: String.raw`\text{Import content of exports} = \frac{\text{foreign value-added in gross exports}}{\text{total gross exports}}`,
     difficulty: "medium",
-    points: 3,
+    points: 6,
     topic: "International Trade",
     context: "Measures how much of a country's gross exports is actually foreign value added rather than domestic production. A high ratio signals deep participation in global value chains, where exports embody imported intermediate inputs.",
     hints: [
@@ -10830,7 +10825,7 @@ export const problems: Problem[] = [
     title: "Nigeria Aggregate PPF (Ricardian)",
     latex: String.raw`3 q_R + q_C = 390, \qquad q_R \in [0, 130], \; q_C \in [0, 390]`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Ricardian Model",
     context: "Nigeria's production possibility frontier in a Ricardian example: producing a unit of rice costs three units' worth of labour relative to cocoa, out of a total labour budget of 390. The linear frontier reflects the constant opportunity cost of one good in terms of the other.",
     hints: [
@@ -10842,7 +10837,7 @@ export const problems: Problem[] = [
     title: "Nigeria Relative Supply Step Function",
     latex: String.raw`\frac{Q^R_S}{Q^C_S} = \begin{cases} 0 & \text{if } P^R/P^C < 3, \\ \in [0, \infty] & \text{if } P^R/P^C = 3, \\ \text{undefined} & \text{if } P^R/P^C > 3. \end{cases}`,
     difficulty: "hard",
-    points: 16,
+    points: 20,
     topic: "Ricardian Model",
     context: "Nigeria's relative supply of rice as a step function of the relative price: nothing is supplied below the opportunity cost of 3, any mix at exactly 3, and full specialisation in rice above it. Constant opportunity costs make supply jump rather than slope.",
     hints: [
@@ -10858,7 +10853,7 @@ export const problems: Problem[] = [
     title: "Symmetric Cobb-Douglas Preferences",
     latex: String.raw`U(C^R, C^C) = (C^R)^{0.5} (C^C)^{0.5}`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Ricardian Model",
     context: "Cobb-Douglas utility with equal weights of one half on rice and cocoa consumption. Consumers with these preferences always split their spending fifty-fifty between the two goods, whatever prices are.",
     hints: [],
@@ -10868,7 +10863,7 @@ export const problems: Problem[] = [
     title: "Cobb-Douglas Relative Demand",
     latex: String.raw`RD\!\left(\frac{P^R}{P^C}\right) \equiv \frac{C^R}{C^C} = \frac{P^C}{P^R}`,
     difficulty: "medium",
-    points: 7,
+    points: 10,
     topic: "Ricardian Model",
     context: "With symmetric Cobb-Douglas preferences, the ratio of rice to cocoa consumed equals the inverse of their price ratio. Relative demand is a downward-sloping hyperbola: doubling a good's relative price halves its relative consumption.",
     hints: [
@@ -10897,7 +10892,7 @@ export const problems: Problem[] = [
     title: "Free-Trade World Relative Price",
     latex: String.raw`\left(\frac{P^R}{P^C}\right)^{FT} = \frac{3}{2}`,
     difficulty: "easy",
-    points: 6,
+    points: 4,
     topic: "Ricardian Model",
     context: "The equilibrium free-trade relative price of rice comes out at 3/2 — strictly between the two countries' autarky opportunity costs of 1 and 3. An interior price like this means both countries fully specialise and both gain from trade.",
     hints: [
@@ -10909,7 +10904,7 @@ export const problems: Problem[] = [
     title: "Terms of Trade Definition",
     latex: String.raw`TOT \equiv \frac{P_x}{P_m}`,
     difficulty: "easy",
-    points: 5,
+    points: 3,
     topic: "International Trade",
     context: "Defines a country's terms of trade as the price of its exports divided by the price of its imports. An improvement means each unit exported buys more imports, directly raising national purchasing power.",
     hints: [
@@ -10922,7 +10917,7 @@ export const problems: Problem[] = [
     title: "Nigeria Free-Trade Budget Line",
     latex: String.raw`C^C + \frac{P^R}{P^C}\, C^R = 3 \;\Leftrightarrow\; C^C + 1.5\, C^R = 3`,
     difficulty: "medium",
-    points: 6,
+    points: 9,
     topic: "Ricardian Model",
     context: "Nigeria's consumption possibilities under free trade: specialising in cocoa yields income worth 3, spendable on cocoa and on rice at the world relative price of 1.5. Because this budget line lies outside the autarky frontier, trade expands what the country can consume.",
     hints: [
@@ -10935,7 +10930,7 @@ export const problems: Problem[] = [
     title: "Cobb-Douglas Preferences (General)",
     latex: String.raw`U(C^c, C^w) = (C^c)^{\alpha} (C^w)^{1-\alpha}`,
     difficulty: "easy",
-    points: 6,
+    points: 4,
     topic: "Ricardian Model",
     context: "General Cobb-Douglas utility over cocoa and wheat with preference weight alpha. The exponents are expenditure shares: consumers spend fraction alpha of income on the first good regardless of prices.",
     hints: [],
@@ -10945,7 +10940,7 @@ export const problems: Problem[] = [
     title: "Ricardian Production Possibility Frontier",
     latex: String.raw`a_{LW} q_w + a_{LC} q_c = L \;\Leftrightarrow\; q_w = \frac{L}{a_{LW}} - \frac{a_{LC}}{a_{LW}} q_c`,
     difficulty: "medium",
-    points: 12,
+    points: 10,
     topic: "Ricardian Model",
     context: "The Ricardian PPF: unit labour requirements times outputs must exhaust the labour endowment, so wheat output falls linearly as cocoa output rises. The slope, the ratio of the labour coefficients, is the constant opportunity cost of cocoa in terms of wheat.",
     hints: [
@@ -10958,7 +10953,7 @@ export const problems: Problem[] = [
     title: "Autarky Price Equals Opportunity Cost",
     latex: String.raw`\frac{a_{LC}}{a_{LW}} = \left(\frac{P_c}{P_w}\right)^{a}`,
     difficulty: "medium",
-    points: 7,
+    points: 9,
     topic: "Ricardian Model",
     context: "In a closed Ricardian economy, the relative price of cocoa equals the ratio of unit labour requirements — its opportunity cost in wheat. With one factor and constant costs, technology alone pins down autarky prices, independent of demand.",
     hints: [
@@ -10983,7 +10978,7 @@ export const problems: Problem[] = [
     title: "Cobb-Douglas Relative Demand (FOC)",
     latex: String.raw`\frac{C_c}{C_w} = \frac{\alpha}{1-\alpha} \cdot \frac{P_w}{P_c}`,
     difficulty: "medium",
-    points: 8,
+    points: 10,
     topic: "Ricardian Model",
     context: "The first-order condition of Cobb-Douglas utility maximisation: relative consumption of cocoa to wheat equals the preference ratio alpha over one-minus-alpha times the inverse relative price. Stronger taste for cocoa shifts relative demand up; a higher cocoa price moves consumption along the curve.",
     hints: [
@@ -10996,7 +10991,7 @@ export const problems: Problem[] = [
     title: "Free-Trade Price with Preference Weight",
     latex: String.raw`\left(\frac{P_c}{P_w}\right)^{FT} = \frac{\alpha}{1-\alpha} \cdot \frac{3}{2}`,
     difficulty: "medium",
-    points: 9,
+    points: 10,
     topic: "Ricardian Model",
     context: "The free-trade relative price of cocoa as a function of the preference weight: the taste ratio alpha over one-minus-alpha scaled by 3/2. Stronger world demand for cocoa (higher alpha) directly raises its equilibrium relative price.",
     hints: [
@@ -11009,7 +11004,7 @@ export const problems: Problem[] = [
     title: "Full-Specialisation Output Levels",
     latex: String.raw`q_c = \frac{L}{a_{LC}} = \frac{390}{3/2} = 260, \qquad q^*_w = \frac{L^*}{a^*_{LW}} = \frac{130}{1/3} = 390`,
     difficulty: "medium",
-    points: 8,
+    points: 10,
     topic: "Ricardian Model",
     context: "Computes each country's output under complete specialisation: home devotes all 390 units of labour to cocoa producing 260, while foreign puts its 130 units into wheat producing 390. Dividing the labour endowment by the unit labour requirement gives maximal output of the comparative-advantage good.",
     hints: [
@@ -11021,7 +11016,7 @@ export const problems: Problem[] = [
     title: "Complete-Specialisation Condition",
     latex: String.raw`\left(\frac{P_c}{P_w}\right)^{FT} < 3 \;\Leftrightarrow\; \frac{\alpha}{1-\alpha} < 2`,
     difficulty: "medium",
-    points: 9,
+    points: 10,
     topic: "Ricardian Model",
     context: "The condition for both countries to specialise fully: the free-trade price must stay below the higher opportunity cost of 3, which translates into the preference ratio being under 2. If demand for cocoa is too strong, the price hits the foreign cost and specialisation becomes incomplete.",
     hints: [
@@ -11034,7 +11029,7 @@ export const problems: Problem[] = [
     title: "DFS Relative Technology Schedule",
     latex: String.raw`A(z) \equiv \frac{a^*_{Lz}}{a_{Lz}}`,
     difficulty: "easy",
-    points: 7,
+    points: 3,
     topic: "Ricardian Model",
     context: "The Dornbusch-Fischer-Samuelson schedule A(z): foreign's unit labour requirement relative to home's for each good on the continuum, arranged to be decreasing in z. It ranks goods by home's comparative advantage, from strongest to weakest.",
     hints: [
@@ -11047,7 +11042,7 @@ export const problems: Problem[] = [
     title: "Competitive Prices with Labour-Only Technology",
     latex: String.raw`p_z = w\, a_{Lz}, \qquad p^*_z = w^*\, a^*_{Lz}`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Ricardian Model",
     context: "With labour the only input and perfect competition, each good's price equals the wage times the unit labour requirement, in each country. Prices are pure labour costs, so wage and productivity comparisons determine who produces what.",
     hints: [],
@@ -11057,7 +11052,7 @@ export const problems: Problem[] = [
     title: "DFS Home-Production Condition",
     latex: String.raw`w\, a_{Lz} \leq w^*\, a^*_{Lz} \quad\Longleftrightarrow\quad \frac{w}{w^*} \leq \frac{a^*_{Lz}}{a_{Lz}} = A(z)`,
     difficulty: "hard",
-    points: 11,
+    points: 16,
     topic: "Ricardian Model",
     context: "Home produces good z whenever its labour cost is no higher than foreign's, which rearranges to the relative wage lying below the relative productivity schedule A(z). The marginal good is where the relative wage exactly equals A(z), splitting the continuum between the countries.",
     hints: [
@@ -11070,7 +11065,7 @@ export const problems: Problem[] = [
     title: "DFS Expenditure Share",
     latex: String.raw`b(z) = \frac{P(z) C(z)}{Y} > 0, \qquad \int_0^1 b(z)\,dz = 1`,
     difficulty: "medium",
-    points: 5,
+    points: 8,
     topic: "Ricardian Model",
     context: "Defines b(z) as the share of world income spent on good z, positive for every good and integrating to one across the continuum. These Cobb-Douglas shares are constants, which keeps the demand side of the DFS model tractable.",
     hints: [
@@ -11083,7 +11078,7 @@ export const problems: Problem[] = [
     title: "DFS Expenditure Share on Home Goods",
     latex: String.raw`\gamma(\tilde{z}) \equiv \int_0^{\tilde{z}} b(z)\,dz`,
     difficulty: "medium",
-    points: 7,
+    points: 9,
     topic: "Ricardian Trade",
     context: "Cumulates the expenditure shares of all goods up to the cutoff z-tilde, giving the fraction of world spending that falls on home-produced goods. As home produces a wider range of goods, gamma rises with the cutoff.",
     hints: [
@@ -11097,7 +11092,7 @@ export const problems: Problem[] = [
     title: "DFS Balanced Trade Condition",
     latex: String.raw`[1 - \gamma(\tilde{z})]\, wL = \gamma(\tilde{z})\, w^* L^*`,
     difficulty: "medium",
-    points: 4,
+    points: 5,
     topic: "Ricardian Trade",
     context: "Balanced trade in the DFS model: foreign's spending on home goods (its share gamma of foreign income) must equal home's spending on foreign goods. Equating the two trade flows ties the relative wage to the range of goods each country produces.",
     hints: [
@@ -11109,7 +11104,7 @@ export const problems: Problem[] = [
     title: "DFS Trade-Balance Relative Wage Schedule",
     latex: String.raw`\frac{w}{w^*} = \frac{\gamma(\tilde{z})}{1 - \gamma(\tilde{z})}\,\frac{L^*}{L} \equiv B(\tilde{z})`,
     difficulty: "medium",
-    points: 8,
+    points: 10,
     topic: "Ricardian Trade",
     context: "Solves the balanced-trade condition for the relative wage as an increasing function B of the cutoff good: producing more goods raises the demand for home labour and thus its relative wage. Its intersection with the downward-sloping A(z) schedule pins down both the wage and the pattern of specialisation.",
     hints: [
@@ -11123,7 +11118,7 @@ export const problems: Problem[] = [
     title: "Real-Wage Comparison for Switched Goods",
     latex: String.raw`\frac{w/w^*}{a^*_{Lz''}} > \frac{1}{a_{Lz''}}`,
     difficulty: "medium",
-    points: 6,
+    points: 8,
     topic: "Ricardian Trade",
     context: "Compares real wages in terms of a good that switched producers: home workers can now buy more of it than foreign workers can, because the relative wage exceeds the relative labour cost. Goods reallocating to the cheaper producer is precisely how trade raises real incomes.",
     hints: [
@@ -11135,7 +11130,7 @@ export const problems: Problem[] = [
     title: "Specific-Factors Labour Market Clearing",
     latex: String.raw`L_M + L_F = \bar{L}`,
     difficulty: "easy",
-    points: 3,
+    points: 2,
     topic: "Specific Factors Model",
     context: "The labour constraint of the specific-factors model: employment in manufacturing plus employment in food must add up to the fixed total labour force. Labour is the mobile factor, reallocating between sectors until wages equalise.",
     hints: [
@@ -11147,7 +11142,7 @@ export const problems: Problem[] = [
     title: "Specific-Factors Constant-Returns Technologies",
     latex: String.raw`Q_M = Q_M(K, L_M), \qquad Q_F = Q_F(T, L_F)`,
     difficulty: "easy",
-    points: 3,
+    points: 2,
     topic: "Specific Factors Model",
     context: "The two production functions of the specific-factors model: manufacturing combines capital with its labour, food combines land with its labour. Capital and land are stuck in their sectors, while labour can move between them.",
     hints: [],
@@ -11172,7 +11167,7 @@ export const problems: Problem[] = [
     title: "Food as Numeraire",
     latex: String.raw`P_F \equiv 1, \qquad p \equiv \frac{P_M}{P_F} = P_M`,
     difficulty: "easy",
-    points: 6,
+    points: 3,
     topic: "Specific Factors Model",
     context: "Normalises the price of food to one, so the single relative price p is just the money price of manufactures. Choosing a numeraire costs nothing — only relative prices matter for allocations.",
     hints: [
@@ -11199,7 +11194,7 @@ export const problems: Problem[] = [
     title: "Specific-Factors Competitive Wage Condition",
     latex: String.raw`w = P_M \cdot \mathrm{MPL}_M = P_F \cdot \mathrm{MPL}_F`,
     difficulty: "medium",
-    points: 5,
+    points: 6,
     topic: "Specific Factors Model",
     context: "Labour-market equilibrium in the specific-factors model: the common wage equals the value marginal product of labour in both sectors simultaneously. Labour mobility enforces the equality, and this condition fixes how the workforce splits between manufacturing and food.",
     hints: [
@@ -11212,7 +11207,7 @@ export const problems: Problem[] = [
     title: "Autarkic Price Equals PPF Slope",
     latex: String.raw`\left|\frac{dQ_F}{dQ_M}\right| = \frac{\mathrm{MPL}_F}{\mathrm{MPL}_M} = \frac{P_M}{P_F} = p^a`,
     difficulty: "hard",
-    points: 7,
+    points: 16,
     topic: "Specific Factors Model",
     context: "At the autarky optimum, the slope of the production possibility frontier — the ratio of the marginal products of labour — equals the relative price of manufactures. Production sits where the frontier is tangent to the price line, the closed economy's efficiency condition.",
     hints: [
@@ -11225,7 +11220,7 @@ export const problems: Problem[] = [
     title: "Cross-Country Endowment Differences",
     latex: String.raw`K > K^*, \qquad T = T^*, \qquad \bar{L} = \bar{L}^*`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Specific Factors Model",
     context: "Sets up two countries identical in land and labour but with home holding more capital. This single endowment difference makes home relatively better at manufacturing and generates the motive for trade.",
     hints: [
@@ -11237,7 +11232,7 @@ export const problems: Problem[] = [
     title: "World Price Between Autarkic Prices",
     latex: String.raw`p^a < p^w < p^{a*}`,
     difficulty: "easy",
-    points: 3,
+    points: 1,
     topic: "International Trade",
     context: "In the trading equilibrium, the world relative price settles strictly between the two countries' autarky prices. Each country therefore faces a better price for its export good than it did in isolation, which is the source of gains from trade.",
     hints: [],
@@ -11259,7 +11254,7 @@ export const problems: Problem[] = [
     title: "Wage Rises by Less than the Price",
     latex: String.raw`0 < \Delta w < \Delta P_M`,
     difficulty: "easy",
-    points: 3,
+    points: 1,
     topic: "Specific Factors Model",
     context: "When the price of manufactures rises, the nominal wage increases but by proportionally less than the price. Workers gain in terms of food yet lose in terms of manufactures, so labour's welfare change is ambiguous — a hallmark of the specific-factors model.",
     hints: [
@@ -11271,7 +11266,7 @@ export const problems: Problem[] = [
     title: "Leontief Production Function",
     latex: String.raw`q_g = \min\!\left\{ \frac{u_g}{a_{Ug}},\; \frac{s_g}{a_{Sg}} \right\}`,
     difficulty: "medium",
-    points: 11,
+    points: 10,
     topic: "Heckscher-Ohlin",
     context: "A Leontief technology where output of good g is limited by whichever input runs short first: unskilled labour or skilled labour, each divided by its unit requirement. Fixed proportions mean no substitution — inputs must be used in a strict recipe.",
     hints: [
@@ -11284,7 +11279,7 @@ export const problems: Problem[] = [
     title: "Factor Abundance Definition",
     latex: String.raw`\frac{S}{U} > \frac{S^*}{U^*}`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Heckscher-Ohlin",
     context: "Defines factor abundance by relative endowments: home is skill-abundant if its ratio of skilled to unskilled labour exceeds foreign's. In the Heckscher-Ohlin model, this comparison of ratios — not absolute amounts — predicts the pattern of trade.",
     hints: [
@@ -11296,7 +11291,7 @@ export const problems: Problem[] = [
     title: "Factor Intensity Ranking",
     latex: String.raw`\frac{a_{SP}}{a_{UP}} > \frac{a_{SA}}{a_{UA}}`,
     difficulty: "easy",
-    points: 9,
+    points: 4,
     topic: "Heckscher-Ohlin",
     context: "Says that plastics uses more skilled labour per unit of unskilled labour than agriculture, so plastics is the skill-intensive sector. Ranking sectors by factor intensity like this is the starting assumption of the Heckscher-Ohlin model.",
     hints: [
@@ -11308,7 +11303,7 @@ export const problems: Problem[] = [
     title: "Heckscher-Ohlin Zero-Profit Conditions",
     latex: String.raw`\begin{aligned} p_P &= w_u\, a_{UP} + w_s\, a_{SP} \\ p_A &= w_u\, a_{UA} + w_s\, a_{SA} \end{aligned}`,
     difficulty: "medium",
-    points: 12,
+    points: 11,
     topic: "Heckscher-Ohlin",
     context: "Under perfect competition, the price of each good must exactly equal its unit production cost: the unskilled and skilled wages weighted by how much of each factor a unit of output requires. Any profit would be competed away by entry.",
     hints: [
@@ -11320,7 +11315,7 @@ export const problems: Problem[] = [
     title: "Full Employment of Both Factors",
     latex: String.raw`\begin{aligned} U &= a_{UP}\, q_P + a_{UA}\, q_A \\ S &= a_{SP}\, q_P + a_{SA}\, q_A \end{aligned}`,
     difficulty: "medium",
-    points: 12,
+    points: 10,
     topic: "Heckscher-Ohlin",
     context: "Requires that the economy's total supplies of unskilled and skilled labour are fully absorbed by the two sectors, with each sector's demand given by its unit factor requirement times its output. Together with zero profits, these conditions pin down outputs and factor prices.",
     hints: [
@@ -11332,7 +11327,7 @@ export const problems: Problem[] = [
     title: "Rybczynski Theorem (Sign)",
     latex: String.raw`\frac{\partial q_A}{\partial U} > 0, \qquad \frac{\partial q_P}{\partial U} < 0`,
     difficulty: "medium",
-    points: 6,
+    points: 9,
     topic: "Heckscher-Ohlin",
     context: "Captures the Rybczynski theorem: an increase in the unskilled-labour endowment raises output of the unskilled-intensive good (agriculture) and actually shrinks output of the skill-intensive good (plastics). Factor growth causes lopsided, not proportional, changes in production.",
     hints: [
@@ -11345,7 +11340,7 @@ export const problems: Problem[] = [
     title: "Numerical Zero-Profit System",
     latex: String.raw`\begin{aligned} p_A &= 2 w_U + w_S \\ p_P &= 3 w_U + 3 w_S \end{aligned}`,
     difficulty: "medium",
-    points: 7,
+    points: 10,
     topic: "Heckscher-Ohlin",
     context: "A concrete two-equation zero-profit system linking the prices of agriculture and plastics to the two wages, with numeric unit factor requirements. Solving it recovers the unskilled and skilled wages implied by given goods prices.",
     hints: [
@@ -11357,7 +11352,7 @@ export const problems: Problem[] = [
     title: "Stolper-Samuelson Theorem (Sign)",
     latex: String.raw`\frac{\partial (w_U/p_g)}{\partial (p_A/p_P)} > 0, \qquad \frac{\partial (w_S/p_g)}{\partial (p_A/p_P)} < 0`,
     difficulty: "hard",
-    points: 7,
+    points: 15,
     topic: "Heckscher-Ohlin",
     context: "States the Stolper-Samuelson result: a rise in the relative price of the unskilled-intensive good raises the real unskilled wage in terms of both goods and lowers the real skilled wage. Trade-induced price changes therefore create winners and losers across factors.",
     hints: [
@@ -11380,7 +11375,7 @@ export const problems: Problem[] = [
     title: "Plastics-Firm Profit Maximisation",
     latex: String.raw`\max_{S_P, U_P} \pi(S_P, U_P) = p_P\, q_P(S_P, U_P) - w_s\, S_P - w_u\, U_P`,
     difficulty: "medium",
-    points: 7,
+    points: 6,
     topic: "Heckscher-Ohlin",
     context: "The plastics firm chooses its skilled and unskilled labour inputs to maximise revenue minus its wage bill. Its first-order conditions equate each factor's marginal value product to that factor's wage.",
     hints: [
@@ -11392,7 +11387,7 @@ export const problems: Problem[] = [
     title: "Cost-Minimisation First-Order Condition",
     latex: String.raw`\frac{MP_{S_P}}{MP_{U_P}} = \frac{w_s}{w_u}`,
     difficulty: "medium",
-    points: 7,
+    points: 9,
     topic: "Heckscher-Ohlin",
     context: "At the cost-minimising input mix, the ratio of the marginal products of skilled and unskilled labour equals the ratio of their wages. Graphically, the firm operates where an isoquant is tangent to an isocost line.",
     hints: [
@@ -11404,7 +11399,7 @@ export const problems: Problem[] = [
     title: "Unit Isocost Line",
     latex: String.raw`S_i = \frac{1}{w_s} - \frac{w_u}{w_s}\, U_i`,
     difficulty: "medium",
-    points: 5,
+    points: 8,
     topic: "Heckscher-Ohlin",
     context: "Traces all skilled/unskilled input combinations that cost exactly one dollar: its intercept is the inverse skilled wage and its slope is the (negative) wage ratio. Sliding this line against the unit isoquant finds the cheapest way to produce one unit.",
     hints: [
@@ -11416,7 +11411,7 @@ export const problems: Problem[] = [
     title: "Mincerian Wage Regression",
     latex: String.raw`\ln(\text{wage})_i = \alpha + \rho\, ed_i + X'_i \beta + \gamma\, \text{occup}_i + \delta\, \text{ind}_i + \varepsilon_i`,
     difficulty: "hard",
-    points: 12,
+    points: 14,
     topic: "Labour Economics",
     context: "Regresses log wages on years of education, controls, and occupation and industry dummies, with rho measuring the return to schooling. Adding occupation and industry controls asks how much of the education premium works through the kind of job people get.",
     hints: [
@@ -11429,7 +11424,7 @@ export const problems: Problem[] = [
     title: "Welfare Decomposition: Exchange plus Specialisation",
     latex: String.raw`\Delta W = (p^W - p^A) \cdot (c^E - q^A) + p^W \cdot (q^B - q^A)`,
     difficulty: "hard",
-    points: 5,
+    points: 12,
     topic: "Heckscher-Ohlin",
     context: "Splits the total gains from trade into a gains-from-exchange term (consuming at world rather than autarky prices with unchanged production) and a gains-from-specialisation term (shifting production toward comparative advantage). Both pieces are non-negative, so trade cannot lower aggregate welfare here.",
     hints: [
@@ -11442,7 +11437,7 @@ export const problems: Problem[] = [
     title: "ADH Import Exposure per Worker",
     latex: String.raw`\Delta IPW_{uit} = \sum_j \frac{L_{ijt}}{L_{ujt}} \cdot \frac{\Delta M_{ucjt}}{L_{it}}`,
     difficulty: "medium",
-    points: 15,
+    points: 10,
     topic: "Trade Theory",
     context: "Autor, Dorn and Hanson's measure of a local labour market's exposure to Chinese imports: national import growth in each industry is apportioned to regions by their share of that industry's employment, then scaled per local worker. Regions specialised in import-competing industries score high.",
     hints: [
@@ -11457,7 +11452,7 @@ export const problems: Problem[] = [
     title: "China Shock Structural Regression",
     latex: String.raw`\Delta L^m_{it} = \gamma_t + \beta_1\, \Delta IPW_{uit} + X'_{it}\, \beta_2 + e_{it}`,
     difficulty: "medium",
-    points: 11,
+    points: 7,
     topic: "Trade Theory",
     context: "Relates the change in a region's manufacturing employment to its import exposure per worker, with period effects and controls. A negative beta means regions more exposed to Chinese import competition lost more manufacturing jobs.",
     hints: [
@@ -11469,7 +11464,7 @@ export const problems: Problem[] = [
     title: "ADH Shift-Share Instrument",
     latex: String.raw`\Delta IPW_{oit} = \sum_j \frac{L_{ij,t-1}}{L_{uj,t-1}} \cdot \frac{\Delta M_{ocjt}}{L_{i,t-1}}`,
     difficulty: "medium",
-    points: 15,
+    points: 10,
     topic: "Trade Theory",
     context: "Instruments US import exposure with imports from China into other rich countries, weighted by lagged employment shares. Because other countries' imports reflect China's supply-driven rise rather than US demand shocks, this isolates the causal effect of the China shock.",
     hints: [
@@ -11484,7 +11479,7 @@ export const problems: Problem[] = [
     title: "Skill Share Panel Regression",
     latex: String.raw`y_{it} = \alpha_i + \gamma_t + \beta\, \text{tariff}_{it} + \varepsilon_{it}`,
     difficulty: "easy",
-    points: 11,
+    points: 3,
     topic: "Trade Theory",
     context: "A two-way fixed-effects panel regression of an outcome on tariffs, absorbing permanent differences across units and common shocks in each year. Beta is identified from within-unit changes in tariffs over time.",
     hints: [
@@ -11507,7 +11502,7 @@ export const problems: Problem[] = [
     title: "Scale Economy: Doubling Output",
     latex: String.raw`C(2Q) = F + 2 w a Q < 2 C(Q) = 2F + 2 w a Q`,
     difficulty: "medium",
-    points: 1,
+    points: 5,
     topic: "New Trade Theory",
     context: "Doubling output only duplicates the variable cost while the fixed cost is paid once, so producing twice as much costs less than twice as much. This is the precise sense in which the technology exhibits increasing returns to scale.",
     hints: [],
@@ -11517,7 +11512,7 @@ export const problems: Problem[] = [
     title: "Marginal Revenue with Falling Demand",
     latex: String.raw`MR(q) = \frac{d}{dq}\left[ p(q)\, q \right] = p(q) + p'(q)\, q`,
     difficulty: "medium",
-    points: 3,
+    points: 6,
     topic: "Monopolistic Competition",
     context: "Differentiating total revenue shows that selling an extra unit brings in the price but also depresses the price on all existing units, since demand slopes down. Marginal revenue therefore lies below price for any firm with market power.",
     hints: [
@@ -11529,7 +11524,7 @@ export const problems: Problem[] = [
     title: "Average and Marginal Cost with Fixed Cost",
     latex: String.raw`AC(q) = \frac{F}{q} + c, \qquad MC(q) = c`,
     difficulty: "easy",
-    points: 3,
+    points: 2,
     topic: "Monopolistic Competition",
     context: "With a fixed cost F and constant marginal cost c, average cost is c plus F spread over output, so it declines toward c as the firm scales up. The gap between average and marginal cost is what makes markup pricing necessary for survival.",
     hints: [
@@ -11541,7 +11536,7 @@ export const problems: Problem[] = [
     title: "Monopolist Profit Maximisation",
     latex: String.raw`\max_{q}\; p(q)\, q - c q - F`,
     difficulty: "easy",
-    points: 3,
+    points: 1,
     topic: "Monopolistic Competition",
     context: "The monopolist picks the quantity that maximises revenue minus variable and fixed costs, facing a downward-sloping demand curve. The optimum is where marginal revenue equals marginal cost.",
     hints: [
@@ -11553,7 +11548,7 @@ export const problems: Problem[] = [
     title: "Monopolist Optimal Profit",
     latex: String.raw`\pi^{*} = p(q^{*})\, q^{*} - c q^{*} - F = \left( p^{*} - c \right) q^{*} - F`,
     difficulty: "medium",
-    points: 2,
+    points: 5,
     topic: "Monopolistic Competition",
     context: "Evaluates profit at the optimal quantity: the price-cost margin earned on every unit sold, minus the fixed cost. The firm stays in business only if this markup revenue covers F.",
     hints: [],
@@ -11563,7 +11558,7 @@ export const problems: Problem[] = [
     title: "Linear Demand in a Symmetric Industry",
     latex: String.raw`q = S \left[ \frac{1}{n} - b (p - \bar p) \right]`,
     difficulty: "medium",
-    points: 4,
+    points: 6,
     topic: "Monopolistic Competition",
     context: "Each of n symmetric firms sells to an equal slice of the market of size S, gaining customers when it prices below the industry average and losing them when it prices above. This demand system underlies the Krugman-style monopolistic competition model of trade.",
     hints: [
@@ -11576,7 +11571,7 @@ export const problems: Problem[] = [
     title: "Inverse Demand for a Single Firm",
     latex: String.raw`p = \bar p + \frac{1}{nb} - \frac{q}{Sb}`,
     difficulty: "medium",
-    points: 5,
+    points: 8,
     topic: "Monopolistic Competition",
     context: "Rearranges the symmetric demand system to express a firm's price in terms of its own quantity, the average price, market size, and the number of competitors. It is the demand curve each firm takes as given when setting output.",
     hints: [
@@ -11589,7 +11584,7 @@ export const problems: Problem[] = [
     title: "Marginal Revenue in the Linear Model",
     latex: String.raw`MR = \bar p + \frac{1}{nb} - \frac{2q}{Sb}`,
     difficulty: "medium",
-    points: 5,
+    points: 8,
     topic: "Monopolistic Competition",
     context: "Marginal revenue in the linear symmetric model: it starts at the demand intercept but falls twice as fast in quantity as inverse demand does. Setting it equal to marginal cost delivers the firm's pricing rule.",
     hints: [
@@ -11602,7 +11597,7 @@ export const problems: Problem[] = [
     title: "PP Curve (Equilibrium Markup)",
     latex: String.raw`p - c = \frac{1}{nb}`,
     difficulty: "easy",
-    points: 3,
+    points: 2,
     topic: "Monopolistic Competition",
     context: "The PP curve: each firm's optimal markup over marginal cost equals one over n times b, so markups shrink as more firms compete. More entry means tougher competition and prices closer to cost.",
     hints: [
@@ -11614,7 +11609,7 @@ export const problems: Problem[] = [
     title: "CC Curve (Average Cost)",
     latex: String.raw`AC = \frac{Fn}{S} + c`,
     difficulty: "easy",
-    points: 3,
+    points: 2,
     topic: "Monopolistic Competition",
     context: "The CC curve: with the market split n ways, each firm produces less, so fixed costs are spread more thinly and average cost rises with the number of firms. Its intersection with the PP curve determines the zero-profit equilibrium.",
     hints: [
@@ -11626,7 +11621,7 @@ export const problems: Problem[] = [
     title: "Equilibrium Number of Firms",
     latex: String.raw`n^{*} = \sqrt{\frac{S}{bF}}`,
     difficulty: "medium",
-    points: 4,
+    points: 7,
     topic: "New Trade Theory",
     context: "The zero-profit number of firms grows with the square root of market size and shrinks with fixed costs. Bigger markets support more varieties, which is why trade, by enlarging the market, expands consumer choice.",
     hints: [
@@ -11639,7 +11634,7 @@ export const problems: Problem[] = [
     title: "Equilibrium Price in Monopolistic Competition",
     latex: String.raw`p^{*} = c + \frac{1}{n^{*} b} = c + \sqrt{\frac{F}{Sb}}`,
     difficulty: "medium",
-    points: 5,
+    points: 8,
     topic: "New Trade Theory",
     context: "The equilibrium price is marginal cost plus a markup that shrinks with market size: larger markets host more firms, and more competition compresses margins. Consumers in big markets pay lower prices and enjoy more varieties.",
     hints: [
@@ -11652,7 +11647,7 @@ export const problems: Problem[] = [
     title: "Free-Trade Firm Count",
     latex: String.raw`n^{*}_{\mathrm{trade}} = \sqrt{\frac{S_{\mathrm{Home}} + S_{\mathrm{Foreign}}}{bF}} > \sqrt{\frac{S_{\mathrm{Home}}}{bF}} = n^{*}_{\mathrm{aut}}`,
     difficulty: "hard",
-    points: 6,
+    points: 19,
     topic: "New Trade Theory",
     context: "Opening to trade merges the Home and Foreign markets, and the combined market supports more firms than Home alone did. Trade thus delivers gains even between identical countries: more varieties at lower prices.",
     hints: [
@@ -11666,7 +11661,7 @@ export const problems: Problem[] = [
     title: "Gravity Equation",
     latex: String.raw`T_{ij} = \frac{A \, Y_i^{a} \, Y_j^{b}}{D_{ij}^{c}}`,
     difficulty: "medium",
-    points: 7,
+    points: 8,
     topic: "New Trade Theory",
     context: "The gravity equation: bilateral trade rises with both countries' GDPs and falls with the distance between them, in a form echoing Newtonian gravity. It is one of the most robust empirical regularities in all of economics.",
     hints: [
@@ -11678,7 +11673,7 @@ export const problems: Problem[] = [
     title: "Grubel-Lloyd Intra-Industry Trade Index",
     latex: String.raw`\text{IIT}_{ij} = 1 - \frac{\sum_k |x_{ij}^{k} - x_{ji}^{k}|}{\sum_k(x_{ij}^{k}+x_{ji}^{k})}`,
     difficulty: "hard",
-    points: 12,
+    points: 15,
     topic: "New Trade Theory",
     context: "Measures how much of two countries' trade is two-way trade within the same industries: it equals one when exports and imports match in every industry and zero when all trade is one-way. High values signal the variety-driven trade predicted by new trade theory.",
     hints: [
@@ -11692,7 +11687,7 @@ export const problems: Problem[] = [
     title: "Operating Profit of a Firm",
     latex: String.raw`\pi_i^o = (P_i - c_i)\, Q_i`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Monopolistic Competition",
     context: "Operating profit is simply the markup of price over marginal cost multiplied by the quantity sold, before any fixed costs are paid. It is the prize that must cover entry costs in models of firm heterogeneity.",
     hints: [],
@@ -11702,7 +11697,7 @@ export const problems: Problem[] = [
     title: "Melitz-Ottaviano Optimal Quantity",
     latex: String.raw`Q^{*}(c) = \frac{Sb}{2}(c^{*} - c)`,
     difficulty: "medium",
-    points: 3,
+    points: 6,
     topic: "Monopolistic Competition",
     context: "In the Melitz-Ottaviano model, a firm's optimal output is proportional to the gap between the cost cutoff and its own marginal cost. More productive (lower-cost) firms produce more, and firms at the cutoff produce nothing.",
     hints: [
@@ -11714,7 +11709,7 @@ export const problems: Problem[] = [
     title: "Melitz-Ottaviano Absolute Markup",
     latex: String.raw`P^{*}(c) - c = \frac{c^{*} - c}{2}`,
     difficulty: "medium",
-    points: 3,
+    points: 6,
     topic: "Monopolistic Competition",
     context: "Each firm's markup equals half the distance between the cutoff cost and its own cost, so more efficient firms charge higher absolute markups. Unlike CES models, markups here vary with competition rather than being constant.",
     hints: [
@@ -11726,7 +11721,7 @@ export const problems: Problem[] = [
     title: "Melitz-Ottaviano Operating Profit",
     latex: String.raw`\pi^{o}(c) = (P^{*}(c) - c)\, Q^{*}(c) = \frac{Sb}{4}(c^{*} - c)^2`,
     difficulty: "hard",
-    points: 5,
+    points: 13,
     topic: "Monopolistic Competition",
     context: "Operating profit is proportional to the squared gap between the cutoff cost and the firm's own cost. Profits therefore rise steeply with productivity, concentrating gains among the most efficient firms.",
     hints: [
@@ -11738,7 +11733,7 @@ export const problems: Problem[] = [
     title: "Melitz-Ottaviano Entry Cutoff",
     latex: String.raw`\frac{Sb}{4}(c^{*} - c_i)^2 \ge f \quad \Longleftrightarrow \quad c_i \le c^{*} - 2 \sqrt{\frac{f}{Sb}}`,
     difficulty: "hard",
-    points: 10,
+    points: 17,
     topic: "Monopolistic Competition",
     context: "A firm produces only if its operating profit covers the fixed cost, which translates into its marginal cost lying sufficiently far below the market cutoff. Tougher markets (bigger S or lower f) admit only more productive firms.",
     hints: [
@@ -11753,7 +11748,7 @@ export const problems: Problem[] = [
     title: "Free-Entry Zero-Profit Condition",
     latex: String.raw`\int_0^{c_{\max}} \left( \pi^{o}(c) - f \right) dG(c) = 0`,
     difficulty: "hard",
-    points: 7,
+    points: 14,
     topic: "Monopolistic Competition",
     context: "Free entry drives expected profits to zero: averaging operating profit net of the fixed cost over the whole distribution of cost draws must yield nothing. This condition pins down the equilibrium cost cutoff.",
     hints: [
@@ -11766,7 +11761,7 @@ export const problems: Problem[] = [
     title: "Specific Factors: Wage Equals Marginal Product of Labour",
     latex: String.raw`w_H = MPL_H(L_H), \qquad w_F = MPL^*_F(L_F)`,
     difficulty: "easy",
-    points: 3,
+    points: 2,
     topic: "International Trade",
     context: "In each country, competitive hiring equates the wage to labour's marginal product, with diminishing returns because the other factor is fixed. Wage gaps across countries then reflect differences in these marginal product schedules.",
     hints: [],
@@ -11776,7 +11771,7 @@ export const problems: Problem[] = [
     title: "World Labour-Market Equilibrium under Migration",
     latex: String.raw`MPL_H(L_H) = MPL^*_F(L_F), \qquad L_H + L_F = \bar{L}^W`,
     difficulty: "medium",
-    points: 4,
+    points: 6,
     topic: "Immigration",
     context: "With free migration, workers relocate until marginal products of labour are equalised across countries, subject to the fixed world labour supply. Migration thus eliminates wage gaps and maximises world output.",
     hints: [
@@ -11788,7 +11783,7 @@ export const problems: Problem[] = [
     title: "Heckscher-Ohlin Zero-Profit (Price = Unit Cost) Condition",
     latex: String.raw`P_g = w \, a_{Lg}(w, r) + r \, a_{Kg}(w, r)`,
     difficulty: "medium",
-    points: 4,
+    points: 5,
     topic: "Trade Theory",
     context: "The price of each good equals its unit cost, where the cost-minimising labour and capital requirements themselves depend on the wage and rental rate. This flexible-coefficients version generalises the fixed-coefficients zero-profit condition.",
     hints: [],
@@ -11798,7 +11793,7 @@ export const problems: Problem[] = [
     title: "Factor-Market Clearing in the Two-Sector Economy",
     latex: String.raw`a_{LS} Q_S + a_{LC} Q_C = L, \qquad a_{KS} Q_S + a_{KC} Q_C = K`,
     difficulty: "medium",
-    points: 7,
+    points: 6,
     topic: "Trade Theory",
     context: "The two sectors' demands for labour and for capital, given by unit input requirements times outputs, must exactly exhaust the economy's endowments. These two equations determine how production is allocated across shoes and computers.",
     hints: [],
@@ -11808,7 +11803,7 @@ export const problems: Problem[] = [
     title: "Factor Price Insensitivity: Zero-Profit System",
     latex: String.raw`P_S = w \, a_{LS} + r \, a_{KS}, \qquad P_C = w \, a_{LC} + r \, a_{KC}`,
     difficulty: "medium",
-    points: 7,
+    points: 6,
     topic: "Trade Theory",
     context: "Two zero-profit conditions in two unknown factor prices: given goods prices, the wage and rental rate are fully determined regardless of factor endowments. This is factor price insensitivity — endowment changes shift outputs, not factor prices.",
     hints: [],
@@ -11818,7 +11813,7 @@ export const problems: Problem[] = [
     title: "Borjas Immigrant Share of a Skill Cell",
     latex: String.raw`p_{ijt} = \frac{M_{ijt}}{M_{ijt} + N_{ijt}}`,
     difficulty: "easy",
-    points: 8,
+    points: 3,
     topic: "Immigration",
     context: "Defines the immigrant supply shock to a skill cell (an education-experience-year group) as immigrants' share of that cell's total workforce. Variation in this share across cells is what identifies immigration's wage effects in Borjas's national approach.",
     hints: [
@@ -11830,7 +11825,7 @@ export const problems: Problem[] = [
     title: "Borjas National Labour-Market Regression",
     latex: String.raw`y_{ijt} = \theta \, p_{ijt} + s_i + x_j + \pi_t + (s_i \times x_j) + (s_i \times \pi_t) + (x_j \times \pi_t) + \phi_{ijt}`,
     difficulty: "hard",
-    points: 12,
+    points: 13,
     topic: "Immigration",
     context: "Regresses cell-level wages on the immigrant share, saturating with education, experience and time effects plus all their pairwise interactions. Theta is identified purely from within-cell variation, and Borjas estimates it to be negative.",
     hints: [
@@ -11842,7 +11837,7 @@ export const problems: Problem[] = [
     title: "Immigrant Share and Labour-Supply Increase Identity",
     latex: String.raw`p = \frac{M}{M+N} = \frac{m}{1+m}`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Immigration",
     context: "Links two ways of measuring the immigration shock: the immigrant share of the workforce p equals m over one plus m, where m is immigrants relative to natives. The identity lets estimates on shares be translated into effects of supply increases.",
     hints: [
@@ -11854,7 +11849,7 @@ export const problems: Problem[] = [
     title: "Chain-Rule Derivative of Immigrant Share",
     latex: String.raw`\frac{\partial p}{\partial m} = \frac{(1+m) - m}{(1+m)^2} = \frac{1}{(1+m)^2}`,
     difficulty: "medium",
-    points: 6,
+    points: 10,
     topic: "Immigration",
     context: "Differentiating the share formula with the quotient rule shows the immigrant share responds to the relative supply m at rate one over the square of one plus m. The response is strongest when the immigrant presence is still small.",
     hints: [
@@ -11867,7 +11862,7 @@ export const problems: Problem[] = [
     title: "Borjas Wage Elasticity of Immigration",
     latex: String.raw`\frac{\partial \ln w_{ijt}}{\partial m_{ijt}} = \frac{\theta}{(1 + m_{ijt})^2}`,
     difficulty: "medium",
-    points: 12,
+    points: 10,
     topic: "Immigration",
     context: "Converts the regression coefficient theta into the wage elasticity of an immigration-induced supply increase, scaling by one over the square of one plus m. Evaluated at typical values, this yields Borjas's headline estimate of how much immigration depresses wages in a skill cell.",
     hints: [
@@ -11880,7 +11875,7 @@ export const problems: Problem[] = [
     title: "Ottaviano-Peri Nested-CES First-Stage Regression",
     latex: String.raw`\ln\!\left(\frac{w_{Fkt}}{w_{Dkt}}\right) = \varphi_k + \varphi_t - \frac{1}{\sigma_N} \ln\!\left(\frac{L_{Fkt}}{L_{Dkt}}\right) + u_{kt}`,
     difficulty: "hard",
-    points: 16,
+    points: 17,
     topic: "Immigration",
     context: "Regresses the log foreign-to-native wage ratio on the log foreign-to-native employment ratio within skill cells; the slope recovers minus the inverse elasticity of substitution between immigrants and natives. A small slope means the two groups are close substitutes.",
     hints: [
@@ -11893,7 +11888,7 @@ export const problems: Problem[] = [
     title: "Offshoring Home Labour Constraint",
     latex: String.raw`L^M + L^N = \bar{L}`,
     difficulty: "easy",
-    points: 3,
+    points: 2,
     topic: "Firm Heterogeneity",
     context: "Home's fixed labour supply must be divided between manufacturing production and non-production (headquarters) tasks. Offshoring decisions reallocate workers across these two uses.",
     hints: [
@@ -11905,7 +11900,7 @@ export const problems: Problem[] = [
     title: "Value Chain: Foreign Wages Below Home Wages",
     latex: String.raw`W_L^* < W_L, \qquad W_S^* < W_S`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "International Trade",
     context: "Both unskilled and skilled wages are lower abroad than at home, which is what makes moving any stage of the value chain offshore attractive. The interesting question is which tasks go, given relative wage gaps.",
     hints: [],
@@ -11915,7 +11910,7 @@ export const problems: Problem[] = [
     title: "Relative Cheapness of Foreign Unskilled Labour",
     latex: String.raw`\frac{W_L^*}{W_L} < \frac{W_S^*}{W_S}`,
     difficulty: "medium",
-    points: 5,
+    points: 8,
     topic: "International Trade",
     context: "The foreign wage discount is proportionally deeper for unskilled labour than for skilled labour. Firms therefore offshore the least skill-intensive tasks first, where the cost saving is greatest.",
     hints: [
@@ -11927,7 +11922,7 @@ export const problems: Problem[] = [
     title: "Foreign Unskilled-to-Skilled Wage Ratio",
     latex: String.raw`\frac{W_L^*}{W_S^*} < \frac{W_L}{W_S}`,
     difficulty: "medium",
-    points: 5,
+    points: 8,
     topic: "International Trade",
     context: "Unskilled labour is cheaper relative to skilled labour abroad than at home. This relative-wage comparison, not just absolute wage levels, determines the slicing point of the value chain between countries.",
     hints: [
@@ -11939,7 +11934,7 @@ export const problems: Problem[] = [
     title: "Terms of Trade Definition",
     latex: String.raw`\text{ToT} = \frac{P_x}{P_y} = \frac{P_R}{P_C}`,
     difficulty: "easy",
-    points: 5,
+    points: 4,
     topic: "International Trade",
     context: "Defines the terms of trade as the price of the country's export good relative to its import good. An improvement means each unit exported buys more imports, raising national purchasing power.",
     hints: [
@@ -11952,7 +11947,7 @@ export const problems: Problem[] = [
     title: "Outsourcing Firm Output Ranking across World Prices",
     latex: String.raw`Y_2 > Y_1 > Y_3 > Y_0`,
     difficulty: "medium",
-    points: 2,
+    points: 5,
     topic: "International Trade",
     context: "Ranks the firm's output across four trading scenarios, showing production is highest when the firm can trade components at favourable world prices and lowest in autarky. Access to outsourcing acts like a technology improvement.",
     hints: [],
@@ -11962,7 +11957,7 @@ export const problems: Problem[] = [
     title: "Autarky Input Tangency (Outsourcing PPF)",
     latex: String.raw`\frac{f_C}{f_R} = \frac{F_C}{F_R} = \left(\frac{P_C}{P_R}\right)^{A}`,
     difficulty: "medium",
-    points: 6,
+    points: 10,
     topic: "Offshoring",
     context: "In autarky, the firm equates the marginal rate of transformation between component and assembly activities to their implicit relative price. This tangency of the production frontier with the autarky price line fixes the no-trade benchmark.",
     hints: [
@@ -11974,7 +11969,7 @@ export const problems: Problem[] = [
     title: "Outsourcing Production Tangency at World Prices",
     latex: String.raw`\frac{P_C}{P_R} = \frac{F_C}{F_R}`,
     difficulty: "easy",
-    points: 5,
+    points: 4,
     topic: "Offshoring",
     context: "With trade in tasks, the firm produces where the frontier's slope equals the world relative price of components to assembly. Production choices then depend on world prices, not on the firm's own consumption of tasks.",
     hints: [
@@ -11986,7 +11981,7 @@ export const problems: Problem[] = [
     title: "Outsourcing Trade Balance Condition",
     latex: String.raw`P_C\,(C_{\text{use}} - C_B) = P_R\,(R_B - R_{\text{use}})`,
     difficulty: "medium",
-    points: 2,
+    points: 7,
     topic: "Offshoring",
     context: "Requires balanced trade in tasks: the value of components bought beyond own production must equal the value of assembly services sold abroad. It ties the firm's usage point to its production point along the world price line.",
     hints: [
@@ -12011,7 +12006,7 @@ export const problems: Problem[] = [
     title: "Tariff Price Wedge in a Small Open Economy",
     latex: String.raw`p_d \equiv \frac{p_w}{\tau}, \qquad \tau \equiv 1 + t`,
     difficulty: "medium",
-    points: 7,
+    points: 8,
     topic: "Trade Policy",
     context: "Defines the tariff wedge: with an ad valorem tariff t, the gross factor tau is one plus t, and it drives a proportional gap between the world price and the domestic price. All the tariff's domestic effects flow through this wedge.",
     hints: [
@@ -12024,7 +12019,7 @@ export const problems: Problem[] = [
     title: "US Sugar Demand Schedule",
     latex: String.raw`D_{US}(P) = 2.56 \times 10^{10} - 2.79 \times 10^{8}\, P`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Trade Policy",
     context: "A linear demand curve for US sugar with numeric intercept and slope, quantity falling as price rises. It is the demand side of the calibrated sugar-tariff exercise.",
     hints: [
@@ -12036,7 +12031,7 @@ export const problems: Problem[] = [
     title: "US Sugar Supply Schedule",
     latex: String.raw`S_{US}(P) = 1.48 \times 10^{10} + 5.44 \times 10^{7}\, P`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Trade Policy",
     context: "A linear supply curve for US sugar producers, with quantity supplied rising in price from a large positive intercept. Combined with demand, it determines how much of US consumption is met by imports.",
     hints: [
@@ -12048,7 +12043,7 @@ export const problems: Problem[] = [
     title: "US Import Demand for Sugar",
     latex: String.raw`MD_{US}(P) = D_{US}(P) - S_{US}(P) = 1.08 \times 10^{10} - 3.33 \times 10^{8}\, P`,
     difficulty: "medium",
-    points: 8,
+    points: 6,
     topic: "Trade Policy",
     context: "Import demand is domestic demand minus domestic supply at each price, yielding another downward-sloping linear schedule. Its intersection with world export supply determines the free-trade price and import volume.",
     hints: [
@@ -12072,7 +12067,7 @@ export const problems: Problem[] = [
     title: "Net Welfare Loss of a Small-Country Tariff",
     latex: String.raw`\text{Net loss} = (a + b + c + d) - a - c = b + d`,
     difficulty: "medium",
-    points: 1,
+    points: 5,
     topic: "Trade Policy",
     context: "Tallies the tariff's welfare accounting for a small country: consumers lose areas a+b+c+d, producers gain a, the government collects c, leaving a net loss of the two deadweight triangles b and d. A small country can never gain from a tariff.",
     hints: [
@@ -12084,7 +12079,7 @@ export const problems: Problem[] = [
     title: "BLW Optimal-Tariff First-Order Condition",
     latex: String.raw`\tau_g\, p_g^*\, \frac{dm_g}{d\tau_g} - m_g\, \frac{dp_g^*}{d\tau_g} = 0`,
     difficulty: "hard",
-    points: 7,
+    points: 14,
     topic: "Trade Policy",
     context: "The first-order condition for a welfare-maximising tariff: the marginal deadweight loss from distorting imports is balanced against the terms-of-trade gain from pushing down the foreign export price. Only a country with market power has a nonzero interior solution.",
     hints: [
@@ -12096,7 +12091,7 @@ export const problems: Problem[] = [
     title: "Optimal Tariff Equals Inverse Export-Supply Elasticity",
     latex: String.raw`\tau_g^{opt} = \omega_g = \left[\frac{dx_g^*}{dp_g^*}\,\frac{p_g^*}{m_g}\right]^{-1}`,
     difficulty: "hard",
-    points: 10,
+    points: 15,
     topic: "Trade Policy",
     context: "The optimal tariff equals the inverse of the foreign export supply elasticity: the less elastic foreign supply, the more of the tariff foreigners absorb and the higher the optimal rate. Facing perfectly elastic supply, the optimal tariff is zero.",
     hints: [
@@ -12108,7 +12103,7 @@ export const problems: Problem[] = [
     title: "Domestic Price Response to a Tariff",
     latex: String.raw`\frac{dp_g}{d\tau_g} = p_g^* + \tau_g\,\frac{dp_g^*}{d\tau_g}`,
     difficulty: "medium",
-    points: 7,
+    points: 9,
     topic: "Trade Policy",
     context: "Decomposes how the domestic price moves with the tariff: it rises with the world price one-for-one via the tariff factor, offset by any tariff-induced decline in the world price itself. Incomplete pass-through is direct evidence of terms-of-trade effects.",
     hints: [
@@ -12120,7 +12115,7 @@ export const problems: Problem[] = [
     title: "Feenstra-BLW Double-Difference Operator",
     latex: String.raw`\Delta^{k_{ig}} x_{igvt} \equiv \Delta_t x_{igvt} - \Delta_t x_{igk_{ig}t}`,
     difficulty: "hard",
-    points: 10,
+    points: 14,
     topic: "Trade Policy",
     context: "Defines a double difference: each variety's change over time is measured relative to the change for a reference variety in the same product group. This sweeps out both time-invariant variety effects and common product-time shocks before estimation.",
     hints: [
@@ -12133,7 +12128,7 @@ export const problems: Problem[] = [
     title: "BLW Demand-Side Estimating Equation",
     latex: String.raw`\Delta^{k_{ig}} \ln s_{igvt} = -(\sigma_{ig} - 1)\, \Delta^{k_{ig}} \ln p_{igvt} + \epsilon_{igvt}^{k_{ig}}`,
     difficulty: "hard",
-    points: 15,
+    points: 14,
     topic: "Trade Policy",
     context: "The demand-side estimating equation: double-differenced expenditure shares fall with double-differenced prices at rate sigma minus one, identifying the elasticity of substitution across varieties. It is one half of the Broda-Limao-Weinstein system for measuring market power in trade.",
     hints: [
@@ -12146,7 +12141,7 @@ export const problems: Problem[] = [
     title: "BLW Residual Export-Supply Equation",
     latex: String.raw`\Delta^{k_{ig}} \ln p_{igvt} = \frac{\omega_{ig}}{1 + \omega_{ig}}\, \Delta^{k_{ig}} \ln s_{igvt} + \delta_{igvt}^{k_{ig}}`,
     difficulty: "hard",
-    points: 17,
+    points: 16,
     topic: "Trade Policy",
     context: "The supply-side counterpart: double-differenced prices rise with expenditure shares at a rate governed by the inverse export supply elasticity omega. Estimating omega tells you how large each importer's optimal tariff would be.",
     hints: [
@@ -12159,7 +12154,7 @@ export const problems: Problem[] = [
     title: "Grossman-Helpman Modified Welfare Function",
     latex: String.raw`W^{US} = A_{cons}\, CS(P^{US}) + A_{prod}\, PS(P^{US}) + A_{tax}\, TR(P^{US}, P^{world})`,
     difficulty: "medium",
-    points: 8,
+    points: 6,
     topic: "Trade Policy",
     context: "A political-economy welfare function that weights consumer surplus, producer surplus and tariff revenue differently rather than summing them equally. When producers get extra weight, protectionist policies become politically optimal.",
     hints: [],
@@ -12169,7 +12164,7 @@ export const problems: Problem[] = [
     title: "Specific-Factor Sector Profit",
     latex: String.raw`\pi_i(p_i) = \max_{L_i}\; p_i\, f_i(L_i, K_i) - L_i`,
     difficulty: "medium",
-    points: 7,
+    points: 6,
     topic: "Trade Theory",
     context: "Each sector's profit function: choose labour to maximise revenue from output produced with labour and the sector-specific capital, minus the wage bill (with the wage normalised to one). Its derivative with respect to price is the sector's output, by Hotelling's lemma.",
     hints: [
@@ -12181,7 +12176,7 @@ export const problems: Problem[] = [
     title: "Total Tariff Revenue Across Sectors",
     latex: String.raw`TR = \sum_{i=1}^{N} t_i\, m_i(p_i)`,
     difficulty: "easy",
-    points: 5,
+    points: 3,
     topic: "Trade Policy",
     context: "Sums tariff revenue across all goods: each sector contributes its tariff rate times its import volume at the tariff-inclusive price. This revenue term enters the government's objective alongside surplus measures.",
     hints: [
@@ -12193,7 +12188,7 @@ export const problems: Problem[] = [
     title: "Grossman-Helpman Protection-for-Sale Tariff",
     latex: String.raw`\frac{t_i}{p_i} = -\left(\frac{\delta_i - \lambda_o}{\alpha + \lambda_o}\right)\left(\frac{y_i}{m_i}\right)\left(\frac{\partial m_i}{\partial p_i}\,\frac{p_i}{m_i}\right)^{-1}`,
     difficulty: "hard",
-    points: 13,
+    points: 18,
     topic: "Trade Policy",
     context: "The protection-for-sale formula: a sector's equilibrium tariff is higher when it is politically organised (delta above average), when its output is large relative to imports, and when import demand is inelastic. Protection is literally sold to lobbies at the price of the deadweight loss it creates.",
     hints: [
@@ -12226,7 +12221,7 @@ export const problems: Problem[] = [
     title: "Terms of Trade in the Two-Good Nash Game",
     latex: String.raw`P^{tot}_{US} = \frac{P^a_{US}}{P^t_J}`,
     difficulty: "easy",
-    points: 8,
+    points: 3,
     topic: "Trade Policy",
     context: "In the two-good Nash tariff game, the US terms of trade are the price of its export good (autos) relative to the price it pays for its import good (tuna). Each country's tariff improves its own terms of trade at the other's expense.",
     hints: [
@@ -12238,7 +12233,7 @@ export const problems: Problem[] = [
     title: "ACR Gains from Trade Formula",
     latex: String.raw`\hat{W} = \lambda_{dd}^{-1/\theta}`,
     difficulty: "easy",
-    points: 8,
+    points: 3,
     topic: "Quantitative Trade",
     context: "The Arkolakis-Costinot-Rodriguez-Clare formula: welfare gains from trade depend only on the domestic expenditure share and the trade elasticity theta. Remarkably, this one statistic summarises the gains across a whole class of trade models.",
     hints: [
@@ -12250,7 +12245,7 @@ export const problems: Problem[] = [
     title: "Cobb-Douglas Firm Production",
     latex: String.raw`q_{fiot} = A_{fiot}\left(\frac{L_{fiot}}{\nu}\right)^{\nu}\left(\frac{M_{fiot}}{1-\nu}\right)^{1-\nu} = \sum_d q_{fiodt}`,
     difficulty: "hard",
-    points: 14,
+    points: 18,
     topic: "Quantitative Trade",
     context: "Each firm produces with a Cobb-Douglas combination of labour and materials, scaled by its own productivity, and ships its output across destination markets. The nu exponent fixes the labour share of variable costs.",
     hints: [
@@ -12263,7 +12258,7 @@ export const problems: Problem[] = [
     title: "Triple-Nested CES: Across Products",
     latex: String.raw`Y_{dt} = \left( \int_{i \in F_D} \alpha_{id}^{1/\eta}\, y_{idt}^{(\eta-1)/\eta}\, di \right)^{\eta/(\eta-1)}`,
     difficulty: "hard",
-    points: 14,
+    points: 18,
     topic: "Quantitative Trade",
     context: "The outermost tier of a triple-nested CES structure: destination consumption aggregates a continuum of products with elasticity eta. Lower tiers then substitute across origin countries and across firms within an origin.",
     hints: [
@@ -12276,7 +12271,7 @@ export const problems: Problem[] = [
     title: "CES Aggregator Across Origins",
     latex: String.raw`y_{idt} = \left( \sum_{o \in C} \alpha_{od}^{1/\rho}\, y_{iodt}^{(\rho-1)/\rho} \right)^{\rho/(\rho-1)}`,
     difficulty: "medium",
-    points: 14,
+    points: 11,
     topic: "Quantitative Trade",
     context: "The middle CES tier combines a product sourced from different origin countries with elasticity rho. Buyers switch across countries more readily than across products but less readily than across firms within a country.",
     hints: [
@@ -12289,7 +12284,7 @@ export const problems: Problem[] = [
     title: "CES Aggregator Across Firms Within Origin",
     latex: String.raw`y_{iodt} = \left( \sum_{f \in F_{iodt}} q_{fiodt}^{(\sigma-1)/\sigma} \right)^{\sigma/(\sigma-1)}`,
     difficulty: "medium",
-    points: 11,
+    points: 10,
     topic: "Quantitative Trade",
     context: "The innermost CES tier aggregates the outputs of individual firms from the same origin with elasticity sigma, the highest of the three. Firms from the same country are the closest substitutes in the demand system.",
     hints: [
@@ -12302,7 +12297,7 @@ export const problems: Problem[] = [
     title: "Firm Residual-Demand Elasticity",
     latex: String.raw`\varepsilon_{fiodt} = \sigma - ms_{fiodt}\big[\sigma - \rho + (\rho - \eta)\, ms_{iodt}\big]`,
     difficulty: "hard",
-    points: 10,
+    points: 13,
     topic: "Quantitative Trade",
     context: "A firm's perceived demand elasticity starts at sigma but falls with its market shares, blending in the lower across-origin and across-product elasticities as the firm grows. Big firms therefore face less elastic demand and charge higher markups.",
     hints: [
@@ -12314,7 +12309,7 @@ export const problems: Problem[] = [
     title: "Price-Cost Markup",
     latex: String.raw`\mu_{fiodt} = \frac{\varepsilon_{fiodt}}{\varepsilon_{fiodt} - 1}`,
     difficulty: "easy",
-    points: 9,
+    points: 3,
     topic: "Trade Theory",
     context: "The classic Lerner markup: price over marginal cost equals the demand elasticity divided by the elasticity minus one. As perceived demand becomes less elastic, the markup explodes; as it tends to infinity, pricing approaches marginal cost.",
     hints: [
@@ -12327,7 +12322,7 @@ export const problems: Problem[] = [
     title: "Baqaee-Farhi Welfare Decomposition",
     latex: String.raw`d\log W_d \approx -\sum_a \tilde\lambda_{ad}\, d\log \tau_{ad} - \sum_a \tilde\lambda_{ad}\, d\log \mu_{ad} - \sum_b (\tilde\lambda_{bd} - \Lambda_{bd})\, d\log \Lambda_b + \mathcal{E}_d`,
     difficulty: "hard",
-    points: 20,
+    points: 18,
     topic: "Quantitative Trade",
     context: "Decomposes a country's welfare change into three channels: the direct cost of tariff changes, the distortion from markup changes, and reallocation effects working through supplier shares. It disciplines how much of a trade shock's impact comes from misallocation rather than mechanical cost changes.",
     hints: [
@@ -12343,7 +12338,7 @@ export const problems: Problem[] = [
     title: "Variety (Entry/Exit) Welfare Effect",
     latex: String.raw`\mathcal{E}_d \approx -\theta_d^{-1}\Big[\sum_{e \in E_d}\tilde\lambda_{ed} - \sum_{x \in X_d}\tilde\lambda_{xd}\Big] + \sum_{e \in E_d}\Lambda_{ed} - \sum_{x \in X_d}\Lambda_{xd}`,
     difficulty: "hard",
-    points: 20,
+    points: 19,
     topic: "Quantitative Trade",
     context: "The correction term for entry and exit: welfare gains from newly available varieties and losses from disappearing ones, scaled by the trade elasticity and their expenditure shares. Ignoring it biases welfare calculations when trade shocks change the set of available goods.",
     hints: [
@@ -12360,7 +12355,7 @@ export const problems: Problem[] = [
     title: "Bown-Crowley Tariff Regression",
     latex: String.raw`y_{ikt} = \beta_0 + \beta_1 M_{ikt} + \beta_2 \left(\frac{1}{\eta_{xk} + \eta_{mk}}\right) + \beta_3 \left(M_{ikt} \cdot \frac{1}{\eta_{xk} + \eta_{mk}}\right) + \beta_4 \sigma^m_{ik} + \varepsilon_{ikt}`,
     difficulty: "hard",
-    points: 20,
+    points: 17,
     topic: "Gravity Models",
     context: "Regresses applied tariffs on import volumes, inverse trade elasticities, and their interaction, testing whether governments set higher tariffs exactly where terms-of-trade theory predicts market power is greatest. Positive coefficients validate the optimal-tariff logic empirically.",
     hints: [
@@ -12374,7 +12369,7 @@ export const problems: Problem[] = [
     title: "Incentive to Cooperate",
     latex: String.raw`\omega^*(\tau_c, \tau^*_c) \equiv \frac{\delta}{1 - \delta} \big[ \mathbb{E}W^*(k, k^*, \tau_c, \tau^*_c) - \mathbb{E}W^*(k, k^*, \tau^N, \tau^{*,N}) \big]`,
     difficulty: "medium",
-    points: 12,
+    points: 10,
     topic: "Trade Theory",
     context: "Defines the value of cooperation in a repeated tariff game: the discounted stream of extra welfare from cooperative tariffs relative to reverting to Nash tariffs forever. Cooperation is sustainable only when this exceeds the one-shot gain from cheating.",
     hints: [
@@ -12388,7 +12383,7 @@ export const problems: Problem[] = [
     title: "Foreign Monopolist Tariff FOC",
     latex: String.raw`\underbrace{p'(x) x + p(x)}_{MR} = \underbrace{c^{*\prime}(x) + t}_{MC^* + t}`,
     difficulty: "medium",
-    points: 7,
+    points: 9,
     topic: "International Trade",
     context: "The foreign monopolist exporting under a tariff equates marginal revenue to its marginal cost plus the tariff, which it treats as an extra per-unit cost. Because the monopolist absorbs part of the tariff in its markup, the importing country can extract foreign profit.",
     hints: [
@@ -12400,7 +12395,7 @@ export const problems: Problem[] = [
     title: "Foreign Monopolist Profit Under Tariff",
     latex: String.raw`\pi^*(x) = p(x) x - c^*(x) - t x`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "International Trade",
     context: "The foreign monopolist's profit is sales revenue minus production costs minus the tariff bill paid on every exported unit. The tariff shifts the firm's effective cost curve up and its optimal export quantity down.",
     hints: [],
@@ -12422,7 +12417,7 @@ export const problems: Problem[] = [
     title: "Market-Share Decomposition",
     latex: String.raw`\omega_{fiodt} = ms_{fiodt} \cdot ms_{iodt}`,
     difficulty: "easy",
-    points: 7,
+    points: 2,
     topic: "Quantitative Trade",
     context: "A firm's overall market share in a destination factors into its share among same-origin firms times that origin's share of the product market. The decomposition maps directly into the nested CES elasticity formula.",
     hints: [
@@ -12434,7 +12429,7 @@ export const problems: Problem[] = [
     title: "Atkeson-Burstein Elasticity Case",
     latex: String.raw`\varepsilon = \rho - (\rho - \eta)\, ms_{fiodt}\, ms_{iodt}`,
     difficulty: "medium",
-    points: 8,
+    points: 6,
     topic: "Quantitative Trade",
     context: "The Atkeson-Burstein special case where firm and origin elasticities coincide: the perceived elasticity slides from rho down toward eta as the firm's combined market share grows. Dominant exporters price like monopolists over their whole origin's market.",
     hints: [
@@ -12446,7 +12441,7 @@ export const problems: Problem[] = [
     title: "Within-Origin Oligopoly Elasticity",
     latex: String.raw`\varepsilon \to \sigma - ms_{fiodt}(\sigma - \rho)`,
     difficulty: "easy",
-    points: 8,
+    points: 3,
     topic: "Quantitative Trade",
     context: "In the limit where oligopoly bites only within an origin, the perceived elasticity falls from sigma toward rho as a firm's within-origin share grows. Firms that dominate their own country's exports of a product charge systematically higher markups.",
     hints: [
@@ -12459,7 +12454,7 @@ export const problems: Problem[] = [
     title: "Nested CES Elasticity Ordering",
     latex: String.raw`\sigma \geq \rho \geq \eta > 1`,
     difficulty: "easy",
-    points: 7,
+    points: 2,
     topic: "Quantitative Trade",
     context: "Orders the three CES elasticities: substitution is easiest across firms within an origin, harder across origin countries, and hardest across products, with all exceeding one. This ordering is what makes market shares translate into variable markups.",
     hints: [
@@ -12471,7 +12466,7 @@ export const problems: Problem[] = [
     title: "All-Pay Contest Interim Expected Payoff",
     latex: String.raw`U_i(e_i, s \mid v_i) = v_i\, s^{-1}(e_i) - \bigl(1 - s^{-1}(e_i)\bigr)\dfrac{e_i^{2}}{2}`,
     difficulty: "medium",
-    points: 11,
+    points: 10,
     topic: "Game Theory",
     context: "A contestant's expected payoff in an all-pay contest: bidding effort e wins the prize with probability equal to the chance the rival's value falls below the inverse bid function, while the quadratic effort cost is paid only upon losing here. Maximising this over effort characterises the equilibrium bidding strategy.",
     hints: [
@@ -12484,7 +12479,7 @@ export const problems: Problem[] = [
     title: "Inverse Bid-Function Derivative Identity",
     latex: String.raw`\dfrac{d\, s^{-1}(e_i^{*})}{d e_i} = \dfrac{1}{s'\!\left(s^{-1}(e_i^{*})\right)}`,
     difficulty: "easy",
-    points: 7,
+    points: 4,
     topic: "Optimization",
     context: "The inverse function rule: the derivative of the inverse bid function equals one over the slope of the bid function evaluated at the corresponding value. It is the key substitution when deriving the contest's equilibrium differential equation.",
     hints: [
@@ -12496,7 +12491,7 @@ export const problems: Problem[] = [
     title: "Contest Equilibrium Differential Condition",
     latex: String.raw`v_i = \dfrac{d}{d v_i}\!\left[(1-v_i)\,\dfrac{s(v_i)^{2}}{2}\right]`,
     difficulty: "medium",
-    points: 5,
+    points: 8,
     topic: "Game Theory",
     context: "The equilibrium condition of the contest reduced to a differential equation in the bid function: a player's value must equal the marginal cost, in value space, of mimicking a slightly higher type. Solving it delivers the equilibrium effort schedule.",
     hints: [
@@ -12508,7 +12503,7 @@ export const problems: Problem[] = [
     title: "Contest Equilibrium Effort Function",
     latex: String.raw`s(v_i) = \dfrac{v_i}{\sqrt{1-v_i}}`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Game Theory",
     context: "The closed-form equilibrium effort schedule: effort rises with the contestant's value and blows up as the value approaches one. High-value players bid aggressively because the prize is nearly certain to be worth the escalating cost.",
     hints: [
@@ -12521,7 +12516,7 @@ export const problems: Problem[] = [
     title: "Screening Utility from Marginal Valuation",
     latex: String.raw`v(y,\theta) = \int \theta(1-y)\,dy = \dfrac{\theta y}{2}\,(2 - y)`,
     difficulty: "medium",
-    points: 6,
+    points: 8,
     topic: "Microeconomics",
     context: "Integrates a consumer's declining marginal valuation to get total willingness to pay for quantity y, which is concave in y and scales with the taste parameter theta. This utility function is the raw material for the monopolist's screening problem.",
     hints: [
@@ -12534,7 +12529,7 @@ export const problems: Problem[] = [
     title: "Non-Discriminating Monopolist Problem",
     latex: String.raw`\max_{p}\ \lambda(p-c)\dfrac{\ell - p}{\ell} + (1-\lambda)(p-c)\dfrac{h - p}{h}`,
     difficulty: "medium",
-    points: 8,
+    points: 10,
     topic: "Microeconomics",
     context: "A monopolist who must charge everyone the same price maximises expected profit across low-taste and high-taste buyers, weighting each type's demand by its population share lambda. The single price inevitably distorts sales to at least one type.",
     hints: [
@@ -12548,7 +12543,7 @@ export const problems: Problem[] = [
     title: "Optimal Uniform Monopoly Price with Two Types",
     latex: String.raw`p = \dfrac{h\ell + c\bigl(\lambda h + (1-\lambda)\ell\bigr)}{2\bigl(\lambda h + (1-\lambda)\ell\bigr)}`,
     difficulty: "medium",
-    points: 9,
+    points: 10,
     topic: "Microeconomics",
     context: "The closed-form optimal uniform price when facing a mix of high and low taste types, expressed through the taste parameters, cost, and the type shares. Comparing profit here with the screening solution quantifies the value of price discrimination.",
     hints: [
@@ -12561,7 +12556,7 @@ export const problems: Problem[] = [
     title: "Monopolist Nonlinear-Tariff Screening Objective",
     latex: String.raw`\max_{y_\ell,\,y_h}\ \lambda\!\left[\dfrac{\ell y_\ell}{2}(2-y_\ell) - c y_\ell\right] + (1-\lambda)\!\left[\dfrac{h y_h}{2}(2-y_h) - \dfrac{(h-\ell)y_\ell}{2}(2-y_\ell) - c y_h\right]`,
     difficulty: "hard",
-    points: 11,
+    points: 18,
     topic: "Microeconomics",
     context: "The screening monopolist chooses a quantity for each type to maximise expected profit, where the high type's bracket subtracts the information rent needed to stop them mimicking the low type. That rent term is the price of asymmetric information.",
     hints: [
@@ -12575,7 +12570,7 @@ export const problems: Problem[] = [
     title: "Screening FOCs: No Distortion at the Top",
     latex: String.raw`h(1-y_h) = c, \qquad \ell(1-y_\ell) = \dfrac{c}{\,1 - \dfrac{1-\lambda}{\lambda}\cdot\dfrac{h-\ell}{\ell}\,}`,
     difficulty: "hard",
-    points: 9,
+    points: 17,
     topic: "Microeconomics",
     context: "The screening first-order conditions: the high type's quantity is efficient (marginal valuation equals cost), while the low type's is distorted below the efficient level by a rent-extraction wedge. This is the classic no-distortion-at-the-top result.",
     hints: [
@@ -12589,7 +12584,7 @@ export const problems: Problem[] = [
     title: "Optimal Advertising First-Order Condition",
     latex: String.raw`\dfrac{1}{2\sqrt{a^{*}}} - c = 0 \implies a^{*} = \dfrac{1}{4c^{2}}`,
     difficulty: "medium",
-    points: 7,
+    points: 9,
     topic: "Game Theory",
     context: "Setting the marginal benefit of advertising (which declines as the square root of spending) equal to its marginal cost yields the optimal budget of one over four c squared. Costlier advertising sharply reduces the optimal outlay.",
     hints: [
@@ -12603,7 +12598,7 @@ export const problems: Problem[] = [
     title: "Entry-Deterrence Uniqueness Condition",
     latex: String.raw`\pi + \sqrt{\hat a} - c\hat a > \dfrac{1}{4c}`,
     difficulty: "easy",
-    points: 7,
+    points: 3,
     topic: "Game Theory",
     context: "A parameter restriction guaranteeing the incumbent prefers the deterrence strategy: monopoly profit plus the net payoff from the deterring advertising level must beat the best accommodating alternative. When it holds, the entry-deterrence equilibrium is the unique prediction.",
     hints: [
@@ -12617,7 +12612,7 @@ export const problems: Problem[] = [
     title: "Advertising Signalling Pooling Beliefs",
     latex: String.raw`\mu(h \mid a) = \begin{cases} \lambda & \text{if } a \ge a_p, \\ 0 & \text{if } 0 \le a < a_p. \end{cases}`,
     difficulty: "medium",
-    points: 13,
+    points: 11,
     topic: "Game Theory",
     context: "Specifies the entrant's off-path beliefs supporting a pooling equilibrium: advertising at or above the threshold leaves the prior belief lambda that the incumbent is the high type, while anything less is read as proof of the low type. These threshold beliefs make costly advertising an effective signal.",
     hints: [
@@ -12645,14 +12640,13 @@ export const problems: Problem[] = [
     title: "Substitutable Choice Function",
     latex: String.raw`i \in F(T) \ \text{and}\ i \in U \subset T \implies i \in F(U)`,
     difficulty: "easy",
-    points: 5,
+    points: 3,
     topic: "Mechanism Design",
     context: "If contract i is chosen from a large set T, it must still be chosen from any smaller subset U that contains it. This substitutability condition means removing rival options never crowds out something already selected, and it is key for stable matching to exist.",
     hints: [
       { command: String.raw`\implies`, name: "implies", example: String.raw`\implies` },
       { command: String.raw`\in`, name: "element of", example: String.raw`\in` },
       { command: String.raw`\subset`, name: "subset", example: String.raw`\subset` },
-      { command: String.raw`\text{ }`, name: "text mode", example: String.raw`x \text{ if } y` },
     ],
   },
   {
@@ -12660,7 +12654,7 @@ export const problems: Problem[] = [
     title: "Rubinstein Bargaining Stationary Equilibrium",
     latex: String.raw`\bigl(1 - \delta(1-q),\ \delta(1-q)\bigr), \qquad \text{accept } (z, 1-z) \text{ iff } z \ge \delta q`,
     difficulty: "medium",
-    points: 7,
+    points: 8,
     topic: "Game Theory",
     context: "Describes stationary equilibrium strategies in alternating-offer bargaining: the proposer offers the responder exactly their discounted continuation value delta q and keeps the rest, and any offer of at least that amount is accepted. Impatience gives the proposer the lion's share without delay.",
     hints: [
@@ -12673,7 +12667,7 @@ export const problems: Problem[] = [
     title: "Auction Envelope Expected Utility",
     latex: String.raw`U(v_i) = U(0) + \int_0^{v_i} u^{2}\, du = U(0) + \dfrac{v_i^{3}}{3}`,
     difficulty: "medium",
-    points: 7,
+    points: 9,
     topic: "Game Theory",
     context: "Applies the envelope theorem to an auction: a bidder's expected utility equals the lowest type's utility plus the integral of the winning probability (here u squared) over all types below v. Integrating gives the cubic payoff v cubed over 3.",
     hints: [
@@ -12686,7 +12680,7 @@ export const problems: Problem[] = [
     title: "Symmetric Efficient Bidding Function",
     latex: String.raw`U(v_i) = -b(v_i) + v_i \Pr[v_j < v_i] = -b(v_i) + v_i^{3} \implies b(v) = \dfrac{2v^{3}}{3}`,
     difficulty: "medium",
-    points: 8,
+    points: 9,
     topic: "Game Theory",
     context: "Equates a bidder's expected payoff — paying the bid but winning value v with probability v squared — to the envelope-theorem payoff, and solves for the equilibrium bid. Each bidder shades so the bid equals two-thirds of v cubed.",
     hints: [
@@ -12699,7 +12693,7 @@ export const problems: Problem[] = [
     title: "Myerson-Satterthwaite Incentive Constraint",
     latex: String.raw`1 - \dfrac{p_{hh}}{2} - \dfrac{p_{hl}}{2} \ge \dfrac{1 - p_{ll}}{2}`,
     difficulty: "medium",
-    points: 9,
+    points: 10,
     topic: "Mechanism Design",
     context: "An incentive constraint from a bilateral trade mechanism: the high type's expected payoff from reporting truthfully (left side) must be at least what it gets by mimicking the low type (right side). Constraints like this force the trade probabilities p to leave information rents, which is why efficient trade can be impossible.",
     hints: [
@@ -12712,7 +12706,7 @@ export const problems: Problem[] = [
     title: "Weighted Social Welfare Differential",
     latex: String.raw`\Delta SWF = N_E a_E q_x \lambda_E \Delta x_E - N_W a_W q_x \lambda_W \Delta x_W = q_x \Delta x[a_E \lambda_E - a_W \lambda_W]`,
     difficulty: "hard",
-    points: 6,
+    points: 12,
     topic: "Welfare Economics",
     context: "Computes the change in weighted social welfare from shifting consumption of good x from West to East households, with group sizes N, marginal utilities, and welfare weights lambda. The sign hinges on whether the East's weighted marginal utility exceeds the West's, so redistribution helps only if the recipients are valued more at the margin.",
     hints: [
@@ -12724,7 +12718,7 @@ export const problems: Problem[] = [
     title: "Two-Task Linear Wage Contract",
     latex: String.raw`w(y_1,y_2) = \alpha + \beta\left(y_1 + \gamma y_2\right)`,
     difficulty: "easy",
-    points: 6,
+    points: 3,
     topic: "Contract Theory",
     context: "A wage that pays a base alpha plus a bonus rate beta on a performance index combining the two outputs, with gamma setting the relative weight on task two. Choosing gamma lets the principal steer how the agent splits effort across tasks.",
     hints: [],
@@ -12747,7 +12741,7 @@ export const problems: Problem[] = [
     title: "Risk-Neutral Firm Revenue",
     latex: String.raw`M = 4\log(e) - w(y_1,y_2)`,
     difficulty: "easy",
-    points: 3,
+    points: 2,
     topic: "Contract Theory",
     context: "The firm's payoff is log-shaped revenue in the agent's effort minus the wage bill. Concave revenue means extra effort has diminishing value to the principal.",
     hints: [],
@@ -12757,7 +12751,7 @@ export const problems: Problem[] = [
     title: "Principal's Objective (Two-Task Contract)",
     latex: String.raw`V(\beta,\gamma) = 4\log(\beta + 2\beta\gamma) - \beta^2(1+\gamma^2) - 0.5\beta^2 - \beta^2\gamma^2`,
     difficulty: "hard",
-    points: 7,
+    points: 12,
     topic: "Contract Theory",
     context: "The principal's profit as a function of the two incentive parameters after substituting the agent's optimal effort choices: log revenue from induced effort minus the risk premium and effort costs passed through the wage. Maximising this over beta and gamma pins down the optimal contract.",
     hints: [],
@@ -12767,7 +12761,7 @@ export const problems: Problem[] = [
     title: "Triangular Ability Distribution",
     latex: String.raw`f(z) = \begin{cases} z & z \in [0,1] \\ 2-z & z \in [1,2] \end{cases}`,
     difficulty: "medium",
-    points: 7,
+    points: 10,
     topic: "Labour Economics",
     context: "A triangular density on the interval from 0 to 2: the probability weight rises linearly up to ability 1 and falls linearly after. Most workers have middling ability, with few at either extreme.",
     hints: [
@@ -12780,7 +12774,7 @@ export const problems: Problem[] = [
     title: "Rocket Scientist Wage Schedule",
     latex: String.raw`w_R(z,e,n_R) = (1+0.5e)z - n_R`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Labour Economics",
     context: "Pay for a rocket scientist rises with ability z, is scaled up by education e, and falls one-for-one with the number of scientists n. Skilled wages are thus eroded by congestion as more workers enter the occupation.",
     hints: [],
@@ -12790,7 +12784,7 @@ export const problems: Problem[] = [
     title: "Present Value of Occupational Choice",
     latex: String.raw`PV_R = -c + \delta\frac{(1+0.5e)z - n_R}{1-\delta}`,
     difficulty: "medium",
-    points: 5,
+    points: 7,
     topic: "Labour Economics",
     context: "The lifetime value of training as a scientist: pay the training cost c up front, then receive the scientist wage as a discounted perpetuity starting next period. Workers enter the occupation only if this exceeds the alternative career's value.",
     hints: [
@@ -12802,7 +12796,7 @@ export const problems: Problem[] = [
     title: "Equilibrium Occupation Share",
     latex: String.raw`n_R = \frac{(2-z^*)^2}{2}`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Labour Economics",
     context: "The equilibrium number of scientists equals the mass of workers whose ability exceeds the entry cutoff z-star, computed from the triangular density's upper tail. Positive selection means only the ablest choose the skilled occupation.",
     hints: [
@@ -12814,7 +12808,7 @@ export const problems: Problem[] = [
     title: "Selection-Corrected Return to Education",
     latex: String.raw`w_R(z,e,n_R) - w_S(z,n_S) = 0.5ez - (n_R - n_S)`,
     difficulty: "medium",
-    points: 3,
+    points: 5,
     topic: "Labour Economics",
     context: "The observed wage gap between scientists and the alternative occupation decomposes into the education premium (half of e times ability) minus the difference in congestion effects. The raw gap overstates the return to education because high-ability workers select into science.",
     hints: [],
@@ -12824,7 +12818,7 @@ export const problems: Problem[] = [
     title: "Conditional Average Ability",
     latex: String.raw`\bar{z}_{\text{scientist}} = \frac{\int_{z^*}^{2} z\,dF(z)}{1/8}`,
     difficulty: "medium",
-    points: 8,
+    points: 10,
     topic: "Labour Economics",
     context: "Computes the mean ability among workers who became scientists: the integral of z over the upper tail above the cutoff, divided by that tail's probability mass of one-eighth. It quantifies how strongly the occupation selects on talent.",
     hints: [
@@ -12839,7 +12833,7 @@ export const problems: Problem[] = [
     title: "Net Marginal Social Cost of Tax Interaction",
     latex: String.raw`NMC(\tau_h) = \tau_c\left(\frac{\partial y_c^s}{\partial p_h} - \frac{\partial y_c^d}{\partial p_h}\right)\frac{\partial p_h}{\partial \tau_h}`,
     difficulty: "hard",
-    points: 9,
+    points: 17,
     topic: "Welfare Economics",
     context: "Measures the fiscal spillover of raising the tax on good h: the induced change in h's price shifts supply and demand for the already-taxed good c, changing revenue collected there. Ignoring such cross-market effects misstates the true cost of a tax.",
     hints: [
@@ -12852,7 +12846,7 @@ export const problems: Problem[] = [
     title: "Boardman Shadow Price of Supply",
     latex: String.raw`SP = \frac{MC_1 + MC_0}{2}\frac{\Delta x^-}{\Delta x} + \frac{p_1^m + p_0^m}{2}\frac{\Delta x^+}{\Delta x}`,
     difficulty: "hard",
-    points: 7,
+    points: 16,
     topic: "Welfare Economics",
     context: "Values a public project's input purchases as a weighted average: units met by new production are priced at (average) marginal cost, while units displaced from private buyers are priced at the market price. The weights are each channel's share of the total quantity change.",
     hints: [
@@ -12865,7 +12859,7 @@ export const problems: Problem[] = [
     title: "Marginal Revenue Cost of Taxation",
     latex: String.raw`MRC_i = -\frac{\dfrac{\partial R_i}{\partial t_i}}{\dfrac{\partial SWF}{\partial t_i}}`,
     difficulty: "medium",
-    points: 8,
+    points: 10,
     topic: "Welfare Economics",
     context: "Ranks tax instruments by the ratio of the revenue gained to the social welfare lost when the tax rate rises marginally. Instruments with a low ratio buy revenue cheaply in welfare terms and should be used first.",
     hints: [
@@ -12879,7 +12873,7 @@ export const problems: Problem[] = [
     title: "Size-Dependent Firm Revenue",
     latex: String.raw`M = \exp(x)\,S^{1-\gamma}e - w(z)`,
     difficulty: "medium",
-    points: 5,
+    points: 6,
     topic: "Contract Theory",
     context: "The firm's profit is productivity exp(x) times effort, scaled by firm size raised to the power one minus gamma, minus the manager's wage. Larger firms amplify the value of managerial effort, but less than proportionally.",
     hints: [],
@@ -12889,7 +12883,7 @@ export const problems: Problem[] = [
     title: "Linear Incentive Wage Contract",
     latex: String.raw`w(z) = \alpha + \beta z, \quad z = x + e`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Contract Theory",
     context: "A linear pay scheme: base salary alpha plus a bonus rate beta on the performance measure z, which mixes the manager's effort e with random noise x. Beta governs how much risk and how much incentive the contract transmits.",
     hints: [],
@@ -12899,7 +12893,7 @@ export const problems: Problem[] = [
     title: "Agent Mean-Variance Utility",
     latex: String.raw`U = \mathbb{E}[w(z)] - \mathrm{var}[w(z)] - 0.5e^2`,
     difficulty: "easy",
-    points: 4,
+    points: 2,
     topic: "Contract Theory",
     context: "The manager's payoff is expected pay minus the variance of pay minus a quadratic effort cost. Because compensation risk enters as a direct penalty, stronger incentives must be traded off against the risk they load onto the agent.",
     hints: [
@@ -12912,7 +12906,7 @@ export const problems: Problem[] = [
     title: "Optimal Incentive Intensity",
     latex: String.raw`\beta^* = \frac{S^{1-\gamma}\exp(0.5\sigma)}{1+2\sigma}`,
     difficulty: "medium",
-    points: 10,
+    points: 9,
     topic: "Contract Theory",
     context: "The profit-maximising bonus rate: it scales with the firm-size return in the numerator and shrinks with the noise term in the denominator. Incentives are stronger where effort is more valuable and weaker where performance is measured noisily.",
     hints: [
@@ -12924,7 +12918,7 @@ export const problems: Problem[] = [
     title: "Incentive Intensity vs Noise",
     latex: String.raw`\frac{d\beta^*}{d\sigma} = \frac{S^{1-\gamma}\exp(0.5\sigma)(\sigma - 1.5)}{(1+2\sigma)^2}`,
     difficulty: "hard",
-    points: 11,
+    points: 17,
     topic: "Contract Theory",
     context: "Differentiates the optimal bonus rate with respect to measurement noise; the sign flips at sigma equals 1.5. Here noise both raises expected productivity (through the lognormal mean) and adds risk, so incentive pay is non-monotone in sigma.",
     hints: [
@@ -12936,7 +12930,7 @@ export const problems: Problem[] = [
     title: "Incentive Intensity vs Firm Size",
     latex: String.raw`\frac{d\beta^*}{dS} = (1-\gamma)S^{-\gamma}\frac{\exp(0.5\sigma)}{1+2\sigma}`,
     difficulty: "hard",
-    points: 10,
+    points: 16,
     topic: "Contract Theory",
     context: "The optimal bonus rate rises with firm size as long as gamma is below one, since managerial effort is worth more at bigger firms. This predicts steeper pay-for-performance for CEOs of larger companies.",
     hints: [
@@ -12948,7 +12942,7 @@ export const problems: Problem[] = [
     title: "Discounted Value of Skilled Occupation",
     latex: String.raw`PV_R = -c + \frac{(1+0.5e)z - n_R}{i}`,
     difficulty: "medium",
-    points: 4,
+    points: 6,
     topic: "Labour Economics",
     context: "The lifetime value of the skilled career at interest rate i: a training cost c paid now, followed by a perpetuity of the scientist wage discounted at i. Comparing this with the unskilled career's value determines occupational choice.",
     hints: [
@@ -12960,7 +12954,7 @@ export const problems: Problem[] = [
     title: "Discounted Value of Unskilled Occupation",
     latex: String.raw`PV_S = \frac{(z+1-n_S)(1+i)}{i}`,
     difficulty: "medium",
-    points: 4,
+    points: 6,
     topic: "Labour Economics",
     context: "The present value of the unskilled career: the wage perpetuity is worth the flow over i, and the extra factor of one plus i reflects that earnings start immediately rather than after a training period. Skipping training trades a lower wage for earlier income.",
     hints: [
@@ -12972,7 +12966,7 @@ export const problems: Problem[] = [
     title: "Cournot Firm with Quadratic Cost",
     latex: String.raw`C(q) = cq + dq^2`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Oligopoly",
     context: "A total cost function with a linear part c q and a quadratic part d q squared, so marginal cost c plus 2 d q rises with output. Convex costs make firms reluctant to expand and soften competition.",
     hints: [],
@@ -12982,7 +12976,7 @@ export const problems: Problem[] = [
     title: "Competitive Supply, Increasing Marginal Cost",
     latex: String.raw`S_i(p) = \frac{p-c}{2d}`,
     difficulty: "easy",
-    points: 4,
+    points: 3,
     topic: "Industrial Organization",
     context: "A price-taking firm's supply curve, found by setting price equal to marginal cost c plus 2 d q and solving for quantity. Steeper marginal cost (larger d) makes supply less responsive to price.",
     hints: [
@@ -12994,7 +12988,7 @@ export const problems: Problem[] = [
     title: "Price-Taking Equilibrium Price with Convex Costs",
     latex: String.raw`p^{*} = \frac{2da + bcN}{2d + bN}`,
     difficulty: "medium",
-    points: 3,
+    points: 6,
     topic: "Industrial Organization",
     context: "The market-clearing price when N price-taking firms with convex costs meet linear demand: a weighted blend of the demand intercept a and marginal cost c. As N grows, the price falls toward marginal cost.",
     hints: [
@@ -13006,7 +13000,7 @@ export const problems: Problem[] = [
     title: "Cournot Best Response with Convex Costs",
     latex: String.raw`q_i = \frac{a - c - b\,q_{-i}}{2(b+d)}`,
     difficulty: "medium",
-    points: 4,
+    points: 7,
     topic: "Oligopoly",
     context: "A Cournot firm's best reply to its rivals' combined output: optimal quantity falls in rival output, and the convexity parameter d in the denominator makes the response flatter. Rising marginal cost dampens how aggressively firms punish rival expansion.",
     hints: [
@@ -13018,7 +13012,7 @@ export const problems: Problem[] = [
     title: "N-Firm Cournot Output with Convex Costs",
     latex: String.raw`q_i^{C} = \frac{a-c}{2(b+d) + b(N-1)}`,
     difficulty: "medium",
-    points: 4,
+    points: 7,
     topic: "Oligopoly",
     context: "The symmetric Cournot equilibrium output per firm with N competitors and convex costs. More rivals or steeper marginal cost shrinks each firm's production, and the market approaches the competitive outcome as N grows.",
     hints: [
@@ -13030,7 +13024,7 @@ export const problems: Problem[] = [
     title: "Cournot Profit with Convex Costs",
     latex: String.raw`\pi^{C} = (b+d)\left(\frac{a-c}{2(b+d) + b(N-1)}\right)^2`,
     difficulty: "medium",
-    points: 5,
+    points: 7,
     topic: "Oligopoly",
     context: "Equilibrium profit per Cournot firm, equal to b plus d times the square of equilibrium output. Profits fall quickly as the number of firms N rises, since each firm's output shrinks and profit depends on its square.",
     hints: [
@@ -13042,7 +13036,7 @@ export const problems: Problem[] = [
     title: "Differentiated-Goods Inverse Demand",
     latex: String.raw`p_i(q_i, q_j) = a - b\,q_i - d\,q_j`,
     difficulty: "easy",
-    points: 2,
+    points: 1,
     topic: "Product Differentiation",
     context: "Inverse demand for a differentiated product: the price falls by b per unit of own output but only by d per unit of the rival's. When d is below b the goods are imperfect substitutes, which relaxes competition.",
     hints: [],
@@ -13052,7 +13046,7 @@ export const problems: Problem[] = [
     title: "Inverse-to-Direct Demand Transformation",
     latex: String.raw`\tilde{a} \equiv \frac{a(b-d)}{b^2-d^2}, \quad \tilde{b} \equiv \frac{b}{b^2-d^2}, \quad \tilde{d} \equiv \frac{d}{b^2-d^2}`,
     difficulty: "medium",
-    points: 9,
+    points: 10,
     topic: "Product Differentiation",
     context: "Defines the transformed intercept and slope parameters obtained by inverting the two-good linear inverse-demand system into direct demands. This rewriting is the standard first step for analysing Bertrand competition, where firms choose prices rather than quantities.",
     hints: [
@@ -13066,7 +13060,7 @@ export const problems: Problem[] = [
     title: "Differentiated Cournot Equilibrium Price",
     latex: String.raw`p_i^{C} = \frac{ab(-2b+d) - 2b^2 c_i + d^2 c_i - bd\,c_j}{-4b^2 + d^2}`,
     difficulty: "hard",
-    points: 5,
+    points: 13,
     topic: "Oligopoly",
     context: "The closed-form equilibrium price for firm i under Cournot competition with differentiated goods and asymmetric marginal costs. Own cost pushes the price up more strongly than the rival's cost, and the differentiation parameter d governs how tightly the two prices are linked.",
     hints: [
@@ -13078,7 +13072,7 @@ export const problems: Problem[] = [
     title: "Differentiated Bertrand Equilibrium Price",
     latex: String.raw`p_i^{B} = \frac{2ab^2 - abd - ad^2 + 2b^2 c_i + bd\,c_j}{4b^2 - d^2}`,
     difficulty: "hard",
-    points: 5,
+    points: 13,
     topic: "Oligopoly",
     context: "Firm i's equilibrium price when differentiated-goods rivals compete in prices rather than quantities. A rival's cost enters positively because prices are strategic complements, and Bertrand prices come out below their Cournot counterparts.",
     hints: [
@@ -13090,7 +13084,7 @@ export const problems: Problem[] = [
     title: "Inverse Demand from Quadratic Preferences",
     latex: String.raw`p_i = v - \frac{1}{1+\mu}\left(N q_i + \mu \sum_i q_i\right)`,
     difficulty: "medium",
-    points: 7,
+    points: 8,
     topic: "Product Differentiation",
     context: "Inverse demand derived from a representative consumer with quadratic utility: the price falls with own output and with total industry output, with mu indexing how substitutable the N varieties are. Higher mu means less differentiation and fiercer competition.",
     hints: [
@@ -13103,7 +13097,7 @@ export const problems: Problem[] = [
     title: "Best Response with Symmetric Differentiation",
     latex: String.raw`q_i = \frac{1+\mu}{2(\mu+N)}\left(v - c - \frac{\mu}{1+\mu}\sum_{j\neq i} q_j\right)`,
     difficulty: "hard",
-    points: 10,
+    points: 17,
     topic: "Oligopoly",
     context: "A firm's profit-maximising quantity given the sum of its rivals' outputs in the symmetric differentiated-products model. The substitutability parameter mu scales how much rival production depresses the firm's own optimal output.",
     hints: [
@@ -13117,7 +13111,7 @@ export const problems: Problem[] = [
     title: "Cournot Quantity, Differentiated Products",
     latex: String.raw`q^{C} = \frac{(v-c)(1+\mu)}{2N + \mu + N\mu}`,
     difficulty: "medium",
-    points: 5,
+    points: 7,
     topic: "Oligopoly",
     context: "The symmetric Cournot equilibrium quantity with N differentiated products: output scales with the value-cost margin v minus c and shrinks as the market gets more crowded or goods more substitutable. Differentiation (low mu) lets each firm sustain higher output.",
     hints: [
@@ -13129,7 +13123,7 @@ export const problems: Problem[] = [
     title: "Cournot Profit, Differentiated Products",
     latex: String.raw`\pi^{C} = \frac{(v-c)^2(1+\mu)(N+\mu)}{(2N + \mu + N\mu)^2}`,
     difficulty: "hard",
-    points: 7,
+    points: 13,
     topic: "Oligopoly",
     context: "Equilibrium profit per firm in the differentiated Cournot model, proportional to the squared margin v minus c. Both a larger number of rivals N and closer substitutability mu erode profit, quantifying the value of product differentiation.",
     hints: [
@@ -13141,7 +13135,7 @@ export const problems: Problem[] = [
     title: "Managerial Delegation Objective",
     latex: String.raw`R_i \equiv \alpha_i \pi_i + (1-\alpha_i)\,p\,q_i`,
     difficulty: "medium",
-    points: 7,
+    points: 6,
     topic: "Industrial Organization",
     context: "The manager is instructed to maximise a weighted combination of profit and sales revenue, with alpha the weight on profit. Setting alpha below one makes the manager behave as if costs were lower, committing the firm to aggressive output.",
     hints: [
@@ -13153,7 +13147,7 @@ export const problems: Problem[] = [
     title: "Delegated Manager Best Response",
     latex: String.raw`q_i = \frac{a - \alpha_i c - b\,q_j}{2b}`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Oligopoly",
     context: "The delegated manager's best-response output: identical to a standard Cournot reply except the perceived marginal cost is alpha times c. A lower profit weight alpha makes the manager expand output beyond what pure profit maximisation would dictate.",
     hints: [
@@ -13165,7 +13159,7 @@ export const problems: Problem[] = [
     title: "Delegated-Cournot Equilibrium Output",
     latex: String.raw`q_i^{*}(\alpha_i, \alpha_j) = \frac{a - c(2\alpha_i - \alpha_j)}{3b}`,
     difficulty: "hard",
-    points: 6,
+    points: 13,
     topic: "Oligopoly",
     context: "Equilibrium output for firm i when both duopolists delegate to managers with sales-weighted incentives. A more aggressive own contract (lower alpha i) raises own output, while a rival's aggression shrinks it.",
     hints: [
@@ -13177,7 +13171,7 @@ export const problems: Problem[] = [
     title: "Delegated-Cournot Equilibrium Price",
     latex: String.raw`p^{*}(\alpha_i, \alpha_j) = \frac{a + c(\alpha_i + \alpha_j)}{3}`,
     difficulty: "medium",
-    points: 6,
+    points: 8,
     topic: "Oligopoly",
     context: "The market price in the delegated Cournot duopoly rises with both firms' profit weights. When owners give managers sales-heavy incentives (low alphas), total output expands and the price is competed down.",
     hints: [
@@ -13189,7 +13183,7 @@ export const problems: Problem[] = [
     title: "Delegated-Cournot Profit",
     latex: String.raw`\pi_i^{*}(\alpha_i, \alpha_j) = \frac{[a + (\alpha_i + \alpha_j - 3)c]\,[a - (2\alpha_i - \alpha_j)c]}{9b}`,
     difficulty: "hard",
-    points: 7,
+    points: 14,
     topic: "Oligopoly",
     context: "Firm i's realised profit as a function of both delegation weights, combining the price-cost margin with its equilibrium output. Each owner would like the rival to choose a high profit weight while cutting its own — the source of the delegation prisoners' dilemma.",
     hints: [
@@ -13201,7 +13195,7 @@ export const problems: Problem[] = [
     title: "Equilibrium Delegation Weight",
     latex: String.raw`\alpha^{*} = \frac{6c - a}{5c}`,
     difficulty: "medium",
-    points: 4,
+    points: 7,
     topic: "Industrial Organization",
     context: "The symmetric equilibrium profit weight owners choose in the delegation game; it is below one whenever demand intercept a exceeds cost c. Both owners strategically over-reward sales, expanding output and leaving both with lower profits than plain Cournot.",
     hints: [
@@ -13213,7 +13207,7 @@ export const problems: Problem[] = [
     title: "Discrete-Choice Random Utility",
     latex: String.raw`u_{ij} = \beta' X_j + \epsilon_{ij}`,
     difficulty: "easy",
-    points: 7,
+    points: 2,
     topic: "Discrete Choice Demand",
     context: "Consumer i's utility from product j is a common index of observed characteristics X weighted by tastes beta, plus an idiosyncratic shock. Products are chosen when they deliver the highest total utility, which is the foundation of discrete-choice demand estimation.",
     hints: [
@@ -13225,7 +13219,7 @@ export const problems: Problem[] = [
     title: "Logit Market Share",
     latex: String.raw`s_j = \frac{\exp(\delta_j)}{1 + \sum_{i=1}^{J} \exp(\delta_i)}`,
     difficulty: "medium",
-    points: 10,
+    points: 9,
     topic: "Discrete Choice Demand",
     context: "Under extreme-value taste shocks, product j's market share is the exponential of its mean utility divided by one plus the sum over all products, where the one represents the outside option of buying nothing. Better products earn larger shares through this smooth logit formula.",
     hints: [
@@ -13238,7 +13232,7 @@ export const problems: Problem[] = [
     title: "Logit Own- and Cross-Price Elasticity",
     latex: String.raw`\frac{\partial s_j}{\partial p_k}\frac{p_k}{s_j} = \begin{cases} -\alpha p_j (1 - s_j) & j = k \\ \alpha p_k s_k & \text{otherwise} \end{cases}`,
     difficulty: "hard",
-    points: 13,
+    points: 19,
     topic: "Discrete Choice Demand",
     context: "In the logit model, a product's own-price elasticity depends only on its own price and share, while the cross-price elasticity depends only on the other product's. This delivers the unrealistic IIA substitution pattern — a price cut steals proportionally from every rival — motivating richer models like random coefficients.",
     hints: [
@@ -13253,7 +13247,7 @@ export const problems: Problem[] = [
     title: "BLP Differentiation Instrument",
     latex: String.raw`Z_j = \frac{1}{J-1}\sum_{i\neq j} X_i`,
     difficulty: "medium",
-    points: 8,
+    points: 9,
     topic: "Discrete Choice Demand",
     context: "Uses the average characteristics of a product's rivals as an instrument for its price. Rival characteristics shift the toughness of competition, and hence the markup, but are plausibly unrelated to the product's own unobserved quality.",
     hints: [
@@ -13267,7 +13261,7 @@ export const problems: Problem[] = [
     title: "CES Production Function",
     latex: String.raw`Y = A\left(\alpha L^{\rho} + (1-\alpha) K^{\rho}\right)^{\nu/\rho}`,
     difficulty: "medium",
-    points: 9,
+    points: 8,
     topic: "Production",
     context: "A CES production function combining labour and capital with substitution parameter rho, distribution weight alpha, and overall returns to scale nu. It nests Cobb-Douglas, linear, and Leontief technologies as special cases of rho.",
     hints: [],
@@ -13277,7 +13271,7 @@ export const problems: Problem[] = [
     title: "CES Elasticity of Substitution",
     latex: String.raw`\sigma = \frac{1}{1-\rho}`,
     difficulty: "easy",
-    points: 6,
+    points: 3,
     topic: "Production",
     context: "The elasticity of substitution between inputs in the CES technology equals one over one minus rho. As rho approaches zero the elasticity goes to one (Cobb-Douglas); as rho goes to one the inputs become perfect substitutes.",
     hints: [
@@ -13289,7 +13283,7 @@ export const problems: Problem[] = [
     title: "CES Capital Adjustment for Constant Output",
     latex: String.raw`K' = \left(\frac{\alpha L^{\rho}(1 - 0.9^{\rho}) + (1-\alpha) K^{\rho}}{1-\alpha}\right)^{1/\rho}`,
     difficulty: "hard",
-    points: 11,
+    points: 15,
     topic: "Production",
     context: "Solves for the capital stock needed to hold CES output fixed after labour is cut to 90 percent of its original level. The answer depends on rho: the harder it is to substitute capital for labour, the more extra capital is required.",
     hints: [
@@ -13301,7 +13295,7 @@ export const problems: Problem[] = [
     title: "Elasticity of Migration with Respect to Disposable Income",
     latex: String.raw`\eta_m = \frac{z - T(z)}{P(c \mid z)}\,\frac{\partial P(c \mid z)}{\partial c}`,
     difficulty: "medium",
-    points: 8,
+    points: 10,
     topic: "Optimal Taxation",
     context: "Defines the elasticity of the probability of living in a location with respect to disposable income z minus T(z). It measures how sensitively taxpayers vote with their feet when taxes eat into take-home pay.",
     hints: [
@@ -13315,7 +13309,7 @@ export const problems: Problem[] = [
     title: "Optimal Income Tax with Migration Responses",
     latex: String.raw`\frac{T(z)}{z - T(z)} = \frac{1 - g(z)}{\eta_m}`,
     difficulty: "hard",
-    points: 6,
+    points: 14,
     topic: "Optimal Taxation",
     context: "The optimal average tax rate on migrants: the ratio of tax to disposable income equals one minus the social welfare weight, divided by the migration elasticity. Mobile taxpayers with high elasticity can only be taxed lightly before they leave.",
     hints: [
@@ -13327,7 +13321,7 @@ export const problems: Problem[] = [
     title: "Behavioral Effect of a Small Tax Reform",
     latex: String.raw`-\,\frac{T(z)\,P(c \mid z)\,\eta_m}{z - T(z)}\,dT`,
     difficulty: "medium",
-    points: 6,
+    points: 8,
     topic: "Optimal Taxation",
     context: "The revenue lost when a small tax increase dT drives some residents to migrate away, proportional to the migration elasticity and the existing tax collected from them. It is the behavioural leak that offsets the mechanical revenue gain of a reform.",
     hints: [
@@ -13352,7 +13346,7 @@ export const problems: Problem[] = [
     title: "Harrod-Domar Growth Rate",
     latex: String.raw`\frac{\Delta Y}{Y} = \frac{s}{v}`,
     difficulty: "easy",
-    points: 5,
+    points: 3,
     topic: "Growth Theory",
     context: "In the Harrod-Domar model, output growth equals the saving rate divided by the capital-output ratio. Growth accelerates by saving more or by squeezing more output from each unit of capital — an early workhorse for development planning.",
     hints: [
@@ -13365,7 +13359,7 @@ export const problems: Problem[] = [
     title: "Solow-Swan Capital Accumulation",
     latex: String.raw`\dot{k} = s\,f(k) - (n + \delta)\,k`,
     difficulty: "medium",
-    points: 4,
+    points: 5,
     topic: "Growth Theory",
     context: "The core dynamic of the Solow model: capital per worker rises with saving out of output and falls as population growth and depreciation dilute the stock. The gap between the two terms drives the economy toward its steady state.",
     hints: [
@@ -13387,7 +13381,7 @@ export const problems: Problem[] = [
     title: "Solow Steady-State Capital (Cobb-Douglas)",
     latex: String.raw`k^{*} = \left(\frac{s}{n + \delta}\right)^{\frac{1}{1 - \alpha}}`,
     difficulty: "medium",
-    points: 6,
+    points: 10,
     topic: "Growth Theory",
     context: "The closed-form steady-state capital per worker under Cobb-Douglas production: the saving rate over the break-even rate, raised to one over one minus alpha. A higher saving rate raises long-run capital, but with diminishing returns governed by alpha.",
     hints: [
@@ -13399,7 +13393,7 @@ export const problems: Problem[] = [
     title: "Golden Rule of Capital Accumulation",
     latex: String.raw`f'(k_{g}) = n + \delta`,
     difficulty: "easy",
-    points: 3,
+    points: 1,
     topic: "Growth Theory",
     context: "The golden-rule capital stock sets the marginal product of capital equal to population growth plus depreciation. It is the steady state that maximises consumption per worker — saving any more builds capital that only maintains itself.",
     hints: [],
@@ -13409,7 +13403,7 @@ export const problems: Problem[] = [
     title: "Cobb-Douglas Production Function",
     latex: String.raw`Y = K^{\alpha}\,(AL)^{1 - \alpha}`,
     difficulty: "easy",
-    points: 5,
+    points: 3,
     topic: "Growth Theory",
     context: "Cobb-Douglas production with labour-augmenting technology A: output combines capital and effective labour AL with shares alpha and one minus alpha. Writing technology this way is what allows a balanced growth path in the Solow model.",
     hints: [],
@@ -13419,7 +13413,7 @@ export const problems: Problem[] = [
     title: "Gini Coefficient from the Lorenz Curve",
     latex: String.raw`G = 1 - 2\int_{0}^{1} L(p)\,dp`,
     difficulty: "medium",
-    points: 3,
+    points: 6,
     topic: "Inequality",
     context: "Computes the Gini coefficient as one minus twice the area under the Lorenz curve — equivalently, twice the area between the curve and the line of perfect equality. It ranges from zero (everyone equal) to one (one person has everything).",
     hints: [
@@ -13431,7 +13425,7 @@ export const problems: Problem[] = [
     title: "Lorenz Curve",
     latex: String.raw`L(p) = \frac{1}{\mu}\int_{0}^{p} F^{-1}(x)\,dx`,
     difficulty: "medium",
-    points: 8,
+    points: 9,
     topic: "Inequality",
     context: "The Lorenz curve gives the share of total income held by the poorest fraction p of the population, by integrating the quantile function and dividing by mean income. Perfect equality traces the 45-degree line; the deeper the bow, the more unequal the distribution.",
     hints: [
@@ -13444,7 +13438,7 @@ export const problems: Problem[] = [
     title: "Gini Coefficient (Mean Difference Form)",
     latex: String.raw`G = \frac{1}{2n^{2}\mu}\sum_{i=1}^{n}\sum_{j=1}^{n} \lvert y_i - y_j \rvert`,
     difficulty: "hard",
-    points: 13,
+    points: 18,
     topic: "Inequality",
     context: "Expresses the Gini coefficient as the average absolute income gap across all pairs of people, normalised by twice the mean. Inequality here is literally how different two randomly drawn incomes are expected to be.",
     hints: [
@@ -13470,7 +13464,7 @@ export const problems: Problem[] = [
     title: "Atkinson Inequality Index",
     latex: String.raw`A_{\varepsilon} = 1 - \left(\frac{1}{N}\sum_{i=1}^{N}\left(\frac{y_i}{\mu}\right)^{1 - \varepsilon}\right)^{\frac{1}{1 - \varepsilon}}`,
     difficulty: "hard",
-    points: 13,
+    points: 19,
     topic: "Inequality",
     context: "The Atkinson index gives the fraction of total income society could discard and still be as well off if the remainder were shared equally, with epsilon setting the aversion to inequality. Higher epsilon puts more weight on the poorest, making measured inequality larger.",
     hints: [
@@ -13496,7 +13490,7 @@ export const problems: Problem[] = [
     title: "Harris-Todaro Migration Equilibrium",
     latex: String.raw`w_r = \frac{E_u}{E_u + U_u}\, w_u`,
     difficulty: "medium",
-    points: 4,
+    points: 7,
     topic: "Labour Economics",
     context: "Migration stops when the certain rural wage equals the expected urban wage — the urban wage times the probability of actually finding an urban job. High city wages can therefore coexist with equilibrium unemployment, since the queue itself equalises expected returns.",
     hints: [
@@ -13508,7 +13502,7 @@ export const problems: Problem[] = [
     title: "Lewis Dual-Economy Wage Premium",
     latex: String.raw`w_M = (1 + \mu)\, w_A`,
     difficulty: "easy",
-    points: 3,
+    points: 2,
     topic: "Development Economics",
     context: "In the Lewis dual-economy model, the modern-sector wage is a fixed markup mu over the agricultural wage. The premium is what it takes to pull surplus labour out of subsistence farming into industry.",
     hints: [],
@@ -13518,7 +13512,7 @@ export const problems: Problem[] = [
     title: "Nutrition-Based Efficiency Wage (Solow Condition)",
     latex: String.raw`\frac{w\, e'(w)}{e(w)} = 1`,
     difficulty: "medium",
-    points: 3,
+    points: 6,
     topic: "Labour Economics",
     context: "The Solow condition for an efficiency wage: pay is set where the elasticity of worker effort with respect to the wage equals one. At that point the employer minimises the cost per unit of effective labour, explaining why wages may not fall even amid unemployment.",
     hints: [
@@ -13555,7 +13549,7 @@ export const problems: Problem[] = [
     title: "Quantity-Quality Shadow-Price Condition",
     latex: String.raw`\frac{\partial U / \partial n}{\partial U / \partial q} = \frac{q}{n}`,
     difficulty: "medium",
-    points: 5,
+    points: 8,
     topic: "Development Economics",
     context: "The optimality condition in the quantity-quality model: the marginal rate of substitution between number of children and their quality equals the ratio of their shadow prices, q over n. Raising quality makes each additional child more expensive, generating the celebrated quantity-quality trade-off.",
     hints: [
@@ -13568,7 +13562,7 @@ export const problems: Problem[] = [
     title: "Quasi-Hyperbolic (Beta-Delta) Discounting",
     latex: String.raw`U_t = u(c_t) + \beta \sum_{\tau=1}^{\infty} \delta^{\tau}\, u(c_{t+\tau})`,
     difficulty: "hard",
-    points: 13,
+    points: 18,
     topic: "Behavioural Economics",
     context: "Quasi-hyperbolic preferences discount every future period by an extra factor beta on top of standard exponential discounting delta. The result is present bias: today always looks special, so plans made for tomorrow are reversed when tomorrow arrives.",
     hints: [
@@ -13594,7 +13588,7 @@ export const problems: Problem[] = [
     title: "CRRA Utility Function",
     latex: String.raw`u(c) = \frac{c^{\,1 - \theta} - 1}{1 - \theta}`,
     difficulty: "easy",
-    points: 6,
+    points: 3,
     topic: "Behavioural Economics",
     context: "The constant relative risk aversion utility function, with theta measuring both risk aversion and the inverse of the intertemporal elasticity of substitution. Subtracting one and dividing by one minus theta makes it converge to log utility as theta approaches one.",
     hints: [
@@ -13606,7 +13600,7 @@ export const problems: Problem[] = [
     title: "Difference-in-Differences Estimator",
     latex: String.raw`\hat{\delta}_{DiD} = \bigl(\bar{y}_{T,1} - \bar{y}_{T,0}\bigr) - \bigl(\bar{y}_{C,1} - \bar{y}_{C,0}\bigr)`,
     difficulty: "medium",
-    points: 14,
+    points: 10,
     topic: "Econometrics",
     context: "The difference-in-differences estimator: the treated group's before-after change minus the control group's before-after change. Subtracting the control trend removes common time shocks, isolating the treatment effect under the parallel-trends assumption.",
     hints: [
@@ -13619,7 +13613,7 @@ export const problems: Problem[] = [
     title: "Difference-in-Differences Regression",
     latex: String.raw`y_{it} = \alpha + \beta\, T_i + \gamma\, P_t + \delta\,(T_i \times P_t) + \varepsilon_{it}`,
     difficulty: "medium",
-    points: 13,
+    points: 8,
     topic: "Econometrics",
     context: "The regression version of difference-in-differences: outcome on a treatment-group dummy, a post-period dummy, and their interaction. The coefficient delta on the interaction is the treatment effect, while the main effects absorb group differences and common time trends.",
     hints: [
@@ -13632,7 +13626,7 @@ export const problems: Problem[] = [
     title: "Two-Way Fixed Effects Estimator",
     latex: String.raw`y_{it} = \alpha_i + \lambda_t + \delta\, D_{it} + \varepsilon_{it}`,
     difficulty: "easy",
-    points: 11,
+    points: 3,
     topic: "Econometrics",
     context: "A panel regression with unit fixed effects alpha i and time fixed effects lambda t, where delta on the treatment indicator is the effect of interest. The fixed effects sweep out anything constant within a unit or common to a period, generalising difference-in-differences to many groups and dates.",
     hints: [
@@ -13644,7 +13638,7 @@ export const problems: Problem[] = [
     title: "Full Risk-Sharing Test (Townsend)",
     latex: String.raw`\Delta c_{it} = \alpha_t + \beta\, \Delta y_{it} + \varepsilon_{it}`,
     difficulty: "easy",
-    points: 11,
+    points: 3,
     topic: "Econometrics",
     context: "Townsend's test of full insurance: regress a household's consumption change on its own income change, controlling for village-time effects. Under perfect risk sharing beta is zero — consumption should track aggregate resources, not idiosyncratic income shocks.",
     hints: [
@@ -13667,7 +13661,7 @@ export const problems: Problem[] = [
     title: "Net Present Value of Schooling",
     latex: String.raw`\text{NPV} = \sum_{t=1}^{T} \frac{w_1(t) - w_0(t)}{(1 + r)^{t}} - C`,
     difficulty: "medium",
-    points: 7,
+    points: 9,
     topic: "Labour Economics",
     context: "Values education as an investment: the discounted sum of the wage gains from schooling in every future year, minus the upfront cost C. Going to school is worthwhile whenever this net present value is positive.",
     hints: [
@@ -13681,7 +13675,7 @@ export const problems: Problem[] = [
     title: "Target Input Model of Technology Adoption",
     latex: String.raw`\pi(x) = \bar{\pi} - \gamma\,(x - \theta)^{2}`,
     difficulty: "easy",
-    points: 7,
+    points: 3,
     topic: "Development Economics",
     context: "In the target-input model, profit from a new technology falls quadratically with the distance between the input used, x, and the unknown ideal level theta. Farmers must learn theta through experimentation, which is why adoption of profitable technologies can be slow.",
     hints: [
@@ -13706,7 +13700,7 @@ export const problems: Problem[] = [
     title: "Lindahl Prices for a Public Good",
     latex: String.raw`\sum_{i=1}^{n} p_i = \text{MC}(G), \qquad p_i = \text{MRS}^{i}_{G,x}`,
     difficulty: "medium",
-    points: 6,
+    points: 7,
     topic: "Public Goods",
     context: "Lindahl pricing charges each person a personalised price equal to their own marginal valuation of the public good, with the prices summing to marginal cost. Everyone then demands the same efficient quantity, though the scheme founders on people misreporting their valuations.",
     hints: [
@@ -13719,7 +13713,7 @@ export const problems: Problem[] = [
     title: "Ramsey Inverse Elasticity Rule",
     latex: String.raw`\frac{t_k}{1+t_k} = \frac{\theta}{\varepsilon_k}`,
     difficulty: "medium",
-    points: 8,
+    points: 9,
     topic: "Optimal Taxation",
     context: "The Ramsey rule for commodity taxes: each good's tax rate should be inversely proportional to its demand elasticity. Taxing inelastic goods hardest minimises the distortion per unit of revenue, though it often conflicts with equity since necessities tend to be inelastic.",
     hints: [
@@ -13732,7 +13726,7 @@ export const problems: Problem[] = [
     title: "Ramsey Rule (Proportional Discouragement)",
     latex: String.raw`\frac{\sum_{k} t_k\, S_{ik}}{x_i} = -\theta \quad \text{for all } i`,
     difficulty: "hard",
-    points: 8,
+    points: 15,
     topic: "Optimal Taxation",
     context: "The general Ramsey condition: optimal commodity taxes should reduce the compensated demand for every good by the same proportion theta. Uniform proportional discouragement, rather than uniform tax rates, is what minimises excess burden.",
     hints: [
@@ -13746,7 +13740,7 @@ export const problems: Problem[] = [
     title: "Saez Optimal Nonlinear Income Tax (ABC Formula)",
     latex: String.raw`\frac{T'(z)}{1-T'(z)} = \frac{1}{\varepsilon}\,\frac{1-F(z)}{z\,f(z)}\int_{z}^{\infty}\bigl(1-g(s)\bigr)\frac{dF(s)}{1-F(z)}`,
     difficulty: "hard",
-    points: 12,
+    points: 19,
     topic: "Optimal Taxation",
     context: "The Saez formula for the optimal marginal tax rate at each income z: it is high where the elasticity is low, where few people are at that income relative to those above (the hazard term), and where society places little welfare weight on earners further up. These three sufficient statistics summarise the entire Mirrlees problem.",
     hints: [
@@ -13761,7 +13755,7 @@ export const problems: Problem[] = [
     title: "Saez Optimal Top Marginal Tax Rate",
     latex: String.raw`\tau^{*} = \frac{1-\bar{g}}{1-\bar{g}+a\,\varepsilon}`,
     difficulty: "medium",
-    points: 7,
+    points: 8,
     topic: "Optimal Taxation",
     context: "The optimal top marginal tax rate as a function of three statistics: the average welfare weight on top earners, the Pareto parameter a of the income distribution's tail, and the taxable income elasticity. Less concern for the rich, a thinner tail, or lower responsiveness all push the optimal rate higher.",
     hints: [
@@ -13775,7 +13769,7 @@ export const problems: Problem[] = [
     title: "Revenue-Maximising Top Tax Rate (Laffer)",
     latex: String.raw`\tau^{*} = \frac{1}{1+a\,\varepsilon}`,
     difficulty: "easy",
-    points: 6,
+    points: 3,
     topic: "Optimal Taxation",
     context: "The top tax rate that maximises revenue: one over one plus the Pareto parameter times the elasticity of taxable income. It is the special case of the optimal top rate when society puts zero welfare weight on top earners — the peak of the Laffer curve.",
     hints: [
@@ -13788,7 +13782,7 @@ export const problems: Problem[] = [
     title: "Elasticity of Taxable Income Revenue Response",
     latex: String.raw`\frac{dR}{d\tau} = z\left(1-\frac{\tau}{1-\tau}\,\varepsilon\right)`,
     difficulty: "medium",
-    points: 6,
+    points: 8,
     topic: "Optimal Taxation",
     context: "Decomposes the revenue effect of raising the top rate into the mechanical gain z and a behavioural loss that grows with the elasticity and the existing tax wedge. Revenue stops rising exactly when the behavioural response fully offsets the mechanical one.",
     hints: [
@@ -13801,7 +13795,7 @@ export const problems: Problem[] = [
     title: "Marginal Cost of Public Funds",
     latex: String.raw`\text{MCPF} = \frac{1}{\,1-\dfrac{\tau}{1-\tau}\,\varepsilon\,}`,
     difficulty: "medium",
-    points: 8,
+    points: 9,
     topic: "Optimal Taxation",
     context: "The marginal cost of public funds: how many units of private welfare it costs to raise one unit of tax revenue, given the behavioural erosion of the base. It exceeds one whenever taxes distort behaviour, and blows up as the rate approaches the Laffer peak.",
     hints: [
@@ -13828,7 +13822,7 @@ export const problems: Problem[] = [
     title: "Harberger Deadweight Loss Triangle",
     latex: String.raw`\text{DWL} = \frac{1}{2}\,\frac{\varepsilon_s\,\varepsilon_d}{\varepsilon_s+\varepsilon_d}\,\frac{t^{2}}{p}\,Q`,
     difficulty: "medium",
-    points: 7,
+    points: 10,
     topic: "Optimal Taxation",
     context: "The Harberger triangle formula for the deadweight loss of a tax, combining supply and demand elasticities with the squared tax rate. Because the loss rises with the square of t, doubling a tax roughly quadruples its efficiency cost.",
     hints: [
@@ -13842,7 +13836,7 @@ export const problems: Problem[] = [
     title: "Excess Burden of a Commodity Tax",
     latex: String.raw`\text{DWL} = \frac{1}{2}\,\varepsilon\,\frac{t^{2}}{p}\,Q`,
     difficulty: "medium",
-    points: 6,
+    points: 8,
     topic: "Optimal Taxation",
     context: "Approximates the excess burden of a commodity tax as half the elasticity times the squared tax rate, scaled by expenditure. It shows that welfare losses come from behavioural responses, so more elastic goods generate more waste per unit of revenue.",
     hints: [
@@ -13856,7 +13850,7 @@ export const problems: Problem[] = [
     title: "Tax Incidence Pass-Through",
     latex: String.raw`\frac{dp}{dt} = \frac{\varepsilon_s}{\varepsilon_s+\varepsilon_d}`,
     difficulty: "easy",
-    points: 6,
+    points: 4,
     topic: "Optimal Taxation",
     context: "The pass-through of a tax to consumer prices equals the supply elasticity over the sum of the supply and demand elasticities. The burden lands on the inelastic side of the market — whoever finds it harder to walk away pays the tax.",
     hints: [
@@ -13869,7 +13863,7 @@ export const problems: Problem[] = [
     title: "Baily-Chetty Consumption-Smoothing Benefit",
     latex: String.raw`\frac{u'(c_u)-u'(c_e)}{u'(c_e)} \approx \gamma\,\frac{c_e-c_u}{c_e}`,
     difficulty: "medium",
-    points: 8,
+    points: 9,
     topic: "Social Insurance",
     context: "Approximates the welfare gain from insurance: the proportional gap in marginal utility between the unemployed and employed states equals risk aversion gamma times the proportional consumption drop. It is the benefit side of the Baily-Chetty formula for optimal unemployment insurance.",
     hints: [
@@ -13882,7 +13876,7 @@ export const problems: Problem[] = [
     title: "Atkinson Inequality Index",
     latex: String.raw`A_{\varepsilon} = 1-\left(\frac{1}{n}\sum_{i=1}^{n}\left(\frac{y_i}{\bar{y}}\right)^{1-\varepsilon}\right)^{\frac{1}{1-\varepsilon}}`,
     difficulty: "hard",
-    points: 13,
+    points: 19,
     topic: "Welfare Economics",
     context: "Measures inequality as one minus the ratio of equally-distributed-equivalent income to mean income, where epsilon parameterises society's inequality aversion. It answers how much total income could be given up in exchange for perfect equality without lowering social welfare.",
     hints: [
@@ -13897,7 +13891,7 @@ export const problems: Problem[] = [
     title: "Equally Distributed Equivalent Income",
     latex: String.raw`y_{\text{EDE}} = \left(\frac{1}{n}\sum_{i=1}^{n} y_i^{\,1-\varepsilon}\right)^{\frac{1}{1-\varepsilon}}`,
     difficulty: "medium",
-    points: 10,
+    points: 11,
     topic: "Welfare Economics",
     context: "The equally distributed equivalent income: the single income which, if everyone received it, would deliver the same social welfare as the actual unequal distribution. The more inequality-averse society is (higher epsilon), the further this falls below the mean.",
     hints: [
@@ -13912,7 +13906,7 @@ export const problems: Problem[] = [
     title: "Utilitarian Social Welfare Function",
     latex: String.raw`W = \sum_{i=1}^{n} U_i`,
     difficulty: "easy",
-    points: 5,
+    points: 2,
     topic: "Welfare Economics",
     context: "The utilitarian criterion simply adds up everyone's utility, treating a gain to one person as fully offsetting an equal loss to another. Redistribution matters only through diminishing marginal utility, not through any direct concern for equality.",
     hints: [
@@ -13924,7 +13918,7 @@ export const problems: Problem[] = [
     title: "Rawlsian (Maximin) Social Welfare Function",
     latex: String.raw`W = \min_{i} \, U_i`,
     difficulty: "easy",
-    points: 3,
+    points: 2,
     topic: "Welfare Economics",
     context: "The Rawlsian criterion judges society entirely by the utility of its worst-off member. It embodies extreme inequality aversion: improvements to anyone above the bottom count for nothing until the minimum rises.",
     hints: [
@@ -13936,7 +13930,7 @@ export const problems: Problem[] = [
     title: "Bergson-Samuelson Social Welfare Function",
     latex: String.raw`W = \int G\bigl(u(n)\bigr)\,dF(n), \qquad G'>0,\ G''<0`,
     difficulty: "medium",
-    points: 5,
+    points: 8,
     topic: "Welfare Economics",
     context: "A general social welfare function aggregating individual utilities across the skill distribution through an increasing, concave transformation G. The concavity builds in inequality aversion, nesting the utilitarian and near-Rawlsian criteria as special cases.",
     hints: [
@@ -13948,7 +13942,7 @@ export const problems: Problem[] = [
     title: "Mirrlees Self-Selection Constraint",
     latex: String.raw`v^{*}\!\left(y^{d}_{i},\,\frac{y_i}{a_i}\right) \ge v^{*}\!\left(y^{d}_{j},\,\frac{y_j}{a_i}\right)`,
     difficulty: "medium",
-    points: 7,
+    points: 9,
     topic: "Optimal Taxation",
     context: "The incentive constraint in the Mirrlees model: a worker of ability a must prefer the after-tax income and labour bundle designed for their type over mimicking type j, where producing j's income takes them y over a units of work. These constraints are why the planner cannot tax unobservable ability directly.",
     hints: [
@@ -13961,7 +13955,7 @@ export const problems: Problem[] = [
     title: "Mirrlees Envelope (Incentive-Compatibility) Condition",
     latex: String.raw`\frac{dU(n)}{dn} = -\frac{y(n)}{n^{2}}\,U_{l}\!\left(c(n),\,\frac{y(n)}{n}\right)`,
     difficulty: "hard",
-    points: 5,
+    points: 16,
     topic: "Optimal Taxation",
     context: "The envelope condition of the Mirrlees problem: utility must rise with skill n at a rate determined by labour supply and the marginal disutility of work. This pins down the information rents high-skill workers keep, which shape the whole optimal tax schedule.",
     hints: [
