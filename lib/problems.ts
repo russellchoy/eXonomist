@@ -11,7 +11,6 @@
 // DIFFICULTY_OVERRIDES in build-problems.mjs. Re-copy after rebuild.
 // NOTE: `npm run import` regenerates this file from questions.txt and will
 // overwrite it — sync questions.txt (or re-copy from reference_images/latex/) first.
-// Regenerate with:  node build-problems.mjs
 export type Difficulty = "easy" | "medium" | "hard";
 
 export interface Hint {
@@ -11621,8 +11620,8 @@ export const problems: Problem[] = [
     id: "equilibrium-number-of-firms",
     title: "Equilibrium Number of Firms",
     latex: String.raw`n^{*} = \sqrt{\frac{S}{bF}}`,
-    difficulty: "medium",
-    points: 7,
+    difficulty: "easy",
+    points: 3,
     topic: "New Trade Theory",
     context: "The zero-profit number of firms grows with the square root of market size and shrinks with fixed costs. Bigger markets support more varieties, which is why trade, by enlarging the market, expands consumer choice.",
     hints: [
@@ -11635,7 +11634,7 @@ export const problems: Problem[] = [
     title: "Equilibrium Price in Monopolistic Competition",
     latex: String.raw`p^{*} = c + \frac{1}{n^{*} b} = c + \sqrt{\frac{F}{Sb}}`,
     difficulty: "medium",
-    points: 9,
+    points: 8,
     topic: "New Trade Theory",
     context: "The equilibrium price is marginal cost plus a markup that shrinks with market size: larger markets host more firms, and more competition compresses margins. Consumers in big markets pay lower prices and enjoy more varieties.",
     hints: [
