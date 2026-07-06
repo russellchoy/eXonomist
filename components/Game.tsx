@@ -56,6 +56,8 @@ export function Game({ mode }: { mode: GameMode }) {
   // (may be reduced by the timed-mode hint penalty — shown in the success flash).
   const [hintsShown, setHintsShown] = useState(0);
   const [lastAward, setLastAward] = useState(0);
+  // Zen-mode-only: the raw LaTeX answer, revealable once every hint is used up.
+  const [answerRevealed, setAnswerRevealed] = useState(false);
 
   // Guards against re-awarding while the success flash plays out.
   const transitioning = useRef(false);
@@ -106,6 +108,7 @@ export function Game({ mode }: { mode: GameMode }) {
   const advance = useCallback(() => {
     setInput("");
     setHintsShown(0);
+    setAnswerRevealed(false);
     setQuestionNumber((n) => n + 1);
     if (pos + 1 >= order.length) {
       // Reshuffle for a fresh pass when the deck is exhausted. Done here, not
@@ -145,6 +148,8 @@ export function Game({ mode }: { mode: GameMode }) {
     setHintsShown((n) => Math.min(n + 1, current.hints.length));
   }, [current]);
 
+  const revealAnswer = useCallback(() => setAnswerRevealed(true), []);
+
   const skip = useCallback(() => {
     if (transitioning.current) return;
     advance();
@@ -173,6 +178,7 @@ export function Game({ mode }: { mode: GameMode }) {
     setScore(0);
     setSolved(0);
     setHintsShown(0);
+    setAnswerRevealed(false);
     setSecondsLeft(mode === "timed" ? TIMED_SECONDS : null);
     setFlash(false);
     setFinished(false);
@@ -303,6 +309,28 @@ export function Game({ mode }: { mode: GameMode }) {
         </button>
       )}
       <HintList hints={current.hints} shown={hintsShown} />
+
+      {/* Zen mode only: once every hint is used up, let the player see the answer. */}
+      {mode === "zen" && hintsShown >= current.hints.length && (
+        answerRevealed ? (
+          <div className="border-2 border-black bg-[var(--surface,#faf9f6)] p-4">
+            <p className="mb-1 text-sm font-bold uppercase tracking-wide text-[var(--muted)]">
+              Answer
+            </p>
+            <code className="block whitespace-pre-wrap font-mono text-base">
+              {current.latex}
+            </code>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={revealAnswer}
+            className="inline-flex w-fit items-center gap-2 border-2 border-black px-4 py-2 text-base hover:bg-black hover:text-white"
+          >
+            Reveal Answer
+          </button>
+        )
+      )}
 
       {/* Reference material collated at the bottom of the page. */}
       <GlossaryPanel />
