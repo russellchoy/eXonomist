@@ -248,7 +248,6 @@ export function Game({ mode }: { mode: GameMode }) {
         )}
       </div>
 
-      <Target latex={current.latex} />
       {current.context && (
         <div className="border-2 border-black px-4 py-3">
           <p className="mb-1 text-sm font-bold uppercase tracking-wide text-[var(--muted)]">
@@ -257,6 +256,7 @@ export function Game({ mode }: { mode: GameMode }) {
           <p className="text-base">{current.context}</p>
         </div>
       )}
+      <Target latex={current.latex} />
       <Preview latex={input} shadowLatex={current.latex} shadow={shadow} />
       {/* key per question => fresh, auto-focused editor each problem */}
       <LatexInput
