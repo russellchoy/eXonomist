@@ -360,7 +360,9 @@ export function DailyChallenge() {
           <div className="flex items-baseline gap-3">
             <h2 className="text-2xl font-bold">
               {current.title}{" "}
-              <span className="font-normal">({current.points} points)</span>
+              <span className="font-normal">
+                ({current.topic} · {current.points} points)
+              </span>
             </h2>
             {flash && (
               <span className="text-xl font-bold text-green-700">✓ Correct!</span>
