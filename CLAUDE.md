@@ -110,7 +110,7 @@ exists in the repo right now.
 | `scripts/` | ✅ | `import-questions.mjs` — the question importer. |
 | `app/` | ✅ | `layout.tsx` (imports KaTeX CSS), `globals.css`, `page.tsx` (landing), `play/page.tsx` (game). |
 | `components/` | ✅ | `Game`, `LatexInput`, `Preview`, `Target`, `ReferenceTable`, `Results`, `Wordmark`, `KatexMath`, `HintList`. |
-| `lib/` | ✅ | `problems.ts` (GENERATED — currently the 468-problem bank from `reference_images/latex/`), `checkAnswer.ts`, `reference.ts`, `katex.ts`. |
+| `lib/` | ✅ | `problems.ts` (GENERATED — currently the 1116-problem bank from `reference_images/latex/`, incl. Part IIB Tripos past papers + `trade.tex`), `checkAnswer.ts`, `reference.ts`, `katex.ts`. |
 | `package.json` etc. | ✅ | Next.js 16 + Tailwind v4 + KaTeX config from `create-next-app`. |
 
 Legend: ✅ present · 🔧 in progress this build.
@@ -142,7 +142,7 @@ before touching it.
 
 1. **`questions.txt` → `npm run import`** (the original, hand-authored path).
 2. **The bulk extraction pipeline in `reference_images/latex/`** — this is what
-   currently produces the live 468-problem bank. Both pipelines write the SAME
+   currently produces the live 1116-problem bank. Both pipelines write the SAME
    file (`lib/problems.ts`), so **`npm run import` will overwrite the extracted
    bank** with whatever is in `questions.txt`. Don't run it unless you mean to
    switch back to the hand-authored path.
