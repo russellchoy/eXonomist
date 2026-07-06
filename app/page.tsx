@@ -85,9 +85,12 @@ export default function Home() {
         </p>
       </div>
 
-      <p className="text-sm uppercase tracking-wide text-black/60">
-        {problems.length} questions in the bank
-      </p>
+      <Link
+        href="/stats"
+        className="text-sm uppercase tracking-wide text-black/60 underline underline-offset-4 hover:text-[#3b5bdb]"
+      >
+        {problems.length} questions in the bank →
+      </Link>
 
       <div className="flex flex-wrap justify-center gap-5">
         <Link
